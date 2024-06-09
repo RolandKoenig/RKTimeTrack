@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RKTimeTrack.Service", "src\RKTimeTrack.Service\RKTimeTrack.Service.csproj", "{05D85CE0-0154-41E8-A229-9157DBDAD8C2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RKTimeTrack.Application", "src\RKTimeTrack.Application\RKTimeTrack.Application.csproj", "{534900C9-49E7-4B44-866D-60B829186F01}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Incoming", "Incoming", "{580BA189-E461-4BC9-B408-5EFFF3F3AB85}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Outgoing", "Outgoing", "{CC396AFC-7E63-47B5-A500-4E6CACCC6ED6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RKTimeTrack.StaticProjectRepositoryAdapter", "src\RKTimeTrack.StaticProjectRepositoryAdapter\RKTimeTrack.StaticProjectRepositoryAdapter.csproj", "{23D1E0C1-0B3B-40A9-94EA-99AD6B06326F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{05D85CE0-0154-41E8-A229-9157DBDAD8C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05D85CE0-0154-41E8-A229-9157DBDAD8C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05D85CE0-0154-41E8-A229-9157DBDAD8C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05D85CE0-0154-41E8-A229-9157DBDAD8C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{534900C9-49E7-4B44-866D-60B829186F01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{534900C9-49E7-4B44-866D-60B829186F01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{534900C9-49E7-4B44-866D-60B829186F01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{534900C9-49E7-4B44-866D-60B829186F01}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23D1E0C1-0B3B-40A9-94EA-99AD6B06326F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23D1E0C1-0B3B-40A9-94EA-99AD6B06326F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23D1E0C1-0B3B-40A9-94EA-99AD6B06326F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23D1E0C1-0B3B-40A9-94EA-99AD6B06326F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{05D85CE0-0154-41E8-A229-9157DBDAD8C2} = {580BA189-E461-4BC9-B408-5EFFF3F3AB85}
+		{23D1E0C1-0B3B-40A9-94EA-99AD6B06326F} = {CC396AFC-7E63-47B5-A500-4E6CACCC6ED6}
+	EndGlobalSection
+EndGlobal
