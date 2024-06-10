@@ -1,11 +1,10 @@
 using Microsoft.Extensions.DependencyInjection;
+using RKTimeTrack.Application.UseCases;
 
 namespace RKTimeTrack.Application;
 
 public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddRKTimeTrackApplication(this IServiceCollection services)
-    {
-        return services;
-    }
+        => services.AddScoped<GetWeekUseCase>();
 }
