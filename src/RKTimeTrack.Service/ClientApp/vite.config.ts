@@ -6,12 +6,12 @@
  */
 
 import {UserConfig, defineConfig, ProxyOptions} from 'vite';
-import {fileURLToPath, URL} from 'node:url'
-import vue from '@vitejs/plugin-vue'
+import {fileURLToPath, URL} from 'node:url';
+import vue from '@vitejs/plugin-vue';
 
 import appsettingsDev from "../appsettings.Development.json";
 
-export default defineConfig(async ({ command }) => {
+export default defineConfig(({ command }) => {
   const isDevelopment = command !== "build";
 
   // Prepare proxy options
