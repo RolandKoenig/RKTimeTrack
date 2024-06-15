@@ -1,16 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
-using FluentValidation;
-using ValidationResult = FluentValidation.Results.ValidationResult;
+﻿using FluentValidation;
 
 namespace RKTimeTrack.Application.UseCases;
 
-public record GetWeekRequest(
-    [Range(1, int.MaxValue)] int Year,
-    [Range(1, 52)] int WeekNumber)
+// ReSharper disable once ClassNeverInstantiated.Global
+public record GetWeekRequest(int Year, int WeekNumber)
 {
     public class Validator : AbstractValidator<GetWeekRequest>
     {
-        public override ValidationResult Validate(ValidationContext<GetWeekRequest> context)
+        public Validator()
         {
             RuleFor(request => request.Year)
                 .GreaterThanOrEqualTo(2022);
@@ -18,8 +15,6 @@ public record GetWeekRequest(
             RuleFor(request => request.WeekNumber)
                 .GreaterThanOrEqualTo(1)
                 .LessThanOrEqualTo(52);
-            
-            return base.Validate(context);
         }
     }
 }

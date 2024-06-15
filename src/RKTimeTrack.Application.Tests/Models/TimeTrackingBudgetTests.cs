@@ -31,4 +31,14 @@ public class TimeTrackingBudgetTests
         // Assert
         actAction.Should().Throw<ArgumentException>();
     }
+
+    [Fact]
+    public void Implicit_conversion_from_double()
+    {
+        // Act
+        TimeTrackingBudget myBudget = 5.7;
+        
+        // Assert
+        myBudget.Hours.Should().Be(6);
+    }
 }

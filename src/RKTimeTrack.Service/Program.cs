@@ -1,5 +1,5 @@
 using RKTimeTrack.Application;
-using RKTimeTrack.Service.Api;
+using RKTimeTrack.Service.Api.Ui;
 
 namespace RKTimeTrack.Service;
 
@@ -8,7 +8,7 @@ public static class Program
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
-
+        
         // Add services to the container.
         builder.Services.AddAuthorization();
 
@@ -27,7 +27,7 @@ public static class Program
             app.UseSwagger();
             app.UseSwaggerUI();
         }
-
+        
         app.UseAuthorization();
 
         // Our apis
