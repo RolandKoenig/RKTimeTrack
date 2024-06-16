@@ -1,12 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
-using FluentValidation;
+﻿using FluentValidation;
 using ValidationResult = FluentValidation.Results.ValidationResult;
 
 namespace RKTimeTrack.Application.UseCases;
 
-public record GetWeekRequest(
-    [Range(1, int.MaxValue)] int Year,
-    [Range(1, 52)] int WeekNumber)
+public record GetWeekRequest(int Year, int WeekNumber)
 {
     public class Validator : AbstractValidator<GetWeekRequest>
     {
@@ -17,7 +14,7 @@ public record GetWeekRequest(
             
             RuleFor(request => request.WeekNumber)
                 .GreaterThanOrEqualTo(1)
-                .LessThanOrEqualTo(52);
+                .LessThanOrEqualTo(53);
             
             return base.Validate(context);
         }

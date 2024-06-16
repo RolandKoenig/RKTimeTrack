@@ -1,4 +1,5 @@
 ﻿using RKTimeTrack.Application.Models;
+using RKTimeTrack.Application.Util;
 
 namespace RKTimeTrack.Application.UseCases;
 
@@ -12,9 +13,22 @@ public class GetWeekUseCase
     {
         // Validate
         var validator = new GetWeekRequest.Validator();
-        var result = await validator.ValidateAsync(request, cancellationToken);
-        if (!result.IsValid) { return new CommonErrors.ValidationError(result.Errors); }
+        var validationResult = await validator.ValidateAsync(request, cancellationToken);
+        if (!validationResult.IsValid) { return new CommonErrors.ValidationError(validationResult.Errors); }
         
-        return new TimeTrackingWeek();
+        // Return dummy result
+        var dateMonday = GermanCalendarWeekUtil.GetDateOfMonday(request.Year, request.WeekNumber);
+        var result = new TimeTrackingWeek()
+        {
+            Monday = new TimeTrackingDay(){ Date = dateMonday },
+            Tuesday = new TimeTrackingDay() { Date = dateMonday.AddDays(1) },
+            Wednesday = new TimeTrackingDay() { Date = dateMonday.AddDays(2) },
+            Thursday = new TimeTrackingDay() { Date = dateMonday.AddDays(3) },
+            Friday = new TimeTrackingDay() { Date = dateMonday.AddDays(4) },
+            Saturday = new TimeTrackingDay() { Date = dateMonday.AddDays(5) },
+            Sunday = new TimeTrackingDay() { Date = dateMonday.AddDays(6) }
+        };
+
+        return result;
     }
 }

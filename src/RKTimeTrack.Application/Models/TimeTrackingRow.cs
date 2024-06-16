@@ -2,11 +2,11 @@ namespace RKTimeTrack.Application.Models;
 
 public class TimeTrackingRow
 {
-    public TimeTrackingTopic TimeTrackingTopic { get; }
+    public TimeTrackingTopic Topic { get; }
     
     public DateOnly Date { get; }
     
-    public TimeTrackingDayType TimeTrackingDayType { get; }
+    public TimeTrackingDayType DayType { get; }
     
     public TimeTrackingHours EffortInHours { get; }
     
