@@ -21,4 +21,24 @@ public class TimeTrackingHoursTests
         // Assert
         budget.Hours.Should().Be(expectedOutput);
     }
+    
+    [Fact]
+    public void Do_not_allow_negative_hours()
+    {
+        // Act
+        var actAction = () => new TimeTrackingHours(-1);
+        
+        // Assert
+        actAction.Should().Throw<ArgumentException>();
+    }
+    
+    [Fact]
+    public void Implicit_conversion_from_double()
+    {
+        // Act
+        TimeTrackingHours myBudget = 5.7;
+        
+        // Assert
+        myBudget.Hours.Should().Be(5.75);
+    }
 }

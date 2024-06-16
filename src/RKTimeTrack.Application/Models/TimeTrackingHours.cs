@@ -16,4 +16,6 @@ public readonly struct TimeTrackingHours(double hours)
         
         return Math.Round(hours * 4) / 4;
     }
+    
+    public static implicit operator TimeTrackingHours(double hours) => new (hours);
 }
