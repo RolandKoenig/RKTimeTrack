@@ -5,6 +5,9 @@ namespace RKTimeTrack.Application.Util;
 
 public static class GermanCalendarWeekUtil
 {
+    public const int CALENDAR_WEEK_MIN = 1;
+    public const int CALENDAR_WEEK_MAX = 53;
+    
     private static readonly CultureInfo CULTURE_INFO = new("de-DE");
     
     /// <summary>
@@ -14,8 +17,8 @@ public static class GermanCalendarWeekUtil
     /// <param name="weekNumber">Week number, from 1 to 53</param>
     public static DateOnly GetDateOfMonday(int year, int weekNumber)
     {
-        weekNumber.MustBeGreaterThanOrEqualTo(1);
-        weekNumber.MustBeLessThanOrEqualTo(53);
+        weekNumber.MustBeGreaterThanOrEqualTo(CALENDAR_WEEK_MIN);
+        weekNumber.MustBeLessThanOrEqualTo(CALENDAR_WEEK_MAX);
         
         var firstDayOfYearInFirstCalendarWeek = new DateOnly(year, 1, 1);
         while (GetCalendarWeek(firstDayOfYearInFirstCalendarWeek) > 1)

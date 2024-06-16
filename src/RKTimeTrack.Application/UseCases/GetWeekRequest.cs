@@ -1,5 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
-using FluentValidation;
+﻿using FluentValidation;
+using RKTimeTrack.Application.Util;
 
 namespace RKTimeTrack.Application.UseCases;
 
@@ -14,8 +14,8 @@ public record GetWeekRequest(int Year, int WeekNumber)
                 .GreaterThanOrEqualTo(2022);
             
             RuleFor(request => request.WeekNumber)
-                .GreaterThanOrEqualTo(1)
-                .LessThanOrEqualTo(53);
+                .GreaterThanOrEqualTo(GermanCalendarWeekUtil.CALENDAR_WEEK_MIN)
+                .LessThanOrEqualTo(GermanCalendarWeekUtil.CALENDAR_WEEK_MAX);
         }
     }
 }
