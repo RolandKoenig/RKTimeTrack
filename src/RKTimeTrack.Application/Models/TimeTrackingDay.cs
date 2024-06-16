@@ -1,12 +1,10 @@
 ﻿namespace RKTimeTrack.Application.Models;
 
-public class TimeTrackingDay
+public class TimeTrackingDay(DateOnly date, TimeTrackingDayType type, IReadOnlyList<TimeTrackingRow> entries)
 {
-    public DateOnly Date { get; set; }
-    
-    public TimeTrackingTopic Topic { get; set; }
-    
-    public TimeTrackingDayType Type { get; set; }
+    public DateOnly Date { get; } = date;
 
-    public List<TimeTrackingRow> Entries { get; set; } = new();
+    public TimeTrackingDayType Type { get; } = type;
+
+    public IReadOnlyList<TimeTrackingRow> Entries { get; } = entries;
 }

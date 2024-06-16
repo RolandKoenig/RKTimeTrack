@@ -20,13 +20,13 @@ public class GetWeekUseCase
         var dateMonday = GermanCalendarWeekUtil.GetDateOfMonday(request.Year, request.WeekNumber);
         var result = new TimeTrackingWeek()
         {
-            Monday = new TimeTrackingDay(){ Date = dateMonday },
-            Tuesday = new TimeTrackingDay() { Date = dateMonday.AddDays(1) },
-            Wednesday = new TimeTrackingDay() { Date = dateMonday.AddDays(2) },
-            Thursday = new TimeTrackingDay() { Date = dateMonday.AddDays(3) },
-            Friday = new TimeTrackingDay() { Date = dateMonday.AddDays(4) },
-            Saturday = new TimeTrackingDay() { Date = dateMonday.AddDays(5) },
-            Sunday = new TimeTrackingDay() { Date = dateMonday.AddDays(6) }
+            Monday = new TimeTrackingDay(dateMonday, TimeTrackingDayType.WorkingDay, []),
+            Tuesday = new TimeTrackingDay(dateMonday.AddDays(1), TimeTrackingDayType.WorkingDay, []),
+            Wednesday = new TimeTrackingDay(dateMonday.AddDays(2), TimeTrackingDayType.WorkingDay, []),
+            Thursday = new TimeTrackingDay(dateMonday.AddDays(3), TimeTrackingDayType.WorkingDay, []),
+            Friday = new TimeTrackingDay(dateMonday.AddDays(4), TimeTrackingDayType.WorkingDay, []),
+            Saturday = new TimeTrackingDay(dateMonday.AddDays(5), TimeTrackingDayType.Weekend, []),
+            Sunday = new TimeTrackingDay(dateMonday.AddDays(6), TimeTrackingDayType.Weekend, [])
         };
 
         return result;

@@ -1,4 +1,6 @@
-﻿using Light.GuardClauses;
+﻿using System.Text.Json.Serialization;
+using Light.GuardClauses;
+using RKTimeTrack.Application.Models.Json;
 
 namespace RKTimeTrack.Application.Models;
 
@@ -6,6 +8,7 @@ namespace RKTimeTrack.Application.Models;
 /// Time spend for some work.
 /// Value must be positiv and is rounded to quarter hours.
 /// </summary>
+[JsonConverter(typeof(TimeTrackingHoursJsonConverter))]
 public readonly struct TimeTrackingHours(double hours)
 {
     public double Hours { get; } = RoundHoursToQuarterHours(hours);

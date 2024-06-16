@@ -1,5 +1,8 @@
+using System.Text.Json.Serialization;
+
 namespace RKTimeTrack.Application.Models;
 
+[JsonConverter(typeof(JsonStringEnumConverter<TimeTrackingDayType>))]
 public enum TimeTrackingDayType
 {
     /// <summary>
