@@ -69,24 +69,21 @@ public class TimeTrackingWeekTests
         TimeTrackingDay CreateDayFunc(DateOnly date, TimeTrackingDayType dayType)
             => new(date, dayType, new[]
             {
-                new TimeTrackingRow()
-                {
-                    Topic = topic,
-                    EffortInHours = random.Next(4, 5),
-                    EffortBilled = random.Next(3, 4),
-                    Description = "DummyDescription"
-                }
+                new TimeTrackingRow(
+                    topic, 
+                    effortInHours:random.Next(4,5), 
+                    effortBilled:random.Next(3,4), 
+                    description: "DummyDescription")
             });
 
-        return new TimeTrackingWeek()
-        {
-            Monday = CreateDayFunc(new DateOnly(2024, 6, 17), TimeTrackingDayType.WorkingDay),
-            Tuesday = CreateDayFunc(new DateOnly(2024, 6, 18), TimeTrackingDayType.WorkingDay),
-            Wednesday = CreateDayFunc(new DateOnly(2024, 6, 19), TimeTrackingDayType.WorkingDay),
-            Thursday = CreateDayFunc(new DateOnly(2024, 6, 20), TimeTrackingDayType.WorkingDay),
-            Friday = CreateDayFunc(new DateOnly(2024, 6, 21), TimeTrackingDayType.WorkingDay),
-            Saturday = CreateDayFunc(new DateOnly(2024, 6, 22), TimeTrackingDayType.Weekend),
-            Sunday = CreateDayFunc(new DateOnly(2024, 6, 23), TimeTrackingDayType.Weekend)
-        };
+        return new TimeTrackingWeek(
+            monday: CreateDayFunc(new DateOnly(2024, 6, 17), TimeTrackingDayType.WorkingDay),
+            tuesday: CreateDayFunc(new DateOnly(2024, 6, 18), TimeTrackingDayType.WorkingDay),
+            wednesday: CreateDayFunc(new DateOnly(2024, 6, 19), TimeTrackingDayType.WorkingDay),
+            thursday: CreateDayFunc(new DateOnly(2024, 6, 20), TimeTrackingDayType.WorkingDay),
+            friday: CreateDayFunc(new DateOnly(2024, 6, 21), TimeTrackingDayType.WorkingDay),
+            saturday: CreateDayFunc(new DateOnly(2024, 6, 22), TimeTrackingDayType.Weekend),
+            sunday:CreateDayFunc(new DateOnly(2024, 6, 23), TimeTrackingDayType.Weekend)
+        );
     }
 }
