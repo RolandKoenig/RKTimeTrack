@@ -1,5 +1,6 @@
 using RKTimeTrack.Application;
 using RKTimeTrack.Service.Api.Ui;
+using RKTimeTrack.Service.Mappings;
 
 namespace RKTimeTrack.Service;
 
@@ -17,7 +18,7 @@ public static class Program
 
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
+        builder.Services.AddSwaggerGen(SwaggerGenConfiguration.Configure);
 
         var app = builder.Build();
 
