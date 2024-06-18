@@ -12,9 +12,9 @@ public static class TimeTrackingDayTypeExtensions
         TimeTrackingDayType.Ill => 0,
         TimeTrackingDayType.OwnEducation => 0,
         TimeTrackingDayType.PublicHoliday => 0,
-        TimeTrackingDayType.Training => 7,
+        TimeTrackingDayType.Training => CommonConstants.DEFAULT_EXPECTED_WORKING_HOURS,
         TimeTrackingDayType.Weekend => 0,
-        TimeTrackingDayType.WorkingDay => 7,
+        TimeTrackingDayType.WorkingDay => CommonConstants.DEFAULT_EXPECTED_WORKING_HOURS,
         _ => throw new ArgumentOutOfRangeException(nameof(dayType), dayType, null)
     };
 
@@ -30,7 +30,7 @@ public static class TimeTrackingDayTypeExtensions
         TimeTrackingDayType.Ill => 1,
         TimeTrackingDayType.OwnEducation => 1,
         TimeTrackingDayType.PublicHoliday => 1,
-        TimeTrackingDayType.Training => 1.5,
+        TimeTrackingDayType.Training => CommonConstants.WORKING_HOUR_CALCULATION_FACTOR_FOR_TRAINING,
         TimeTrackingDayType.Weekend => 1,
         TimeTrackingDayType.WorkingDay => 1,
         _ => throw new ArgumentOutOfRangeException(nameof(dayType), dayType, null)
