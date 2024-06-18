@@ -1,0 +1,1 @@
+﻿node_modules/.bin/nswag run swagger.generatorconfig.nswag

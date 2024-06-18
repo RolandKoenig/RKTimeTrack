@@ -1,0 +1,131 @@
+﻿openapi: 3.0.1
+info:
+  title: RKTimeTrack.Service
+  version: '1.0'
+paths:
+  /api/ui/week:
+    get:
+      tags:
+        - WeekApi
+      operationId: GetWeek
+      parameters:
+        - name: Year
+          in: query
+          required: true
+          style: form
+          schema:
+            type: integer
+            format: int32
+        - name: WeekNumber
+          in: query
+          required: true
+          style: form
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TimeTrackingWeek'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+components:
+  schemas:
+    ProblemDetails:
+      type: object
+      properties:
+        type:
+          type: string
+          nullable: true
+        title:
+          type: string
+          nullable: true
+        status:
+          type: integer
+          format: int32
+          nullable: true
+        detail:
+          type: string
+          nullable: true
+        instance:
+          type: string
+          nullable: true
+      additionalProperties: { }
+    TimeTrackingDay:
+      type: object
+      properties:
+        date:
+          type: string
+          description: Date in format 'yyyy-mm-dd'
+        type:
+          $ref: '#/components/schemas/TimeTrackingDayType'
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/TimeTrackingRow'
+          nullable: true
+      additionalProperties: false
+    TimeTrackingDayType:
+      enum:
+        - WorkingDay
+        - OwnEducation
+        - PublicHoliday
+        - Ill
+        - Training
+        - Holiday
+        - Weekend
+      type: string
+    TimeTrackingRow:
+      type: object
+      properties:
+        topic:
+          $ref: '#/components/schemas/TimeTrackingTopicReference'
+        effortInHours:
+          type: number
+        effortBilled:
+          type: number
+        description:
+          type: string
+          nullable: true
+      additionalProperties: false
+    TimeTrackingTopicReference:
+      type: object
+      properties:
+        category:
+          type: string
+          nullable: true
+        name:
+          type: string
+          nullable: true
+      additionalProperties: false
+    TimeTrackingWeek:
+      type: object
+      properties:
+        monday:
+          $ref: '#/components/schemas/TimeTrackingDay'
+        tuesday:
+          $ref: '#/components/schemas/TimeTrackingDay'
+        wednesday:
+          $ref: '#/components/schemas/TimeTrackingDay'
+        thursday:
+          $ref: '#/components/schemas/TimeTrackingDay'
+        friday:
+          $ref: '#/components/schemas/TimeTrackingDay'
+        saturday:
+          $ref: '#/components/schemas/TimeTrackingDay'
+        sunday:
+          $ref: '#/components/schemas/TimeTrackingDay'
+      additionalProperties: false
