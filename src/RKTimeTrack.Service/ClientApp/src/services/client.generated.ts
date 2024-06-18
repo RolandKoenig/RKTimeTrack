@@ -8,7 +8,7 @@
 /* eslint-disable */
 // ReSharper disable InconsistentNaming
 
-export class Client {
+export class TimeTrackClient {
     private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;

@@ -10,7 +10,7 @@
   },
   "codeGenerators": {
     "openApiToTypeScriptClient": {
-      "className": "{controller}Client",
+      "className": "TimeTrackClient",
       "moduleName": "",
       "namespace": "",
       "typeScriptVersion": 4.3,
