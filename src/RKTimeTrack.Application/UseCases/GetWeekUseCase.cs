@@ -16,9 +16,24 @@ public class GetWeekUseCase
         var validationResult = await validator.ValidateAsync(request, cancellationToken);
         if (!validationResult.IsValid) { return new CommonErrors.ValidationError(validationResult.Errors); }
 
+        // Update year if the given week 53 is actually in the following year
+        var year = request.Year;
+        var weekNumber = request.WeekNumber;
+        if (weekNumber == 53)
+        {
+            var calendarWeekOfLastDay = GermanCalendarWeekUtil.GetCalendarWeek(new DateOnly(year, 12, 31));
+            if (calendarWeekOfLastDay == 1)
+            {
+                year++;
+                weekNumber = 1;
+            }
+        }
+        
         // Return dummy result
-        var dateMonday = GermanCalendarWeekUtil.GetDateOfMonday(request.Year, request.WeekNumber);
+        var dateMonday = GermanCalendarWeekUtil.GetDateOfMonday(year, weekNumber);
         var result = new TimeTrackingWeek(
+            year: year,
+            weekNumber: weekNumber,
             monday: new TimeTrackingDay(dateMonday, TimeTrackingDayType.WorkingDay, []),
             tuesday: new TimeTrackingDay(dateMonday.AddDays(1), TimeTrackingDayType.WorkingDay, []),
             wednesday: new TimeTrackingDay(dateMonday.AddDays(2), TimeTrackingDayType.WorkingDay, []),

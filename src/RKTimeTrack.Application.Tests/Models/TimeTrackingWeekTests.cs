@@ -23,6 +23,8 @@ public class TimeTrackingWeekTests
         // Assert
         serializedString.Should().StartWith("""
                                             {
+                                              "year": 2024,
+                                              "weekNumber": 25,
                                               "monday": {
                                                 "date": "2024-06-17",
                                                 "type": "WorkingDay",
@@ -77,6 +79,8 @@ public class TimeTrackingWeekTests
             });
 
         return new TimeTrackingWeek(
+            year: 2024,
+            25,
             monday: CreateDayFunc(new DateOnly(2024, 6, 17), TimeTrackingDayType.WorkingDay),
             tuesday: CreateDayFunc(new DateOnly(2024, 6, 18), TimeTrackingDayType.WorkingDay),
             wednesday: CreateDayFunc(new DateOnly(2024, 6, 19), TimeTrackingDayType.WorkingDay),

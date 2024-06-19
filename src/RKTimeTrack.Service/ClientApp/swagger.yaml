@@ -7,18 +7,74 @@ paths:
     get:
       tags:
         - WeekApi
+      operationId: GetCurrentWeek
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TimeTrackingWeek'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+  '/api/ui/week/{year}/{weekNumber}':
+    get:
+      tags:
+        - WeekApi
       operationId: GetWeek
       parameters:
         - name: year
-          in: query
-          style: form
+          in: path
+          required: true
+          style: simple
           schema:
             type: integer
             format: int32
-            default: 0
         - name: weekNumber
-          in: query
-          style: form
+          in: path
+          required: true
+          style: simple
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TimeTrackingWeek'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+  '/api/ui/year/{year}':
+    get:
+      tags:
+        - YearApi
+      operationId: GetYearMetadata
+      parameters:
+        - name: year
+          in: path
+          style: simple
           schema:
             type: integer
             format: int32
@@ -29,7 +85,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TimeTrackingWeek'
+                $ref: '#/components/schemas/TimeTrackingYearMetadata'
         '400':
           description: Bad Request
           content:
@@ -114,6 +170,12 @@ components:
     TimeTrackingWeek:
       type: object
       properties:
+        year:
+          type: integer
+          format: int32
+        weekNumber:
+          type: integer
+          format: int32
         monday:
           $ref: '#/components/schemas/TimeTrackingDay'
         tuesday:
@@ -128,4 +190,11 @@ components:
           $ref: '#/components/schemas/TimeTrackingDay'
         sunday:
           $ref: '#/components/schemas/TimeTrackingDay'
+      additionalProperties: false
+    TimeTrackingYearMetadata:
+      type: object
+      properties:
+        maxWeekNumber:
+          type: integer
+          format: int32
       additionalProperties: false

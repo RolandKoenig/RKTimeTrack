@@ -1,6 +1,8 @@
 ﻿namespace RKTimeTrack.Application.Models;
 
 public class TimeTrackingWeek(
+    int year,
+    int weekNumber,
     TimeTrackingDay monday,
     TimeTrackingDay tuesday,
     TimeTrackingDay wednesday,
@@ -9,6 +11,10 @@ public class TimeTrackingWeek(
     TimeTrackingDay saturday,
     TimeTrackingDay sunday)
 {
+    public int Year { get; } = year;
+
+    public int WeekNumber { get; } = weekNumber;
+   
    public TimeTrackingDay Monday { get; } = monday;
 
    public TimeTrackingDay Tuesday { get; } = tuesday;

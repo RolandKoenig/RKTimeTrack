@@ -32,6 +32,9 @@
         <None Remove="$(SpaRoot)**" />
         <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
     </ItemGroup>
+    <ItemGroup>
+      <Folder Include="ClientApp\src\views\" />
+    </ItemGroup>
 
     <!-- Restore npm dependencies -->
     <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

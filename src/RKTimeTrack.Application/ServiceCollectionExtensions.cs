@@ -5,6 +5,7 @@ namespace RKTimeTrack.Application;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddRKTimeTrackApplication(this IServiceCollection services)
-        => services.AddScoped<GetWeekUseCase>();
+    public static IServiceCollection AddRKTimeTrackApplication(this IServiceCollection services) => services
+        .AddScoped<GetWeekUseCase>()
+        .AddScoped<GetYearMetadataUseCase>();
 }

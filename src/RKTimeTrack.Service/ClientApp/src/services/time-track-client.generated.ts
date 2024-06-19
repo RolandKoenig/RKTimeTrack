@@ -19,20 +19,67 @@ export class TimeTrackClient {
     }
 
     /**
-     * @param year (optional) 
-     * @param weekNumber (optional) 
      * @return OK
      */
-    getWeek(year: number | undefined, weekNumber: number | undefined): Promise<TimeTrackingWeek> {
-        let url_ = this.baseUrl + "/api/ui/week?";
-        if (year === null)
-            throw new Error("The parameter 'year' cannot be null.");
-        else if (year !== undefined)
-            url_ += "year=" + encodeURIComponent("" + year) + "&";
-        if (weekNumber === null)
-            throw new Error("The parameter 'weekNumber' cannot be null.");
-        else if (weekNumber !== undefined)
-            url_ += "weekNumber=" + encodeURIComponent("" + weekNumber) + "&";
+    getCurrentWeek(): Promise<TimeTrackingWeek> {
+        let url_ = this.baseUrl + "/api/ui/week";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processGetCurrentWeek(_response);
+        });
+    }
+
+    protected processGetCurrentWeek(response: Response): Promise<TimeTrackingWeek> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = TimeTrackingWeek.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status === 400) {
+            return response.text().then((_responseText) => {
+            let result400: any = null;
+            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result400 = ProblemDetails.fromJS(resultData400);
+            return throwException("Bad Request", status, _responseText, _headers, result400);
+            });
+        } else if (status === 500) {
+            return response.text().then((_responseText) => {
+            let result500: any = null;
+            let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result500 = ProblemDetails.fromJS(resultData500);
+            return throwException("Internal Server Error", status, _responseText, _headers, result500);
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<TimeTrackingWeek>(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    getWeek(year: number, weekNumber: number): Promise<TimeTrackingWeek> {
+        let url_ = this.baseUrl + "/api/ui/week/{year}/{weekNumber}";
+        if (year === undefined || year === null)
+            throw new Error("The parameter 'year' must be defined.");
+        url_ = url_.replace("{year}", encodeURIComponent("" + year));
+        if (weekNumber === undefined || weekNumber === null)
+            throw new Error("The parameter 'weekNumber' must be defined.");
+        url_ = url_.replace("{weekNumber}", encodeURIComponent("" + weekNumber));
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: RequestInit = {
@@ -78,14 +125,70 @@ export class TimeTrackClient {
         }
         return Promise.resolve<TimeTrackingWeek>(null as any);
     }
+
+    /**
+     * @param year (optional) 
+     * @return OK
+     */
+    getYearMetadata(year: number | undefined): Promise<TimeTrackingYearMetadata> {
+        let url_ = this.baseUrl + "/api/ui/year/{year}";
+        if (year !== null && year !== undefined)
+        url_ = url_.replace("{year}", encodeURIComponent("" + year));
+        else
+            url_ = url_.replace("/{year}", "");
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processGetYearMetadata(_response);
+        });
+    }
+
+    protected processGetYearMetadata(response: Response): Promise<TimeTrackingYearMetadata> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = TimeTrackingYearMetadata.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status === 400) {
+            return response.text().then((_responseText) => {
+            let result400: any = null;
+            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result400 = ProblemDetails.fromJS(resultData400);
+            return throwException("Bad Request", status, _responseText, _headers, result400);
+            });
+        } else if (status === 500) {
+            return response.text().then((_responseText) => {
+            let result500: any = null;
+            let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result500 = ProblemDetails.fromJS(resultData500);
+            return throwException("Internal Server Error", status, _responseText, _headers, result500);
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<TimeTrackingYearMetadata>(null as any);
+    }
 }
 
 export class ProblemDetails implements IProblemDetails {
-    type?: string | undefined;
-    title?: string | undefined;
-    status?: number | undefined;
-    detail?: string | undefined;
-    instance?: string | undefined;
+    type!: string | undefined;
+    title!: string | undefined;
+    status!: number | undefined;
+    detail!: string | undefined;
+    instance!: string | undefined;
 
     [key: string]: any;
 
@@ -135,20 +238,20 @@ export class ProblemDetails implements IProblemDetails {
 }
 
 export interface IProblemDetails {
-    type?: string | undefined;
-    title?: string | undefined;
-    status?: number | undefined;
-    detail?: string | undefined;
-    instance?: string | undefined;
+    type: string | undefined;
+    title: string | undefined;
+    status: number | undefined;
+    detail: string | undefined;
+    instance: string | undefined;
 
     [key: string]: any;
 }
 
 export class TimeTrackingDay implements ITimeTrackingDay {
     /** Date in format 'yyyy-mm-dd' */
-    date?: string;
-    type?: TimeTrackingDayType;
-    entries?: TimeTrackingRow[] | undefined;
+    date!: string;
+    type!: TimeTrackingDayType;
+    entries!: TimeTrackingRow[] | undefined;
 
     constructor(data?: ITimeTrackingDay) {
         if (data) {
@@ -193,9 +296,9 @@ export class TimeTrackingDay implements ITimeTrackingDay {
 
 export interface ITimeTrackingDay {
     /** Date in format 'yyyy-mm-dd' */
-    date?: string;
-    type?: TimeTrackingDayType;
-    entries?: TimeTrackingRow[] | undefined;
+    date: string;
+    type: TimeTrackingDayType;
+    entries: TimeTrackingRow[] | undefined;
 }
 
 export enum TimeTrackingDayType {
@@ -209,10 +312,10 @@ export enum TimeTrackingDayType {
 }
 
 export class TimeTrackingRow implements ITimeTrackingRow {
-    topic?: TimeTrackingTopicReference;
-    effortInHours?: number;
-    effortBilled?: number;
-    description?: string | undefined;
+    topic!: TimeTrackingTopicReference;
+    effortInHours!: number;
+    effortBilled!: number;
+    description!: string | undefined;
 
     constructor(data?: ITimeTrackingRow) {
         if (data) {
@@ -250,15 +353,15 @@ export class TimeTrackingRow implements ITimeTrackingRow {
 }
 
 export interface ITimeTrackingRow {
-    topic?: TimeTrackingTopicReference;
-    effortInHours?: number;
-    effortBilled?: number;
-    description?: string | undefined;
+    topic: TimeTrackingTopicReference;
+    effortInHours: number;
+    effortBilled: number;
+    description: string | undefined;
 }
 
 export class TimeTrackingTopicReference implements ITimeTrackingTopicReference {
-    category?: string | undefined;
-    name?: string | undefined;
+    category!: string | undefined;
+    name!: string | undefined;
 
     constructor(data?: ITimeTrackingTopicReference) {
         if (data) {
@@ -292,18 +395,20 @@ export class TimeTrackingTopicReference implements ITimeTrackingTopicReference {
 }
 
 export interface ITimeTrackingTopicReference {
-    category?: string | undefined;
-    name?: string | undefined;
+    category: string | undefined;
+    name: string | undefined;
 }
 
 export class TimeTrackingWeek implements ITimeTrackingWeek {
-    monday?: TimeTrackingDay;
-    tuesday?: TimeTrackingDay;
-    wednesday?: TimeTrackingDay;
-    thursday?: TimeTrackingDay;
-    friday?: TimeTrackingDay;
-    saturday?: TimeTrackingDay;
-    sunday?: TimeTrackingDay;
+    year!: number;
+    weekNumber!: number;
+    monday!: TimeTrackingDay;
+    tuesday!: TimeTrackingDay;
+    wednesday!: TimeTrackingDay;
+    thursday!: TimeTrackingDay;
+    friday!: TimeTrackingDay;
+    saturday!: TimeTrackingDay;
+    sunday!: TimeTrackingDay;
 
     constructor(data?: ITimeTrackingWeek) {
         if (data) {
@@ -316,6 +421,8 @@ export class TimeTrackingWeek implements ITimeTrackingWeek {
 
     init(_data?: any) {
         if (_data) {
+            this.year = _data["year"];
+            this.weekNumber = _data["weekNumber"];
             this.monday = _data["monday"] ? TimeTrackingDay.fromJS(_data["monday"]) : <any>undefined;
             this.tuesday = _data["tuesday"] ? TimeTrackingDay.fromJS(_data["tuesday"]) : <any>undefined;
             this.wednesday = _data["wednesday"] ? TimeTrackingDay.fromJS(_data["wednesday"]) : <any>undefined;
@@ -335,6 +442,8 @@ export class TimeTrackingWeek implements ITimeTrackingWeek {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        data["year"] = this.year;
+        data["weekNumber"] = this.weekNumber;
         data["monday"] = this.monday ? this.monday.toJSON() : <any>undefined;
         data["tuesday"] = this.tuesday ? this.tuesday.toJSON() : <any>undefined;
         data["wednesday"] = this.wednesday ? this.wednesday.toJSON() : <any>undefined;
@@ -347,13 +456,51 @@ export class TimeTrackingWeek implements ITimeTrackingWeek {
 }
 
 export interface ITimeTrackingWeek {
-    monday?: TimeTrackingDay;
-    tuesday?: TimeTrackingDay;
-    wednesday?: TimeTrackingDay;
-    thursday?: TimeTrackingDay;
-    friday?: TimeTrackingDay;
-    saturday?: TimeTrackingDay;
-    sunday?: TimeTrackingDay;
+    year: number;
+    weekNumber: number;
+    monday: TimeTrackingDay;
+    tuesday: TimeTrackingDay;
+    wednesday: TimeTrackingDay;
+    thursday: TimeTrackingDay;
+    friday: TimeTrackingDay;
+    saturday: TimeTrackingDay;
+    sunday: TimeTrackingDay;
+}
+
+export class TimeTrackingYearMetadata implements ITimeTrackingYearMetadata {
+    maxWeekNumber!: number;
+
+    constructor(data?: ITimeTrackingYearMetadata) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.maxWeekNumber = _data["maxWeekNumber"];
+        }
+    }
+
+    static fromJS(data: any): TimeTrackingYearMetadata {
+        data = typeof data === 'object' ? data : {};
+        let result = new TimeTrackingYearMetadata();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["maxWeekNumber"] = this.maxWeekNumber;
+        return data;
+    }
+}
+
+export interface ITimeTrackingYearMetadata {
+    maxWeekNumber: number;
 }
 
 export class ApiException extends Error {
