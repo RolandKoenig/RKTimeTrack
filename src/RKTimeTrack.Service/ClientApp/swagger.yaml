@@ -9,20 +9,20 @@ paths:
         - WeekApi
       operationId: GetWeek
       parameters:
-        - name: Year
+        - name: year
           in: query
-          required: true
           style: form
           schema:
             type: integer
             format: int32
-        - name: WeekNumber
+            default: 0
+        - name: weekNumber
           in: query
-          required: true
           style: form
           schema:
             type: integer
             format: int32
+            default: 0
       responses:
         '200':
           description: OK

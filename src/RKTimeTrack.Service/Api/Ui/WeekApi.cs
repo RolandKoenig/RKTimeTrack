@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RKTimeTrack.Application.Models;
 using RKTimeTrack.Application.UseCases;
+using RKTimeTrack.Application.Util;
 using RKTimeTrack.Service.Mappings;
 
 namespace RKTimeTrack.Service.Api.Ui;
@@ -13,11 +14,29 @@ static class WeekApi
     internal static async Task<IResult> GetWeek(
         [FromServices] IWebHostEnvironment environment,
         [FromServices] GetWeekUseCase useCase,
-        [AsParameters] GetWeekRequest request,
-        CancellationToken cancellationToken)
+        [FromQuery] int year = 0, 
+        [FromQuery] int weekNumber = 0,
+        CancellationToken cancellationToken = default)
     {
+        // Map request
+        GetWeekRequest request;
+        if ((year != 0) ||
+            (weekNumber != 0))
+        {
+            request = new GetWeekRequest(year, weekNumber);
+        }
+        else
+        {
+            var now = DateTime.UtcNow;
+            request = new GetWeekRequest(
+                now.Year, 
+                GermanCalendarWeekUtil.GetCalendarWeek(DateOnly.FromDateTime(now)));
+        }
+        
+        // Call application logic
         var result = await useCase.GetWeekAsync(request, cancellationToken);
 
+        // Map response
         return result.Match(
             Results.Ok,
             validationError => validationError.ToResult(environment));

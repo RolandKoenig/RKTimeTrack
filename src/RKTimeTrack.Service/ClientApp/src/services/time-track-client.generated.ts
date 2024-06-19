@@ -19,18 +19,20 @@ export class TimeTrackClient {
     }
 
     /**
+     * @param year (optional) 
+     * @param weekNumber (optional) 
      * @return OK
      */
-    getWeek(year: number, weekNumber: number): Promise<TimeTrackingWeek> {
+    getWeek(year: number | undefined, weekNumber: number | undefined): Promise<TimeTrackingWeek> {
         let url_ = this.baseUrl + "/api/ui/week?";
-        if (year === undefined || year === null)
-            throw new Error("The parameter 'year' must be defined and cannot be null.");
-        else
-            url_ += "Year=" + encodeURIComponent("" + year) + "&";
-        if (weekNumber === undefined || weekNumber === null)
-            throw new Error("The parameter 'weekNumber' must be defined and cannot be null.");
-        else
-            url_ += "WeekNumber=" + encodeURIComponent("" + weekNumber) + "&";
+        if (year === null)
+            throw new Error("The parameter 'year' cannot be null.");
+        else if (year !== undefined)
+            url_ += "year=" + encodeURIComponent("" + year) + "&";
+        if (weekNumber === null)
+            throw new Error("The parameter 'weekNumber' cannot be null.");
+        else if (weekNumber !== undefined)
+            url_ += "weekNumber=" + encodeURIComponent("" + weekNumber) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: RequestInit = {

@@ -2,7 +2,7 @@ import './assets/main.css'
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
-import { TimeTrackClient } from "@/services/client.generated";
+import { TimeTrackClient } from "@/services/time-track-client.generated";
 
 import App from './App.vue'
 import router from './router'

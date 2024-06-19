@@ -6,7 +6,7 @@ public static class EndpointRouteBuilderExtensions
         where T : IEndpointRouteBuilder
     {
         endpointBuilder.MapGet("/api/ui/week", WeekApi.GetWeek)
-            .WithName("GetWeek")
+            .WithName(nameof(WeekApi.GetWeek))
             .WithOpenApi();
         
         return endpointBuilder;
