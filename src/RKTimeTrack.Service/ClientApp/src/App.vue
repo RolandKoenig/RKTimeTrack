@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import {inject, type Ref, ref} from "vue";
   import {TimeTrackClient, TimeTrackingWeek} from "@/services/time-track-client.generated";
+  import DayPreviewView from "@/views/DayPreviewView.vue";
   
   const timeTrackClient = inject<TimeTrackClient>("TimeTrackClient")!;
   const currentWeek: Ref<TimeTrackingWeek | undefined> = ref();
@@ -63,7 +64,7 @@
 <template>
   <header>
     <div class="wrapper">
-      <h1>Year: {{currentWeek?.year}}, Week: {{currentWeek?.weekNumber}}</h1>
+      
       <!-- <HelloWorld msg="Year: {{currentWeek.year}}, Week: {{currentWeek.weekNumber}}" /> -->
 
       <!-- <nav>
@@ -71,15 +72,42 @@
         <RouterLink to="/about">About</RouterLink>
       </nav>-->
 
-      <Button label="<--" @click="fetchWeekBeforeThisWeek"/>
-      <Button label="-->" @click="fetchWeekAfterThisWeek"/>
+      <Card>
+        <template #header>
+          <div class="navigation-container">
+            <h1>Year {{currentWeek?.year}} | Week {{currentWeek?.weekNumber}}</h1>
+          </div>
+        </template>
+        <template #content>
+          <div v-if="currentWeek" class="navigation-container">
+            <Button label="<--" @click="fetchWeekBeforeThisWeek"/>
+
+            <DayPreviewView v-model="currentWeek.monday" />
+            <DayPreviewView v-model="currentWeek.tuesday" />
+            <DayPreviewView v-model="currentWeek.wednesday" />
+            <DayPreviewView v-model="currentWeek.thursday" />
+            <DayPreviewView v-model="currentWeek.friday" />
+            <DayPreviewView v-model="currentWeek.saturday" />
+            <DayPreviewView v-model="currentWeek.sunday" />
+
+            <Button label="-->" @click="fetchWeekAfterThisWeek"/>
+          </div>
+        </template>
+      </Card>
+
       
     </div>
   </header>
-
-  <!-- <RouterView /> -->
+  
 </template>
 
 <style scoped>
+div.navigation-container{
+  display: flex;
+  justify-content: center;
+}
 
+button{
+  margin: 1rem;
+}
 </style>
