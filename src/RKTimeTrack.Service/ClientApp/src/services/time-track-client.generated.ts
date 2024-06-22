@@ -131,7 +131,7 @@ export class TimeTrackClient {
      * @return OK
      */
     getYearMetadata(year: number | undefined): Promise<TimeTrackingYearMetadata> {
-        let url_ = this.baseUrl + "/api/ui/year/{year}";
+        let url_ = this.baseUrl + "/api/ui/year/{year}/metadata";
         if (year !== null && year !== undefined)
         url_ = url_.replace("{year}", encodeURIComponent("" + year));
         else
