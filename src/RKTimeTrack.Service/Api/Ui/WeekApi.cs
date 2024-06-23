@@ -11,7 +11,7 @@ static class WeekApi
     [ProducesResponseType(typeof(TimeTrackingWeek), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-    internal static async Task<IResult> GetCurrentWeek(
+    internal static async Task<IResult> GetCurrentWeekAsync(
         [FromServices] IWebHostEnvironment environment,
         [FromServices] GetWeekUseCase useCase,
         CancellationToken cancellationToken)
@@ -34,7 +34,7 @@ static class WeekApi
     [ProducesResponseType(typeof(TimeTrackingWeek), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-    internal static async Task<IResult> GetWeek(
+    internal static async Task<IResult> GetWeekAsync(
         [FromServices] IWebHostEnvironment environment,
         [FromServices] GetWeekUseCase useCase,
         [FromRoute] int year, 

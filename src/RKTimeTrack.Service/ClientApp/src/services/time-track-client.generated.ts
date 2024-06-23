@@ -21,6 +21,61 @@ export class TimeTrackClient {
     /**
      * @return OK
      */
+    updateDay(body: UpdateDayRequest): Promise<TimeTrackingDay> {
+        let url_ = this.baseUrl + "/api/ui/day";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processUpdateDay(_response);
+        });
+    }
+
+    protected processUpdateDay(response: Response): Promise<TimeTrackingDay> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = TimeTrackingDay.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status === 400) {
+            return response.text().then((_responseText) => {
+            let result400: any = null;
+            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result400 = ProblemDetails.fromJS(resultData400);
+            return throwException("Bad Request", status, _responseText, _headers, result400);
+            });
+        } else if (status === 500) {
+            return response.text().then((_responseText) => {
+            let result500: any = null;
+            let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result500 = ProblemDetails.fromJS(resultData500);
+            return throwException("Internal Server Error", status, _responseText, _headers, result500);
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<TimeTrackingDay>(null as any);
+    }
+
+    /**
+     * @return OK
+     */
     getCurrentWeek(): Promise<TimeTrackingWeek> {
         let url_ = this.baseUrl + "/api/ui/week";
         url_ = url_.replace(/[?&]$/, "");
@@ -501,6 +556,60 @@ export class TimeTrackingYearMetadata implements ITimeTrackingYearMetadata {
 
 export interface ITimeTrackingYearMetadata {
     maxWeekNumber: number;
+}
+
+export class UpdateDayRequest implements IUpdateDayRequest {
+    /** Date in format 'yyyy-mm-dd' */
+    date!: string;
+    type!: TimeTrackingDayType;
+    entries!: TimeTrackingRow[] | undefined;
+
+    constructor(data?: IUpdateDayRequest) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.date = _data["date"];
+            this.type = _data["type"];
+            if (Array.isArray(_data["entries"])) {
+                this.entries = [] as any;
+                for (let item of _data["entries"])
+                    this.entries!.push(TimeTrackingRow.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): UpdateDayRequest {
+        data = typeof data === 'object' ? data : {};
+        let result = new UpdateDayRequest();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["date"] = this.date;
+        data["type"] = this.type;
+        if (Array.isArray(this.entries)) {
+            data["entries"] = [];
+            for (let item of this.entries)
+                data["entries"].push(item.toJSON());
+        }
+        return data;
+    }
+}
+
+export interface IUpdateDayRequest {
+    /** Date in format 'yyyy-mm-dd' */
+    date: string;
+    type: TimeTrackingDayType;
+    entries: TimeTrackingRow[] | undefined;
 }
 
 export class ApiException extends Error {

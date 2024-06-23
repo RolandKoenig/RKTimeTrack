@@ -7,5 +7,6 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddRKTimeTrackApplication(this IServiceCollection services) => services
         .AddScoped<GetWeekUseCase>()
-        .AddScoped<GetYearMetadataUseCase>();
+        .AddScoped<GetYearMetadataUseCase>()
+        .AddScoped<UpdateDayUseCase>();
 }

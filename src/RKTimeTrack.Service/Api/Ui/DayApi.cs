@@ -5,22 +5,19 @@ using RKTimeTrack.Service.Mappings;
 
 namespace RKTimeTrack.Service.Api.Ui;
 
-public class YearApi
+static class DayApi
 {
-    [ProducesResponseType(typeof(TimeTrackingYearMetadata), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(TimeTrackingDay), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-    internal static async Task<IResult> GetYearMetadataAsync(
+    internal static async Task<IResult> UpdateDayAsync(
         [FromServices] IWebHostEnvironment environment,
-        [FromServices] GetYearMetadataUseCase useCase,
-        [FromRoute] int year = 0, 
+        [FromServices] UpdateDayUseCase useCase,
+        [FromBody] UpdateDayRequest request,
         CancellationToken cancellationToken = default)
     {
-        // Map request
-        var request = new GetYearMetadataRequest(year);
-        
         // Call application logic
-        var result = await useCase.GetYearMetadataAsync(request, cancellationToken);
+        var result = await useCase.UpdateDayAsync(request, cancellationToken);
 
         // Map response
         return result.Match(

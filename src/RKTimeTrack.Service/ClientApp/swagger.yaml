@@ -3,6 +3,36 @@ info:
   title: RKTimeTrack.Service
   version: '1.0'
 paths:
+  /api/ui/day:
+    post:
+      tags:
+        - DayApi
+      operationId: UpdateDay
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateDayRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TimeTrackingDay'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
   /api/ui/week:
     get:
       tags:
@@ -197,4 +227,18 @@ components:
         maxWeekNumber:
           type: integer
           format: int32
+      additionalProperties: false
+    UpdateDayRequest:
+      type: object
+      properties:
+        date:
+          type: string
+          description: Date in format 'yyyy-mm-dd'
+        type:
+          $ref: '#/components/schemas/TimeTrackingDayType'
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/TimeTrackingRow'
+          nullable: true
       additionalProperties: false

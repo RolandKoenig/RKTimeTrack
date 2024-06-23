@@ -5,19 +5,30 @@ public static class EndpointRouteBuilderExtensions
     public static T MapWeekApi<T>(this T endpointBuilder)
         where T : IEndpointRouteBuilder
     {
-        // Week Api
-        endpointBuilder.MapGet("/api/ui/week", WeekApi.GetCurrentWeek)
-            .WithName(nameof(WeekApi.GetCurrentWeek))
-            .WithOpenApi();
-        endpointBuilder.MapGet("/api/ui/week/{year}/{weekNumber}", WeekApi.GetWeek)
-            .WithName(nameof(WeekApi.GetWeek))
+        // Year Api
+        endpointBuilder.MapGet("/api/ui/year/{year}/metadata", YearApi.GetYearMetadataAsync)
+            .WithName(RemoveAsyncFromMethodName(nameof(YearApi.GetYearMetadataAsync)))
             .WithOpenApi();
         
-        // Year Api
-        endpointBuilder.MapGet("/api/ui/year/{year}/metadata", YearApi.GetYearMetadata)
-            .WithName(nameof(YearApi.GetYearMetadata))
+        // Week Api
+        endpointBuilder.MapGet("/api/ui/week", WeekApi.GetCurrentWeekAsync)
+            .WithName(RemoveAsyncFromMethodName(nameof(WeekApi.GetCurrentWeekAsync)))
+            .WithOpenApi();
+        endpointBuilder.MapGet("/api/ui/week/{year}/{weekNumber}", WeekApi.GetWeekAsync)
+            .WithName(RemoveAsyncFromMethodName(nameof(WeekApi.GetWeekAsync)))
+            .WithOpenApi();
+        
+        // Day Api
+        endpointBuilder.MapPost("/api/ui/day", DayApi.UpdateDayAsync)
+            .WithName(RemoveAsyncFromMethodName(nameof(DayApi.UpdateDayAsync)))
             .WithOpenApi();
         
         return endpointBuilder;
+    }
+
+    private static string RemoveAsyncFromMethodName(string methodName)
+    {
+        if (!methodName.EndsWith("Async", StringComparison.OrdinalIgnoreCase)) { return methodName; }
+        return methodName.Substring(0, methodName.Length - 5);
     }
 }
