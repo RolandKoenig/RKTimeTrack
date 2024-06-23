@@ -1,6 +1,8 @@
 using RKTimeTrack.Application;
+using RKTimeTrack.FileBasedTimeTrackingRepositoryAdapter;
 using RKTimeTrack.Service.Api.Ui;
 using RKTimeTrack.Service.Mappings;
+using RKTimeTrack.StaticTopicRepositoryAdapter;
 
 namespace RKTimeTrack.Service;
 
@@ -15,6 +17,11 @@ public static class Program
 
         // Add application services
         builder.Services.AddRKTimeTrackApplication();
+        
+        // Add adapters
+        builder.Services.AddFileBasedTimeTrackingRepository(
+            options => builder.Configuration.Bind("FileBasedTimeTrackingRepository", options));
+        builder.Services.AddStaticTopicRepositoryAdapter();
 
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();

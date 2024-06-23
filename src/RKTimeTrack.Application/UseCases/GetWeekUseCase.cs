@@ -1,4 +1,5 @@
 ﻿using RKTimeTrack.Application.Models;
+using RKTimeTrack.Application.Ports;
 using RKTimeTrack.Application.Util;
 
 namespace RKTimeTrack.Application.UseCases;
@@ -7,7 +8,7 @@ using HandlerResult = OneOf.OneOf<
     TimeTrackingWeek,
     CommonErrors.ValidationError>;
 
-public class GetWeekUseCase
+public class GetWeekUseCase(ITimeTrackingRepository timeTrackingRepository)
 {
     public async Task<HandlerResult> GetWeekAsync(GetWeekRequest request, CancellationToken cancellationToken)
     {
@@ -29,18 +30,8 @@ public class GetWeekUseCase
             }
         }
         
-        // Return dummy result
-        var dateMonday = GermanCalendarWeekUtil.GetDateOfMonday(year, weekNumber);
-        var result = new TimeTrackingWeek(
-            year: year,
-            weekNumber: weekNumber,
-            monday: new TimeTrackingDay(dateMonday, TimeTrackingDayType.WorkingDay, []),
-            tuesday: new TimeTrackingDay(dateMonday.AddDays(1), TimeTrackingDayType.WorkingDay, []),
-            wednesday: new TimeTrackingDay(dateMonday.AddDays(2), TimeTrackingDayType.WorkingDay, []),
-            thursday: new TimeTrackingDay(dateMonday.AddDays(3), TimeTrackingDayType.WorkingDay, []),
-            friday: new TimeTrackingDay(dateMonday.AddDays(4), TimeTrackingDayType.WorkingDay, []),
-            saturday: new TimeTrackingDay(dateMonday.AddDays(5), TimeTrackingDayType.Weekend, []),
-            sunday:new TimeTrackingDay(dateMonday.AddDays(6), TimeTrackingDayType.Weekend, []));
+        // Get the week from the repository
+        var result = await timeTrackingRepository.GetWeekAsync(year, weekNumber, cancellationToken);
         
         return result;
     }

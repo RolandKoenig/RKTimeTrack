@@ -24,6 +24,8 @@
 
     <ItemGroup>
       <ProjectReference Include="..\RKTimeTrack.Application\RKTimeTrack.Application.csproj" />
+      <ProjectReference Include="..\RKTimeTrack.FileBasedTimeTrackingRepositoryAdapter\RKTimeTrack.FileBasedTimeTrackingRepositoryAdapter.csproj" />
+      <ProjectReference Include="..\RKTimeTrack.StaticTopicRepositoryAdapter\RKTimeTrack.StaticTopicRepositoryAdapter.csproj" />
     </ItemGroup>
 
     <!-- Don't publish the SPA source files, but do show them in the project files list -->
