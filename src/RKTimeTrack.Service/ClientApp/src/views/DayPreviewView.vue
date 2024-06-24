@@ -3,10 +3,19 @@
   import {computed} from "vue";
 
   const model = defineModel<TimeTrackingDay | undefined>();
+  const props = defineProps({
+    isSelected: Boolean
+  });
 
   const daytypeCssClass = computed(() => {
     if(!model.value){ return "" }
-    return `daytype-${model.value.type.toLowerCase()}`;
+    
+    let result = `daytype-${model.value.type.toLowerCase()}`;
+    if(props.isSelected){
+      result += " selected";
+    }
+    
+    return result;
   })
   
   const sumEffort = computed(() => {
@@ -34,6 +43,7 @@
   }
 
   button.daytype-workingday{
+    
   }
 
   button.daytype-owneducation{
@@ -64,5 +74,10 @@
   button.daytype-weekend{
     background-color: sandybrown;
     border-color: sandybrown;
+  }
+  
+  button.selected{
+    border-color: white;
+    border-width: 4px;
   }
 </style>
