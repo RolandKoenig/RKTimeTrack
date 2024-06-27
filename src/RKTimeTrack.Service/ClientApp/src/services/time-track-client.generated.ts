@@ -363,6 +363,7 @@ export enum TimeTrackingDayType {
     Ill = "Ill",
     Training = "Training",
     Holiday = "Holiday",
+    CompensatoryTimeOff = "CompensatoryTimeOff",
     Weekend = "Weekend",
 }
 

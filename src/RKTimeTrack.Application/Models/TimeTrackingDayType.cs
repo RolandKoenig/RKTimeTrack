@@ -36,6 +36,11 @@ public enum TimeTrackingDayType
     Holiday,
     
     /// <summary>
+    /// Compensatory time-off
+    /// </summary>
+    CompensatoryTimeOff,
+    
+    /// <summary>
     /// Weekend
     /// </summary>
     Weekend

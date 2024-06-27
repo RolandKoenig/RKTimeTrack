@@ -70,6 +70,11 @@
     background-color: yellow;
     border-color: yellow;
   }
+
+  button.daytype-compensatorytimeoff{
+    background-color: yellow;
+    border-color: yellow;
+  }
   
   button.daytype-weekend{
     background-color: sandybrown;

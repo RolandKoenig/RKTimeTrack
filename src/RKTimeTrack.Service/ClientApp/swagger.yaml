@@ -172,6 +172,7 @@ components:
         - Ill
         - Training
         - Holiday
+        - CompensatoryTimeOff
         - Weekend
       type: string
     TimeTrackingRow:

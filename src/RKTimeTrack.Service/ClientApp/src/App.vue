@@ -1,11 +1,27 @@
 <script setup lang="ts">
-  import {inject, type Ref, ref} from "vue";
-  import {TimeTrackClient, TimeTrackingDay, TimeTrackingWeek} from "@/services/time-track-client.generated";
-  import DayPreviewView from "@/views/DayPreviewView.vue";
-  
-  const timeTrackClient = inject<TimeTrackClient>("TimeTrackClient")!;
+import {inject, type Ref, ref} from "vue";
+import {
+  TimeTrackClient,
+  TimeTrackingDay,
+  TimeTrackingDayType,
+  TimeTrackingWeek
+} from "@/services/time-track-client.generated";
+import DayPreviewView from "@/views/DayPreviewView.vue";
+
+const timeTrackClient = inject<TimeTrackClient>("TimeTrackClient")!;
   const currentWeek: Ref<TimeTrackingWeek | undefined> = ref();
   const selectedDay: Ref<TimeTrackingDay | undefined> = ref();
+
+  const dayTypeValues = ref([
+    TimeTrackingDayType.CompensatoryTimeOff,
+    TimeTrackingDayType.Holiday,
+    TimeTrackingDayType.Ill,
+    TimeTrackingDayType.OwnEducation,
+    TimeTrackingDayType.PublicHoliday,
+    TimeTrackingDayType.Training,
+    TimeTrackingDayType.Weekend,
+    TimeTrackingDayType.WorkingDay
+  ]);
   
   function selectMonday(){
     selectedDay.value = currentWeek.value?.monday;
@@ -144,7 +160,38 @@
         </template>
       </Card>
 
-      <h1>Day: {{selectedDay?.date}}</h1>
+      <Card class="selected-day"
+            v-if="selectedDay">
+        <template #header>
+          <h1>Day: {{selectedDay?.date}}</h1>
+        </template>
+        <template #content>
+
+          <div class="card flex justify-center">
+            <Select v-model="selectedDay.type"
+                    :options="dayTypeValues"
+                    placeholder="Select a day type"
+                    class="w-full md:w-56" />
+
+            <DataTable :value="selectedDay.entries" tableStyle="min-width: 50rem">
+              <Column field="topic.category" header="Category"></Column>
+              <Column field="topic.name" header="Name"></Column>
+              <Column field="effortInHours" header="Effort (h)"></Column>
+              <Column field="effortBilled" header="Billed (h)"></Column>
+              <Column field="description" header="Description"></Column>
+            </DataTable>
+            
+          </div>
+
+        </template>
+        <template #footer>
+          <div class="flex gap-4 mt-1">
+            <Button label="Cancel" severity="secondary" outlined class="w-full" />
+            <Button label="Save" class="w-full" />
+          </div>
+        </template>
+      </Card>
+      
       
     </div>
   </header>
@@ -159,5 +206,9 @@ div.navigation-container{
 
 button{
   margin: 1rem;
+}
+
+.selected-day{
+  max-width: 35rem;
 }
 </style>
