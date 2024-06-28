@@ -1,36 +1,55 @@
+// Vue
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
-import { TimeTrackClient } from "@/services/time-track-client.generated";
+
+// Bootstrap
+import "bootstrap/dist/css/bootstrap.min.css"
+
+// PrimeView
 import PrimeVue from 'primevue/config';
 import Aura from '@primevue/themes/aura';
-
-// Components from PrimeVue
 import Button from "primevue/button"
 import Card from 'primevue/card';
-import Select from 'primevue/select';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
+import InputNumber from 'primevue/inputnumber'
+import InputText from 'primevue/inputtext'
+import Select from 'primevue/select';
+import Textarea from 'primevue/textarea';
 
+// App
 import App from './App.vue'
 import router from './router'
+import { TimeTrackClient } from "@/services/time-track-client.generated";
+
+//############################
 
 const app = createApp(App)
 
-app.use(PrimeVue, {
-    theme: {
-        preset: Aura
-    }
-});
-
+// Configure App
 app.use(createPinia())
 app.provide("TimeTrackClient", new TimeTrackClient());
 app.use(router)
 
-// Components from PrimeVue
+// Configure PrimeVue
+app.use(PrimeVue, {
+    theme: {
+        preset: Aura,
+        options: {
+            prefix: 'p',
+            darkModeSelector: 'dark',
+            cssLayer: false
+        }
+    }
+});
 app.component('Button', Button);
 app.component('Card', Card);
-app.component('Select', Select);
-app.component('DataTable', DataTable);
 app.component('Column', Column);
+app.component('DataTable', DataTable);
+app.component('InputNumber', InputNumber);
+app.component('InputText', InputText);
+app.component('Select', Select);
+app.component('Textarea', Textarea);
 
+// Place app inside html
 app.mount('#app')
