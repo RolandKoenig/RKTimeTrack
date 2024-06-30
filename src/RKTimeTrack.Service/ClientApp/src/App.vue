@@ -1,22 +1,11 @@
 <script setup lang="ts">
-  import DayPreviewView from "@/views/DayPreviewView.vue";
   import {useTimeTrackingStore} from "@/stores/timeTrackingStore";
+  import WeekSelection from "@/views/WeekSelection.vue";
   
   const timeTrackingStore = useTimeTrackingStore();
   
-
-  // const dayTypeValues = ref([
-  //   TimeTrackingDayType.CompensatoryTimeOff,
-  //   TimeTrackingDayType.Holiday,
-  //   TimeTrackingDayType.Ill,
-  //   TimeTrackingDayType.OwnEducation,
-  //   TimeTrackingDayType.PublicHoliday,
-  //   TimeTrackingDayType.Training,
-  //   TimeTrackingDayType.Weekend,
-  //   TimeTrackingDayType.WorkingDay
-  // ]);
-  
   timeTrackingStore.fetchCurrentWeek();
+  
 </script>
 
 <template>
@@ -27,34 +16,7 @@
     </div>
     
     <div class="row">
-      <div v-if="timeTrackingStore.currentWeek"
-           class="navigation-container">
-        <Button label="<--" @click="timeTrackingStore.fetchWeekBeforeThisWeek"/>
-
-        <DayPreviewView v-model="timeTrackingStore.currentWeek.monday"
-                        :is-selected="timeTrackingStore.currentWeek.monday == timeTrackingStore.selectedDay"
-                        @click="timeTrackingStore.selectMonday" />
-        <DayPreviewView v-model="timeTrackingStore.currentWeek.tuesday"
-                        :is-selected="timeTrackingStore.currentWeek.tuesday == timeTrackingStore.selectedDay"
-                        @click="timeTrackingStore.selectTuesday" />
-        <DayPreviewView v-model="timeTrackingStore.currentWeek.wednesday"
-                        :is-selected="timeTrackingStore.currentWeek.wednesday == timeTrackingStore.selectedDay"
-                        @click="timeTrackingStore.selectWednesday" />
-        <DayPreviewView v-model="timeTrackingStore.currentWeek.thursday"
-                        :is-selected="timeTrackingStore.currentWeek.thursday == timeTrackingStore.selectedDay"
-                        @click="timeTrackingStore.selectThursday" />
-        <DayPreviewView v-model="timeTrackingStore.currentWeek.friday"
-                        :is-selected="timeTrackingStore.currentWeek.friday == timeTrackingStore.selectedDay"
-                        @click="timeTrackingStore.selectFriday" />
-        <DayPreviewView v-model="timeTrackingStore.currentWeek.saturday"
-                        :is-selected="timeTrackingStore.currentWeek.saturday == timeTrackingStore.selectedDay"
-                        @click="timeTrackingStore.selectSaturday" />
-        <DayPreviewView v-model="timeTrackingStore.currentWeek.sunday"
-                        :is-selected="timeTrackingStore.currentWeek.sunday == timeTrackingStore.selectedDay"
-                        @click="timeTrackingStore.selectSunday" />
-
-        <Button label="-->" @click="timeTrackingStore.fetchWeekAfterThisWeek"/>
-      </div>
+      <WeekSelection />
     </div>
     
     <div v-if="timeTrackingStore.selectedDay"
@@ -138,15 +100,6 @@
 </template>
 
 <style scoped>
-div.navigation-container{
-  display: flex;
-  justify-content: center;
-}
-
-button{
-  margin: 1rem;
-}
-
 input.p-inputtext, span.p-inputnumber, textarea.p-textarea{
   width: 100%;
 }

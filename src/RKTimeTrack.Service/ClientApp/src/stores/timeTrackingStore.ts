@@ -1,4 +1,4 @@
-﻿import {ref, computed, type Ref, inject} from 'vue'
+﻿import {ref, type Ref, inject} from 'vue'
 import {defineStore} from 'pinia'
 import {
     TimeTrackClient,
@@ -14,6 +14,8 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
     const currentWeek: Ref<TimeTrackingWeek | undefined> = ref();
     const selectedDay: Ref<TimeTrackingDay | undefined> = ref();
     const selectedRow: Ref<TimeTrackingRow | undefined> = ref();
+    
+    const isLoading: Ref<boolean> = ref(false);
 
     const dayTypeValues = ref([
         TimeTrackingDayType.CompensatoryTimeOff,
@@ -60,69 +62,95 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
         selectedDay.value = currentWeek.value?.sunday;
         selectedRow.value = undefined;
     }
-
+    
     async function fetchCurrentWeek() {
-        currentWeek.value = await timeTrackClient.getCurrentWeek();
-        selectedDay.value = currentWeek.value.monday;
+        await wrapLoadingCall(async () =>{
+            currentWeek.value = await timeTrackClient.getCurrentWeek();
+            selectedDay.value = currentWeek.value.monday;
+        })
     }
 
-    // Move one week backward
+    /**
+     * Go one week backward
+     */
     async function fetchWeekBeforeThisWeek(){
         if(!currentWeek.value){
             await fetchCurrentWeek();
             return;
         }
-
-        if(currentWeek.value.weekNumber > 1){
-            currentWeek.value = await timeTrackClient.getWeek(
-                currentWeek.value.year,
-                currentWeek.value.weekNumber - 1);
-            selectedDay.value = currentWeek.value.monday;
-            selectedRow.value = undefined;
-        }else{
-            const previousYearMetadata = await timeTrackClient.getYearMetadata(currentWeek.value.year - 1);
-            currentWeek.value = await timeTrackClient.getWeek(
-                currentWeek.value.year - 1,
-                previousYearMetadata.maxWeekNumber);
-            selectedDay.value = currentWeek.value.monday;
-            selectedRow.value = undefined;
-        }
+        
+        const year = currentWeek.value.year;
+        const weekNumber = currentWeek.value.weekNumber;
+        await wrapLoadingCall(async () =>{
+            if(weekNumber > 1){
+                currentWeek.value = await timeTrackClient.getWeek(
+                    year, weekNumber - 1);
+                selectedDay.value = currentWeek.value.monday;
+                selectedRow.value = undefined;
+            }else{
+                const previousYearMetadata = await timeTrackClient.getYearMetadata(year - 1);
+                currentWeek.value = await timeTrackClient.getWeek(
+                    year - 1,
+                    previousYearMetadata.maxWeekNumber);
+                selectedDay.value = currentWeek.value.monday;
+                selectedRow.value = undefined;
+            }
+        })
     }
 
-    // Move one week forward
+    /**
+     * Move one week forward
+     */
     async function fetchWeekAfterThisWeek(){
         if(!currentWeek.value){
             await fetchCurrentWeek();
             return;
         }
 
-        if(currentWeek.value.weekNumber === 53){
-            currentWeek.value = await timeTrackClient.getWeek(
-                currentWeek.value.year + 1,
-                1);
-            selectedDay.value = currentWeek.value.monday;
-            selectedRow.value = undefined;
-        } else if(currentWeek.value.weekNumber === 52){
-            const actYearMetadata = await timeTrackClient.getYearMetadata(currentWeek.value.year);
-            if(actYearMetadata.maxWeekNumber === 53){
+        const year = currentWeek.value.year;
+        const weekNumber = currentWeek.value.weekNumber;
+        await wrapLoadingCall(async () =>{
+            if(weekNumber === 53){
                 currentWeek.value = await timeTrackClient.getWeek(
-                    currentWeek.value.year,
-                    currentWeek.value.weekNumber + 1);
-                selectedDay.value = currentWeek.value.monday;
-                selectedRow.value = undefined;
-            }else{
-                currentWeek.value = await timeTrackClient.getWeek(
-                    currentWeek.value.year + 1,
+                    year + 1,
                     1);
                 selectedDay.value = currentWeek.value.monday;
                 selectedRow.value = undefined;
+            } else if(weekNumber === 52){
+                const actYearMetadata = await timeTrackClient.getYearMetadata(year);
+                if(actYearMetadata.maxWeekNumber === 53){
+                    currentWeek.value = await timeTrackClient.getWeek(
+                        year,
+                        weekNumber + 1);
+                    selectedDay.value = currentWeek.value.monday;
+                    selectedRow.value = undefined;
+                }else{
+                    currentWeek.value = await timeTrackClient.getWeek(
+                        year + 1,
+                        1);
+                    selectedDay.value = currentWeek.value.monday;
+                    selectedRow.value = undefined;
+                }
+            } else {
+                currentWeek.value = await timeTrackClient.getWeek(
+                    year,
+                    weekNumber + 1);
+                selectedDay.value = currentWeek.value.monday;
+                selectedRow.value = undefined;
             }
-        } else {
-            currentWeek.value = await timeTrackClient.getWeek(
-                currentWeek.value.year,
-                currentWeek.value.weekNumber + 1);
-            selectedDay.value = currentWeek.value.monday;
-            selectedRow.value = undefined;
+        })
+    }
+
+    /**
+     * Private helper function to ensure, that we only call one loading function in parallel
+     * @param wrappedFunction
+     */
+    async function wrapLoadingCall(wrappedFunction: () => Promise<void>){
+        if(isLoading.value){ return; }
+        try{
+            await wrappedFunction();
+        }finally {
+            isLoading.value = false;
         }
     }
     
