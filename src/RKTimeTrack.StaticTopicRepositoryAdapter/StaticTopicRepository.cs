@@ -31,7 +31,7 @@ class StaticTopicRepository : ITopicRepository
         };
     }
     
-    public IReadOnlyCollection<TimeTrackingTopic> GetAllProjects()
+    public IReadOnlyCollection<TimeTrackingTopic> GetAllTopics()
     {
         return _topics;
     }

@@ -33,6 +33,32 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ProblemDetails'
+  /api/ui/topics:
+    get:
+      tags:
+        - TopicApi
+      operationId: GetAllTopics
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TimeTrackingTopic'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
   /api/ui/week:
     get:
       tags:
@@ -186,6 +212,19 @@ components:
           type: number
         description:
           type: string
+          nullable: true
+      additionalProperties: false
+    TimeTrackingTopic:
+      type: object
+      properties:
+        category:
+          type: string
+          nullable: true
+        name:
+          type: string
+          nullable: true
+        budget:
+          type: number
           nullable: true
       additionalProperties: false
     TimeTrackingTopicReference:
