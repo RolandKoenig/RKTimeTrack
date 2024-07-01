@@ -1,6 +1,6 @@
 namespace RKTimeTrack.Application.Models;
 
-public class TimeTrackingRow(TimeTrackingTopicReference topic, TimeTrackingHours effortInHours, TimeTrackingHours effortBilled = default, string description = "")
+public class TimeTrackingEntry(TimeTrackingTopicReference topic, TimeTrackingHours effortInHours, TimeTrackingHours effortBilled = default, string description = "")
 {
     public TimeTrackingTopicReference Topic { get; } = topic;
 

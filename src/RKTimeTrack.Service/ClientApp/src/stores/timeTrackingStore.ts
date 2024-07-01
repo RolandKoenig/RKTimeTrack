@@ -1,19 +1,19 @@
-﻿import {ref, type Ref, inject} from 'vue'
+﻿import {ref, type Ref, inject, computed} from 'vue'
 import {defineStore} from 'pinia'
 import {
     TimeTrackClient,
     TimeTrackingDay,
     TimeTrackingDayType,
-    TimeTrackingRow,
+    TimeTrackingEntry,
     TimeTrackingWeek
 } from "@/services/time-track-client.generated";
 
 export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
     const timeTrackClient = inject<TimeTrackClient>("TimeTrackClient")!;
     
-    const currentWeek: Ref<TimeTrackingWeek | undefined> = ref();
-    const selectedDay: Ref<TimeTrackingDay | undefined> = ref();
-    const selectedRow: Ref<TimeTrackingRow | undefined> = ref();
+    const currentWeek: Ref<TimeTrackingWeek | null | undefined> = ref(null);
+    const selectedDay: Ref<TimeTrackingDay | null | undefined> = ref(null);
+    const selectedEntry: Ref<TimeTrackingEntry | null | undefined> = ref(null);
     
     const isLoading: Ref<boolean> = ref(false);
 
@@ -27,46 +27,51 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
         TimeTrackingDayType.Weekend,
         TimeTrackingDayType.WorkingDay
     ]);
-
+    
+    const isCurrentWeekLoaded = computed(() => !!currentWeek.value);
+    const isEntrySelected = computed(() => !!selectedEntry.value);
+    const isDaySelected = computed(() => !!selectedDay.value);
+    
     function selectMonday(){
         selectedDay.value = currentWeek.value?.monday;
-        selectedRow.value = undefined;
+        selectedEntry.value = null;
     }
 
     function selectTuesday(){
         selectedDay.value = currentWeek.value?.tuesday;
-        selectedRow.value = undefined;
+        selectedEntry.value = null;
     }
 
     function selectWednesday(){
         selectedDay.value = currentWeek.value?.wednesday;
-        selectedRow.value = undefined;
+        selectedEntry.value = null;
     }
 
     function selectThursday(){
         selectedDay.value = currentWeek.value?.thursday;
-        selectedRow.value = undefined;
+        selectedEntry.value = null;
     }
 
     function selectFriday(){
         selectedDay.value = currentWeek.value?.friday;
-        selectedRow.value = undefined;
+        selectedEntry.value = null;
     }
 
     function selectSaturday(){
         selectedDay.value = currentWeek.value?.saturday;
-        selectedRow.value = undefined;
+        selectedEntry.value = null;
     }
 
     function selectSunday(){
         selectedDay.value = currentWeek.value?.sunday;
-        selectedRow.value = undefined;
+        selectedEntry.value = null;
     }
     
     async function fetchCurrentWeek() {
         await wrapLoadingCall(async () =>{
             currentWeek.value = await timeTrackClient.getCurrentWeek();
             selectedDay.value = currentWeek.value.monday;
+            selectedEntry.value = null;
         })
     }
 
@@ -86,14 +91,14 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
                 currentWeek.value = await timeTrackClient.getWeek(
                     year, weekNumber - 1);
                 selectedDay.value = currentWeek.value.monday;
-                selectedRow.value = undefined;
+                selectedEntry.value = null;
             }else{
                 const previousYearMetadata = await timeTrackClient.getYearMetadata(year - 1);
                 currentWeek.value = await timeTrackClient.getWeek(
                     year - 1,
                     previousYearMetadata.maxWeekNumber);
                 selectedDay.value = currentWeek.value.monday;
-                selectedRow.value = undefined;
+                selectedEntry.value = null;
             }
         })
     }
@@ -115,7 +120,7 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
                     year + 1,
                     1);
                 selectedDay.value = currentWeek.value.monday;
-                selectedRow.value = undefined;
+                selectedEntry.value = null;
             } else if(weekNumber === 52){
                 const actYearMetadata = await timeTrackClient.getYearMetadata(year);
                 if(actYearMetadata.maxWeekNumber === 53){
@@ -123,20 +128,20 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
                         year,
                         weekNumber + 1);
                     selectedDay.value = currentWeek.value.monday;
-                    selectedRow.value = undefined;
+                    selectedEntry.value = null;
                 }else{
                     currentWeek.value = await timeTrackClient.getWeek(
                         year + 1,
                         1);
                     selectedDay.value = currentWeek.value.monday;
-                    selectedRow.value = undefined;
+                    selectedEntry.value = null;
                 }
             } else {
                 currentWeek.value = await timeTrackClient.getWeek(
                     year,
                     weekNumber + 1);
                 selectedDay.value = currentWeek.value.monday;
-                selectedRow.value = undefined;
+                selectedEntry.value = null;
             }
         })
     }
@@ -155,7 +160,8 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
     }
     
     return{
-        currentWeek, selectedDay, selectedRow,
+        currentWeek, isCurrentWeekLoaded,
+        selectedDay, selectedEntry, isDaySelected, isEntrySelected,
         dayTypeValues,
         selectMonday, selectTuesday, selectWednesday, selectThursday, selectFriday, selectSaturday, selectSunday,
         fetchCurrentWeek, fetchWeekBeforeThisWeek, fetchWeekAfterThisWeek

@@ -364,7 +364,7 @@ export class TimeTrackingDay implements ITimeTrackingDay {
     /** Date in format 'yyyy-mm-dd' */
     date!: string;
     type!: TimeTrackingDayType;
-    entries!: TimeTrackingRow[] | undefined;
+    entries!: TimeTrackingEntry[] | undefined;
 
     constructor(data?: ITimeTrackingDay) {
         if (data) {
@@ -382,7 +382,7 @@ export class TimeTrackingDay implements ITimeTrackingDay {
             if (Array.isArray(_data["entries"])) {
                 this.entries = [] as any;
                 for (let item of _data["entries"])
-                    this.entries!.push(TimeTrackingRow.fromJS(item));
+                    this.entries!.push(TimeTrackingEntry.fromJS(item));
             }
         }
     }
@@ -411,7 +411,7 @@ export interface ITimeTrackingDay {
     /** Date in format 'yyyy-mm-dd' */
     date: string;
     type: TimeTrackingDayType;
-    entries: TimeTrackingRow[] | undefined;
+    entries: TimeTrackingEntry[] | undefined;
 }
 
 export enum TimeTrackingDayType {
@@ -425,13 +425,13 @@ export enum TimeTrackingDayType {
     Weekend = "Weekend",
 }
 
-export class TimeTrackingRow implements ITimeTrackingRow {
+export class TimeTrackingEntry implements ITimeTrackingEntry {
     topic!: TimeTrackingTopicReference;
     effortInHours!: number;
     effortBilled!: number;
     description!: string | undefined;
 
-    constructor(data?: ITimeTrackingRow) {
+    constructor(data?: ITimeTrackingEntry) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -449,9 +449,9 @@ export class TimeTrackingRow implements ITimeTrackingRow {
         }
     }
 
-    static fromJS(data: any): TimeTrackingRow {
+    static fromJS(data: any): TimeTrackingEntry {
         data = typeof data === 'object' ? data : {};
-        let result = new TimeTrackingRow();
+        let result = new TimeTrackingEntry();
         result.init(data);
         return result;
     }
@@ -466,7 +466,7 @@ export class TimeTrackingRow implements ITimeTrackingRow {
     }
 }
 
-export interface ITimeTrackingRow {
+export interface ITimeTrackingEntry {
     topic: TimeTrackingTopicReference;
     effortInHours: number;
     effortBilled: number;
@@ -665,7 +665,7 @@ export class UpdateDayRequest implements IUpdateDayRequest {
     /** Date in format 'yyyy-mm-dd' */
     date!: string;
     type!: TimeTrackingDayType;
-    entries!: TimeTrackingRow[] | undefined;
+    entries!: TimeTrackingEntry[] | undefined;
 
     constructor(data?: IUpdateDayRequest) {
         if (data) {
@@ -683,7 +683,7 @@ export class UpdateDayRequest implements IUpdateDayRequest {
             if (Array.isArray(_data["entries"])) {
                 this.entries = [] as any;
                 for (let item of _data["entries"])
-                    this.entries!.push(TimeTrackingRow.fromJS(item));
+                    this.entries!.push(TimeTrackingEntry.fromJS(item));
             }
         }
     }
@@ -712,7 +712,7 @@ export interface IUpdateDayRequest {
     /** Date in format 'yyyy-mm-dd' */
     date: string;
     type: TimeTrackingDayType;
-    entries: TimeTrackingRow[] | undefined;
+    entries: TimeTrackingEntry[] | undefined;
 }
 
 export class ApiException extends Error {

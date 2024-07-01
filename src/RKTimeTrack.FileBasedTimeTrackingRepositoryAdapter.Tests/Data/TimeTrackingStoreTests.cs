@@ -17,15 +17,15 @@ public class TimeTrackingStoreTests
         sut.AddOrUpdateDay(new TimeTrackingDay(
             new DateOnly(2022, 1, 1), 
             TimeTrackingDayType.Weekend,
-            Array.Empty<TimeTrackingRow>()));
+            Array.Empty<TimeTrackingEntry>()));
         sut.AddOrUpdateDay(new TimeTrackingDay(
             new DateOnly(2022, 1, 2), 
             TimeTrackingDayType.Weekend,
-            Array.Empty<TimeTrackingRow>()));
+            Array.Empty<TimeTrackingEntry>()));
         sut.AddOrUpdateDay(new TimeTrackingDay(
             new DateOnly(2022, 1, 3), 
             TimeTrackingDayType.WorkingDay,
-            Array.Empty<TimeTrackingRow>()));
+            Array.Empty<TimeTrackingEntry>()));
         
         // Assert
         sut.Store.Count.Should().Be(3);
@@ -47,15 +47,15 @@ public class TimeTrackingStoreTests
         sut.AddOrUpdateDay(new TimeTrackingDay(
             new DateOnly(2022, 1, 3), 
             TimeTrackingDayType.WorkingDay,
-            Array.Empty<TimeTrackingRow>()));
+            Array.Empty<TimeTrackingEntry>()));
         sut.AddOrUpdateDay(new TimeTrackingDay(
             new DateOnly(2022, 1, 1), 
             TimeTrackingDayType.Weekend,
-            Array.Empty<TimeTrackingRow>()));
+            Array.Empty<TimeTrackingEntry>()));
         sut.AddOrUpdateDay(new TimeTrackingDay(
             new DateOnly(2022, 1, 2), 
             TimeTrackingDayType.Weekend,
-            Array.Empty<TimeTrackingRow>()));
+            Array.Empty<TimeTrackingEntry>()));
         
         // Assert
         sut.Store.Count.Should().Be(3);
@@ -113,15 +113,15 @@ public class TimeTrackingStoreTests
         var createdFriday = sut.AddOrUpdateDay(new TimeTrackingDay(
             new DateOnly(2024, 6, 21), 
             TimeTrackingDayType.WorkingDay,
-            Array.Empty<TimeTrackingRow>()));
+            Array.Empty<TimeTrackingEntry>()));
         var createdTuesday = sut.AddOrUpdateDay(new TimeTrackingDay(
             new DateOnly(2024, 6, 18), 
             TimeTrackingDayType.WorkingDay,
-            Array.Empty<TimeTrackingRow>()));
+            Array.Empty<TimeTrackingEntry>()));
         var createdSunday = sut.AddOrUpdateDay(new TimeTrackingDay(
             new DateOnly(2024, 6, 23), 
             TimeTrackingDayType.Weekend,
-            Array.Empty<TimeTrackingRow>()));
+            Array.Empty<TimeTrackingEntry>()));
         var week = sut.GetOrCreateWeek(2024, 25);
         
         // Assert
@@ -165,7 +165,7 @@ public class TimeTrackingStoreTests
             sut.AddOrUpdateDay(new TimeTrackingDay(
                 new DateOnly(2024, 6, 17 + x), 
                 x < 5 ? TimeTrackingDayType.WorkingDay : TimeTrackingDayType.Weekend,
-                Array.Empty<TimeTrackingRow>()))).ToArray();
+                Array.Empty<TimeTrackingEntry>()))).ToArray();
         var week = sut.GetOrCreateWeek(2024, 25);
         
         // Assert
@@ -229,7 +229,7 @@ public class TimeTrackingStoreTests
             var newDay = new TimeTrackingDay(
                 newDate,
                 dayType,
-                Array.Empty<TimeTrackingRow>());
+                Array.Empty<TimeTrackingEntry>());
             sut.AddOrUpdateDay(newDay);
             controlDictionary[newDate] = newDay;
         }

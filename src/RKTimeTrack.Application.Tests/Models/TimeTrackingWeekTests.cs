@@ -71,7 +71,7 @@ public class TimeTrackingWeekTests
         TimeTrackingDay CreateDayFunc(DateOnly date, TimeTrackingDayType dayType)
             => new(date, dayType, new[]
             {
-                new TimeTrackingRow(
+                new TimeTrackingEntry(
                     topic, 
                     effortInHours:random.Next(4,5), 
                     effortBilled:random.Next(3,4), 

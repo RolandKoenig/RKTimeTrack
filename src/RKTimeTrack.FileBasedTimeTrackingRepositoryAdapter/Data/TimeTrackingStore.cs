@@ -100,7 +100,7 @@ class TimeTrackingStore
         var newDay = new TimeTrackingDay(
             date: date,
             type: dayType,
-            entries: Array.Empty<TimeTrackingRow>());
+            entries: Array.Empty<TimeTrackingEntry>());
         _store.Insert(~existingRowIndex, newDay);
         return newDay;
     }
