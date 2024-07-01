@@ -24,13 +24,25 @@
     
     <div v-if="timeTrackingStore.selectedDay"
          class="row py-4">
+      <h4>{{  timeTrackingStore.selectedDay.date }}</h4>
+      <form>
+        <div class="row">
+          <div class="col-4 mb-3">
+            <label for="selected-day-type" class="form-label">Type</label>
+            <Select id="selected-day-type"
+                    v-model="timeTrackingStore.selectedDay.type"
+                    :options="timeTrackingStore.dayTypeValues" />
+          </div>
+        </div>
+      </form>
+           
       <h4>Booked times</h4>
       <DayEntrySelectionView />
     </div>
     
     <div class="row py-4"
          v-if="timeTrackingStore.selectedEntry">
-      <h4>Current row</h4>
+      <h4>Current entry</h4>
       <form>
         <div class="row">
           <div class="col-6 mb-3">
@@ -73,7 +85,7 @@
 
     <div class="row py-4"
          v-if="!timeTrackingStore.selectedEntry">
-      <h4>New row</h4>
+      <h4>New entry</h4>
     </div>
 
   </div>
@@ -81,7 +93,7 @@
 </template>
 
 <style scoped>
-input.p-inputtext, span.p-inputnumber, textarea.p-textarea{
+input.p-inputtext, span.p-inputnumber, textarea.p-textarea, div.p-select{
   width: 100%;
 }
 </style>

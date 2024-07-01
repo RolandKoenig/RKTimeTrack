@@ -41,8 +41,8 @@
     display: flex;
     justify-content: center;
   }
-  
-  button{
+
+  button, div.buttonBorder{
     margin: 1rem;
   }
 </style>

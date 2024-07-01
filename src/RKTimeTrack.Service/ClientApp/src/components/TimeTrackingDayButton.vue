@@ -29,11 +29,14 @@
 </script>
 
 <template>
-  <Button :class="daytypeCssClass">
-    <div class="daytype" >
-      <span>{{sumEffort}}</span>
-    </div>
-  </Button>
+  <div class="buttonBorder"
+       :class="daytypeCssClass">
+    <Button :class="daytypeCssClass">
+      <div class="daytype" >
+        <span>{{sumEffort}}</span>
+      </div>
+    </Button>
+  </div>
 </template>
 
 <style scoped>
@@ -41,7 +44,20 @@
     width:3rem;
     height: 3rem;
   }
-
+  
+  div.buttonBorder{
+    border-width: 4px;
+    border-radius: 4px;
+    border-color: white;
+    border-style: solid;
+    background: transparent;
+  }
+  
+  div.selected{
+    border-color: #AAAAAA;
+    background: #AAAAAA;
+  }
+  
   button.daytype-workingday{
     
   }
@@ -69,20 +85,17 @@
   button.daytype-holiday{
     background-color: yellow;
     border-color: yellow;
+    color: black;
   }
 
   button.daytype-compensatorytimeoff{
     background-color: yellow;
     border-color: yellow;
+    color: black;
   }
   
   button.daytype-weekend{
     background-color: sandybrown;
     border-color: sandybrown;
-  }
-  
-  button.selected{
-    border-color: white;
-    border-width: 4px;
   }
 </style>
