@@ -348,6 +348,13 @@ export class ProblemDetails implements IProblemDetails {
         data["instance"] = this.instance;
         return data;
     }
+
+    clone(): ProblemDetails {
+        const json = this.toJSON();
+        let result = new ProblemDetails();
+        result.init(json);
+        return result;
+    }
 }
 
 export interface IProblemDetails {
@@ -404,6 +411,13 @@ export class TimeTrackingDay implements ITimeTrackingDay {
                 data["entries"].push(item.toJSON());
         }
         return data;
+    }
+
+    clone(): TimeTrackingDay {
+        const json = this.toJSON();
+        let result = new TimeTrackingDay();
+        result.init(json);
+        return result;
     }
 }
 
@@ -464,6 +478,13 @@ export class TimeTrackingEntry implements ITimeTrackingEntry {
         data["description"] = this.description;
         return data;
     }
+
+    clone(): TimeTrackingEntry {
+        const json = this.toJSON();
+        let result = new TimeTrackingEntry();
+        result.init(json);
+        return result;
+    }
 }
 
 export interface ITimeTrackingEntry {
@@ -509,6 +530,13 @@ export class TimeTrackingTopic implements ITimeTrackingTopic {
         data["budget"] = this.budget;
         return data;
     }
+
+    clone(): TimeTrackingTopic {
+        const json = this.toJSON();
+        let result = new TimeTrackingTopic();
+        result.init(json);
+        return result;
+    }
 }
 
 export interface ITimeTrackingTopic {
@@ -549,6 +577,13 @@ export class TimeTrackingTopicReference implements ITimeTrackingTopicReference {
         data["category"] = this.category;
         data["name"] = this.name;
         return data;
+    }
+
+    clone(): TimeTrackingTopicReference {
+        const json = this.toJSON();
+        let result = new TimeTrackingTopicReference();
+        result.init(json);
+        return result;
     }
 }
 
@@ -611,6 +646,13 @@ export class TimeTrackingWeek implements ITimeTrackingWeek {
         data["sunday"] = this.sunday ? this.sunday.toJSON() : <any>undefined;
         return data;
     }
+
+    clone(): TimeTrackingWeek {
+        const json = this.toJSON();
+        let result = new TimeTrackingWeek();
+        result.init(json);
+        return result;
+    }
 }
 
 export interface ITimeTrackingWeek {
@@ -654,6 +696,13 @@ export class TimeTrackingYearMetadata implements ITimeTrackingYearMetadata {
         data = typeof data === 'object' ? data : {};
         data["maxWeekNumber"] = this.maxWeekNumber;
         return data;
+    }
+
+    clone(): TimeTrackingYearMetadata {
+        const json = this.toJSON();
+        let result = new TimeTrackingYearMetadata();
+        result.init(json);
+        return result;
     }
 }
 
@@ -705,6 +754,13 @@ export class UpdateDayRequest implements IUpdateDayRequest {
                 data["entries"].push(item.toJSON());
         }
         return data;
+    }
+
+    clone(): UpdateDayRequest {
+        const json = this.toJSON();
+        let result = new UpdateDayRequest();
+        result.init(json);
+        return result;
     }
 }
 

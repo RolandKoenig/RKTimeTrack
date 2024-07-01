@@ -1,4 +1,4 @@
-﻿import {ref, type Ref, inject, computed} from 'vue'
+﻿import {ref, type Ref, inject} from 'vue'
 import {defineStore} from 'pinia'
 import {
     TimeTrackClient,
@@ -27,10 +27,6 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
         TimeTrackingDayType.Weekend,
         TimeTrackingDayType.WorkingDay
     ]);
-    
-    const isCurrentWeekLoaded = computed(() => !!currentWeek.value);
-    const isEntrySelected = computed(() => !!selectedEntry.value);
-    const isDaySelected = computed(() => !!selectedDay.value);
     
     function selectMonday(){
         selectedDay.value = currentWeek.value?.monday;
@@ -160,8 +156,8 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
     }
     
     return{
-        currentWeek, isCurrentWeekLoaded,
-        selectedDay, selectedEntry, isDaySelected, isEntrySelected,
+        currentWeek, 
+        selectedDay, selectedEntry,
         dayTypeValues,
         selectMonday, selectTuesday, selectWednesday, selectThursday, selectFriday, selectSaturday, selectSunday,
         fetchCurrentWeek, fetchWeekBeforeThisWeek, fetchWeekAfterThisWeek

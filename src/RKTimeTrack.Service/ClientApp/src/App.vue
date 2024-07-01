@@ -22,7 +22,7 @@
       <WeekSelectionView />
     </div>
     
-    <div v-if="timeTrackingStore.isDaySelected"
+    <div v-if="timeTrackingStore.selectedDay"
          class="row py-4">
       <h4>Booked times</h4>
       <DayEntrySelectionView />
@@ -72,7 +72,7 @@
     </div>
 
     <div class="row py-4"
-         v-if="!timeTrackingStore.isEntrySelected">
+         v-if="!timeTrackingStore.selectedEntry">
       <h4>New row</h4>
     </div>
 

@@ -5,7 +5,7 @@
 </script>
 
 <template>
-  <DataTable v-if="timeTrackingStore.isDaySelected"
+  <DataTable v-if="timeTrackingStore.selectedDay"
              v-model:selection="timeTrackingStore.selectedEntry"
              :value="timeTrackingStore.selectedDay.entries"
              :size="'small'"
