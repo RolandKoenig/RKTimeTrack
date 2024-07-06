@@ -15,6 +15,7 @@ public static class TimeTrackingDayTypeExtensions
         TimeTrackingDayType.Training => CommonConstants.DEFAULT_EXPECTED_WORKING_HOURS,
         TimeTrackingDayType.Weekend => 0,
         TimeTrackingDayType.WorkingDay => CommonConstants.DEFAULT_EXPECTED_WORKING_HOURS,
+        TimeTrackingDayType.CompensatoryTimeOff => CommonConstants.DEFAULT_EXPECTED_WORKING_HOURS,
         _ => throw new ArgumentOutOfRangeException(nameof(dayType), dayType, null)
     };
 
@@ -33,6 +34,7 @@ public static class TimeTrackingDayTypeExtensions
         TimeTrackingDayType.Training => CommonConstants.WORKING_HOUR_CALCULATION_FACTOR_FOR_TRAINING,
         TimeTrackingDayType.Weekend => 1,
         TimeTrackingDayType.WorkingDay => 1,
+        TimeTrackingDayType.CompensatoryTimeOff => 1,
         _ => throw new ArgumentOutOfRangeException(nameof(dayType), dayType, null)
     };
 }

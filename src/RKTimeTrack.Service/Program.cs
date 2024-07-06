@@ -6,9 +6,17 @@ using RKTimeTrack.StaticTopicRepositoryAdapter;
 
 namespace RKTimeTrack.Service;
 
-public static class Program
+public class Program
 {
     public static void Main(string[] args)
+    {
+        var host = CreateApplication(args);
+        host.Run();
+    }
+
+    internal static IHost CreateApplication(
+        string[] args,
+        Action<WebApplicationBuilder>? customizeWebApplicationBuilder = null)
     {
         var builder = WebApplication.CreateBuilder(args);
         
@@ -29,6 +37,8 @@ public static class Program
         
         builder.Services.AddHttpLogging(o => { });
 
+        customizeWebApplicationBuilder?.Invoke(builder);
+
         var app = builder.Build();
 
         app.UseHttpLogging();
@@ -48,6 +58,7 @@ public static class Program
         
         // Run application        
         app.MapFallbackToFile("index.html");
-        app.Run();
+
+        return app;
     }
 }
