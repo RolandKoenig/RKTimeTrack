@@ -1,3 +1,6 @@
+# syntax=docker/dockerfile:1.7-labs
+# 1.7 because of --exclude parameter of COPY command
+
 #####################################
 # Build image
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
@@ -27,5 +30,5 @@ EXPOSE 80
 
 ## Copy application and define entrypoint
 WORKDIR /app
-COPY --from=publish /app/publish .
+COPY --from=publish --exclude=appsettings.Development.json /app/publish . 
 ENTRYPOINT ["dotnet", "RKTimeTrack.Service.dll"]
