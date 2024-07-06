@@ -13,7 +13,7 @@ class TimeTrackingPersistenceService(
 {
     private readonly ILogger _logger = logger;
 
-    private Task? _persistenceLoopTask = null;
+    private Task? _persistenceLoopTask;
     private CancellationToken _persistenceLoopCancellationToken = CancellationToken.None;
 
     public async Task StartAsync(CancellationToken cancellationToken)

@@ -2,13 +2,10 @@
 
 namespace RKTimeTrack.Application.UseCases;
 
-public record class GetAllTopicsRequest
+public record GetAllTopicsRequest
 {
     public class Validator : AbstractValidator<GetAllTopicsRequest>
     {
-        public Validator()
-        {
-            // Nothing to validate
-        }
+        
     }
 }

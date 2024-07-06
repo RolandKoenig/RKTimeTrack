@@ -17,7 +17,7 @@ public class GetAllTopicsUseCase(ITopicRepository topicRepository)
         var validationResult = await validator.ValidateAsync(request, cancellationToken);
         if (!validationResult.IsValid) { return new CommonErrors.ValidationError(validationResult.Errors); }
 
-        // Execute usecase
+        // Execute UseCase
         var result = topicRepository.GetAllTopics();
         return HandlerResult.FromT0(result);
     }

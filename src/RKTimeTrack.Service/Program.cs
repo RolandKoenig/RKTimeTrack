@@ -6,7 +6,7 @@ using RKTimeTrack.StaticTopicRepositoryAdapter;
 
 namespace RKTimeTrack.Service;
 
-public class Program
+public static class Program
 {
     public static void Main(string[] args)
     {
@@ -39,8 +39,6 @@ public class Program
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen(SwaggerGenConfiguration.Configure);
-        
-        builder.Services.AddHttpLogging(o => { });
 
         // Allow customization from IntegrationTests project
         customizeWebApplicationBuilder?.Invoke(builder);
@@ -49,7 +47,6 @@ public class Program
         // Configure the HTTP request pipeline.
         
         var app = builder.Build();
-        app.UseHttpLogging();
         
         if (app.Environment.IsDevelopment())
         {
