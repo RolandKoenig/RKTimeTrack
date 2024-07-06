@@ -1,9 +1,8 @@
 ﻿using Microsoft.Extensions.Logging;
-using Xunit.Abstractions;
 
 namespace RKTimeTrack.Service.IntegrationTests.Util;
 
-public class TestLoggerProvider(ITestOutputHelper testOutputHelper) : ILoggerProvider
+public class TestLoggerProvider(WebHostServerFixture fixture) : ILoggerProvider
 {
     /// <inheritdoc />
     public void Dispose()
@@ -14,6 +13,6 @@ public class TestLoggerProvider(ITestOutputHelper testOutputHelper) : ILoggerPro
     /// <inheritdoc />
     public ILogger CreateLogger(string categoryName)
     {
-        return new TestLogger(testOutputHelper);
+        return new TestLogger(fixture);
     }
 }

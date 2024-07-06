@@ -1,9 +1,8 @@
 ﻿using Microsoft.Extensions.Logging;
-using Xunit.Abstractions;
 
 namespace RKTimeTrack.Service.IntegrationTests.Util;
 
-public class TestLogger(ITestOutputHelper testOutputHelper) : ILogger
+public class TestLogger(WebHostServerFixture fixture) : ILogger
 {
     public IDisposable? BeginScope<TState>(TState state) where TState : notnull
     {
@@ -17,6 +16,7 @@ public class TestLogger(ITestOutputHelper testOutputHelper) : ILogger
 
     public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
     {
-        testOutputHelper.WriteLine(formatter(state, exception));
+        var testOutputHelper = fixture.TestOutputHelper;
+        testOutputHelper?.WriteLine(formatter(state, exception));
     }
 }

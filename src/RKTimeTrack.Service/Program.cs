@@ -14,13 +14,18 @@ public class Program
         host.Run();
     }
 
+    /// <summary>
+    /// Hook for IntegrationTests project
+    /// </summary>
     internal static IHost CreateApplication(
         string[] args,
         Action<WebApplicationBuilder>? customizeWebApplicationBuilder = null)
     {
         var builder = WebApplication.CreateBuilder(args);
         
+        // #########################################
         // Add services to the container.
+        
         builder.Services.AddAuthorization();
 
         // Add application services
@@ -37,13 +42,15 @@ public class Program
         
         builder.Services.AddHttpLogging(o => { });
 
+        // Allow customization from IntegrationTests project
         customizeWebApplicationBuilder?.Invoke(builder);
 
+        // #########################################
+        // Configure the HTTP request pipeline.
+        
         var app = builder.Build();
-
         app.UseHttpLogging();
         
-        // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();

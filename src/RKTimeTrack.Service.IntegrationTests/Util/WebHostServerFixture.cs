@@ -1,9 +1,7 @@
 using System.Runtime.ExceptionServices;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Hosting.Server.Features;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -11,15 +9,22 @@ using Xunit.Abstractions;
 
 namespace RKTimeTrack.Service.IntegrationTests.Util;
 
+// ReSharper disable once ClassNeverInstantiated.Global
 public class WebHostServerFixture : IDisposable
 {
     private readonly Lazy<Uri> _rootUriInitializer;
 
-    public Uri RootUri => _rootUriInitializer.Value;
+    /// <summary>
+    /// Dependency for startup
+    /// </summary>
+    public Func<string[], Action<WebApplicationBuilder>?, IHost>? ProgramStartupMethod { get; set; }
     
-    public Func<string[], Action<WebApplicationBuilder>?, IHost>? ProgramStartupMethod { get; set; } = null;
-
-    public ITestOutputHelper? TestOutputHelper { get; set; } = null;
+    /// <summary>
+    /// Dependency for logging into test results
+    /// </summary>
+    public ITestOutputHelper? TestOutputHelper { get; set; }
+    
+    public Uri RootUri => _rootUriInitializer.Value;
     
     private IHost? Host { get; set; }
     
@@ -32,7 +37,7 @@ public class WebHostServerFixture : IDisposable
     {
         using var isDone = new ManualResetEvent(false);
 
-        ExceptionDispatchInfo edi = null;
+        ExceptionDispatchInfo? edi = null;
         new Thread(() =>
         {
             try
@@ -60,7 +65,7 @@ public class WebHostServerFixture : IDisposable
         }
     }
 
-    protected string StartAndGetRootUri()
+    private string StartAndGetRootUri()
     {
         // As the port is generated automatically, we can use IServerAddressesFeature to get the actual server URL
         Host = CreateWebHost();
@@ -83,49 +88,10 @@ public class WebHostServerFixture : IDisposable
             ["--environment", "IntegrationTests"], 
             builder =>
             {
-                // Make UseStaticWebAssets work
-                var applicationPath = typeof(Program).Assembly.Location;
-                var name = Path.ChangeExtension(applicationPath, ".staticwebassets.runtime.json");
-                var inMemoryConfiguration = new Dictionary<string, string>
-                {
-                    [WebHostDefaults.StaticWebAssetsKey] = name,
-                };
-                builder.Configuration.AddInMemoryCollection(inMemoryConfiguration);
-
-                if (this.TestOutputHelper != null)
-                {
-                    builder.Logging.AddProvider(new TestLoggerProvider(this.TestOutputHelper));
-                }
-
-                builder.Logging.AddConsole();
-
-                // builder.WebHost
-                //     .UseKestrel()
-                //     // .UseSolutionRelativeContentRoot(typeof(TStartup).Assembly.GetName().Name!)
-                //     .UseStaticWebAssets();
-                // // .UseStartup<TStartup>()
-                // // .UseUrls($"http://127.0.0.1:0"); // :0 allows to choose a port automatically
+                // Configure logging 
+                // (we want to see logging-output in the test results)
+                builder.Logging.AddProvider(new TestLoggerProvider(this));
             });
-
-        // return new HostBuilder()
-        //     .ConfigureHostConfiguration(config =>
-        //     {
-        //         // Make UseStaticWebAssets work
-        //         var applicationPath = typeof(TStartup).Assembly.Location;
-        //         var name = Path.ChangeExtension(applicationPath, ".staticwebassets.runtime.json");
-        //         var inMemoryConfiguration = new Dictionary<string, string>
-        //         {
-        //             [WebHostDefaults.StaticWebAssetsKey] = name,
-        //         };
-        //         config.AddInMemoryCollection(inMemoryConfiguration);
-        //     })
-        //     .ConfigureWebHost(webHostBuilder => webHostBuilder
-        //         .UseKestrel()
-        //         .UseSolutionRelativeContentRoot(typeof(TStartup).Assembly.GetName().Name)
-        //         .UseStaticWebAssets()
-        //         .UseStartup<TStartup>()
-        //         .UseUrls($"http://127.0.0.1:0")) // :0 allows to choose a port automatically
-        //     .Build();
     }
         
     public virtual void Dispose()
@@ -134,54 +100,3 @@ public class WebHostServerFixture : IDisposable
         Host?.StopAsync();
     }
 }
-
-// ASP.NET Core with a Startup class (MVC / Pages / Blazor Server)
-// public class WebHostServerFixture<TStartup> : WebHostServerFixture
-//     where TStartup : class
-// {
-//     protected override IHost CreateWebHost()
-//     {
-//         return RKTimeTrack.Service.Program.CreateApplication(
-//             ["--environment", "IntegrationTests"], 
-//             builder =>
-//             {
-//                 // Make UseStaticWebAssets work
-//                 var applicationPath = typeof(TStartup).Assembly.Location;
-//                 var name = Path.ChangeExtension(applicationPath, ".staticwebassets.runtime.json");
-//                 var inMemoryConfiguration = new Dictionary<string, string>
-//                 {
-//                     [WebHostDefaults.StaticWebAssetsKey] = name,
-//                 };
-//                 builder.Configuration.AddInMemoryCollection(inMemoryConfiguration);
-// 
-//                 builder.Logging.AddConsole();
-// 
-//                 // builder.WebHost
-//                 //     .UseKestrel()
-//                 //     // .UseSolutionRelativeContentRoot(typeof(TStartup).Assembly.GetName().Name!)
-//                 //     .UseStaticWebAssets();
-//                 // // .UseStartup<TStartup>()
-//                 // // .UseUrls($"http://127.0.0.1:0"); // :0 allows to choose a port automatically
-//             });
-// 
-//         // return new HostBuilder()
-//         //     .ConfigureHostConfiguration(config =>
-//         //     {
-//         //         // Make UseStaticWebAssets work
-//         //         var applicationPath = typeof(TStartup).Assembly.Location;
-//         //         var name = Path.ChangeExtension(applicationPath, ".staticwebassets.runtime.json");
-//         //         var inMemoryConfiguration = new Dictionary<string, string>
-//         //         {
-//         //             [WebHostDefaults.StaticWebAssetsKey] = name,
-//         //         };
-//         //         config.AddInMemoryCollection(inMemoryConfiguration);
-//         //     })
-//         //     .ConfigureWebHost(webHostBuilder => webHostBuilder
-//         //         .UseKestrel()
-//         //         .UseSolutionRelativeContentRoot(typeof(TStartup).Assembly.GetName().Name)
-//         //         .UseStaticWebAssets()
-//         //         .UseStartup<TStartup>()
-//         //         .UseUrls($"http://127.0.0.1:0")) // :0 allows to choose a port automatically
-//         //     .Build();
-//     }
-// }
