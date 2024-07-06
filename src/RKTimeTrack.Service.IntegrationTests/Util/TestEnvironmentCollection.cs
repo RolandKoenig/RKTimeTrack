@@ -1,3 +1,5 @@
+using Xunit;
+
 namespace RKTimeTrack.Service.IntegrationTests.Util;
 
 [CollectionDefinition(nameof(TestEnvironmentCollection))]

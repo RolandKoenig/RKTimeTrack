@@ -1,5 +1,6 @@
 using Microsoft.Playwright;
 using RKTimeTrack.Service.IntegrationTests.Util;
+using Xunit;
 using Xunit.Abstractions;
 
 namespace RKTimeTrack.Service.IntegrationTests;

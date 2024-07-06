@@ -1,14 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
-        <IsPackable>false</IsPackable>
-        <IsTestProject>true</IsTestProject> 
-        <SpaRoot>../RKTimeTrack.Service/ClientApp/</SpaRoot>
+        <IsTestProject>true</IsTestProject>
     </PropertyGroup>
 
+    <!-- Spa configuration -->
+    <PropertyGroup>
+        <SpaRoot>../RKTimeTrack.Service/ClientApp/</SpaRoot>
+    </PropertyGroup>
+    
+    <!-- Package dependencies -->
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.0" />
         <PackageReference Include="coverlet.collector" Version="6.0.0"/>
@@ -18,10 +19,7 @@
         <PackageReference Include="xunit.runner.visualstudio" Version="2.5.3"/>
     </ItemGroup>
 
-    <ItemGroup>
-        <Using Include="Xunit"/>
-    </ItemGroup>
-
+    <!-- Project dependencies -->
     <ItemGroup>
       <ProjectReference Include="..\RKTimeTrack.Service\RKTimeTrack.Service.csproj" />
     </ItemGroup>
