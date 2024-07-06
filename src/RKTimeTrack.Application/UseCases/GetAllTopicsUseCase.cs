@@ -18,7 +18,7 @@ public class GetAllTopicsUseCase(ITopicRepository topicRepository)
         if (!validationResult.IsValid) { return new CommonErrors.ValidationError(validationResult.Errors); }
 
         // Execute UseCase
-        var result = topicRepository.GetAllTopics();
+        var result = await topicRepository.GetAllTopicsAsync(cancellationToken);
         return HandlerResult.FromT0(result);
     }
 }

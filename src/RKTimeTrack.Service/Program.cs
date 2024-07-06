@@ -34,7 +34,8 @@ public static class Program
         // Add adapters
         builder.Services.AddFileBasedTimeTrackingRepository(
             options => builder.Configuration.Bind("FileBasedTimeTrackingRepository", options));
-        builder.Services.AddStaticTopicRepositoryAdapter();
+        builder.Services.AddStaticTopicRepositoryAdapter(
+            options => builder.Configuration.Bind("StaticTopicRepository", options));
 
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();

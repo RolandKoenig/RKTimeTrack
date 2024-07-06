@@ -4,5 +4,5 @@ namespace RKTimeTrack.Application.Ports;
 
 public interface ITopicRepository
 {
-    IReadOnlyCollection<TimeTrackingTopic> GetAllTopics();
+    Task<IReadOnlyCollection<TimeTrackingTopic>> GetAllTopicsAsync(CancellationToken cancellationToken);
 }

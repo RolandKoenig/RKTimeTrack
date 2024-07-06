@@ -5,6 +5,16 @@ namespace RKTimeTrack.StaticTopicRepositoryAdapter;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddStaticTopicRepositoryAdapter(this IServiceCollection services)
-        => services.AddSingleton<ITopicRepository, StaticTopicRepository>();
+    public static IServiceCollection AddStaticTopicRepositoryAdapter(
+        this IServiceCollection services,
+        Action<StaticTopicRepositoryOptions> configure)
+    {
+        var options = new StaticTopicRepositoryOptions();
+        configure(options);
+
+        services.AddSingleton<StaticTopicRepositoryOptions>(options);
+        services.AddSingleton<ITopicRepository, StaticTopicRepository>();
+
+        return services;
+    }
 }
