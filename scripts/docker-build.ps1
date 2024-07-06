@@ -1,0 +1,1 @@
+docker build -f ../src/RKTimeTrack.Service/Dockerfile -t rk-time-track-service ../

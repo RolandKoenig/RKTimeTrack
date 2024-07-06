@@ -1,0 +1,31 @@
+#####################################
+# Build image
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /src
+
+# Install node to be able to use npm during build time
+RUN bash -E $(curl -fsSL https://deb.nodesource.com/setup_20.x | bash - ); apt install -y nodejs
+
+# Restore first for improved cache usage
+COPY "src/RKTimeTrack.Service/RKTimeTrack.Service.csproj" "RKTimeTrack.Service/RKTimeTrack.Service.csproj"
+RUN dotnet restore "RKTimeTrack.Service/RKTimeTrack.Service.csproj"
+
+# Build the application
+COPY src .
+WORKDIR "/src/RKTimeTrack.Service"
+RUN dotnet build "RKTimeTrack.Service.csproj" -c Release -o /app/build
+
+# Publish the application to /app/publish
+FROM build AS publish
+RUN dotnet publish "RKTimeTrack.Service.csproj" -c Release -o /app/publish /p:UseAppHost=false
+
+#####################################
+# Runtime image
+## Configure OS
+FROM mcr.microsoft.com/dotnet/aspnet:8.0-jammy-chiseled-extra AS final
+EXPOSE 80
+
+## Copy application and define entrypoint
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "RKTimeTrack.Service.dll"]

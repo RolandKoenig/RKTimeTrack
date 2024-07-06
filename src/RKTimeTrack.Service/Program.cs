@@ -41,6 +41,7 @@ public static class Program
         }
         
         app.UseAuthorization();
+        app.UseStaticFiles();
 
         // Our apis
         app.MapWeekApi();
