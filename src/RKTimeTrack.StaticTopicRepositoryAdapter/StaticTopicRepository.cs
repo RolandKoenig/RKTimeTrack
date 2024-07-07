@@ -10,7 +10,7 @@ class StaticTopicRepository : ITopicRepository
 {
     private readonly ILogger _logger;
     private readonly StaticTopicRepositoryOptions _options;
-    private readonly Lazy<Task<IReadOnlyCollection<TimeTrackingTopic>>> _topics;
+    private readonly Lazy<Task<IReadOnlyList<TimeTrackingTopic>>> _topics;
 
     public StaticTopicRepository(
         ILogger<StaticTopicRepository> logger,
@@ -18,10 +18,10 @@ class StaticTopicRepository : ITopicRepository
     {
         _logger = logger;
         _options = options;
-        _topics = new Lazy<Task<IReadOnlyCollection<TimeTrackingTopic>>>(ReadOrGenerateAllTopicsAsync);
+        _topics = new Lazy<Task<IReadOnlyList<TimeTrackingTopic>>>(ReadOrGenerateAllTopicsAsync);
     }
     
-    private async Task<IReadOnlyCollection<TimeTrackingTopic>> ReadOrGenerateAllTopicsAsync()
+    private async Task<IReadOnlyList<TimeTrackingTopic>> ReadOrGenerateAllTopicsAsync()
     {
         if (_options.GenerateTestData) { return TestDataGenerator.CreateTestData(); }
         
@@ -34,7 +34,7 @@ class StaticTopicRepository : ITopicRepository
                 await using var inStream = File.OpenRead(_options.SourceFilePath);
 
                 var result = await JsonSerializer
-                    .DeserializeAsync<IReadOnlyCollection<TimeTrackingTopic>>(inStream, jsonOptions);
+                    .DeserializeAsync<IReadOnlyList<TimeTrackingTopic>>(inStream, jsonOptions);
                 if (result == null)
                 {
                     _logger.LogError(
@@ -56,7 +56,7 @@ class StaticTopicRepository : ITopicRepository
         return [];
     }
     
-    public async Task<IReadOnlyCollection<TimeTrackingTopic>> GetAllTopicsAsync(CancellationToken cancellationToken)
+    public async Task<IReadOnlyList<TimeTrackingTopic>> GetAllTopicsAsync(CancellationToken cancellationToken)
     {
         await Task.WhenAny(
             StaticTopicRepositoryUtil.WaitForCancelAsync(cancellationToken),

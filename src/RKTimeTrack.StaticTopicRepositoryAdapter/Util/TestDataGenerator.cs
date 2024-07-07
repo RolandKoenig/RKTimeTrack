@@ -4,7 +4,7 @@ namespace RKTimeTrack.StaticTopicRepositoryAdapter.Util;
 
 static class TestDataGenerator
 {
-    public static IReadOnlyCollection<TimeTrackingTopic> CreateTestData()
+    public static IReadOnlyList<TimeTrackingTopic> CreateTestData()
     {
         var result = new List<TimeTrackingTopic>();
         
