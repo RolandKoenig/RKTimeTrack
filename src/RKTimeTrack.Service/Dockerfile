@@ -10,7 +10,11 @@ WORKDIR /src
 RUN bash -E $(curl -fsSL https://deb.nodesource.com/setup_20.x | bash - ); apt install -y nodejs
 
 # Restore first for improved cache usage
+COPY "src/Directory.Build.props" "Directory.Build.props"
 COPY "src/RKTimeTrack.Service/RKTimeTrack.Service.csproj" "RKTimeTrack.Service/RKTimeTrack.Service.csproj"
+COPY "src/RKTimeTrack.Application/RKTimeTrack.Application.csproj" "RKTimeTrack.Application/RKTimeTrack.Application.csproj"
+COPY "src/RKTimeTrack.FileBasedTimeTrackingRepositoryAdapter/RKTimeTrack.FileBasedTimeTrackingRepositoryAdapter.csproj" "RKTimeTrack.FileBasedTimeTrackingRepositoryAdapter/RKTimeTrack.FileBasedTimeTrackingRepositoryAdapter.csproj"
+COPY "src/RKTimeTrack.StaticTopicRepositoryAdapter/RKTimeTrack.StaticTopicRepositoryAdapter.csproj" "RKTimeTrack.StaticTopicRepositoryAdapter/RKTimeTrack.StaticTopicRepositoryAdapter.csproj"
 RUN dotnet restore "RKTimeTrack.Service/RKTimeTrack.Service.csproj"
 
 # Build the application

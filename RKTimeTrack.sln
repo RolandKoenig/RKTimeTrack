@@ -20,6 +20,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RKTimeTrack.Service.Integra
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RKTimeTrack.StaticTopicRepositoryAdapterTests", "src\RKTimeTrack.StaticTopicRepositoryAdapterTests\RKTimeTrack.StaticTopicRepositoryAdapterTests.csproj", "{FCEE73D6-9E5B-40E5-B4DE-CCF4F48C771C}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config", "Config", "{B38631F9-901A-448E-BDC6-E69EF34DCBD3}"
+	ProjectSection(SolutionItems) = preProject
+		.dockerignore = .dockerignore
+		.gitignore = .gitignore
+		src\Directory.Build.props = src\Directory.Build.props
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

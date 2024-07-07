@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Serilog;
 using Xunit.Abstractions;
 
 namespace RKTimeTrack.Service.IntegrationTests.Util;
@@ -17,7 +17,7 @@ public class WebHostServerFixture : IDisposable
     /// <summary>
     /// Dependency for startup
     /// </summary>
-    public Func<string[], Action<WebApplicationBuilder>?, IHost>? ProgramStartupMethod { get; set; }
+    public Func<string[], Action<WebApplicationBuilder>?, Action<LoggerConfiguration>?, IHost>? ProgramStartupMethod { get; set; }
     
     /// <summary>
     /// Dependency for logging into test results
@@ -86,11 +86,13 @@ public class WebHostServerFixture : IDisposable
         
         return this.ProgramStartupMethod(
             ["--environment", "IntegrationTests"], 
-            builder =>
+            webAppBuilder =>
             {
-                // Configure logging 
-                // (we want to see logging-output in the test results)
-                builder.Logging.AddProvider(new TestLoggerProvider(this));
+                
+            },
+            loggerConfig =>
+            {
+                loggerConfig.WriteTo.Sink(new TestLoggerSink(this));
             });
     }
         

@@ -24,4 +24,5 @@
 **/values.dev.yaml
 
 # Custom
-**/appsettings.IntegrationTests
+**/.gitkeep
+**/appsettings.IntegrationTests.json

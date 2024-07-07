@@ -3,6 +3,7 @@ using RKTimeTrack.FileBasedTimeTrackingRepositoryAdapter;
 using RKTimeTrack.Service.Api.Ui;
 using RKTimeTrack.Service.Mappings;
 using RKTimeTrack.StaticTopicRepositoryAdapter;
+using Serilog;
 
 namespace RKTimeTrack.Service;
 
@@ -19,13 +20,20 @@ public static class Program
     /// </summary>
     internal static IHost CreateApplication(
         string[] args,
-        Action<WebApplicationBuilder>? customizeWebApplicationBuilder = null)
+        Action<WebApplicationBuilder>? customizeWebApplicationBuilder = null,
+        Action<LoggerConfiguration>? customizeLogger = null)
     {
         var builder = WebApplication.CreateBuilder(args);
         
         // #########################################
         // Add services to the container.
-        
+
+        builder.Services.AddSerilog(
+            config =>
+            {
+                config.WriteTo.Console();
+                customizeLogger?.Invoke(config);
+            });
         builder.Services.AddAuthorization();
 
         // Add application services
@@ -48,6 +56,8 @@ public static class Program
         // Configure the HTTP request pipeline.
         
         var app = builder.Build();
+
+        app.UseSerilogRequestLogging();
         
         if (app.Environment.IsDevelopment())
         {
