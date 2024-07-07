@@ -1,5 +1,6 @@
 ﻿<script setup lang="ts">
-  import {useTimeTrackingStore} from "@/stores/timeTrackingStore";
+  import {useTimeTrackingStore} from "@/stores/time-tracking-store";
+  import IconPlusSmall from "@/components/icons/IconPlusSmall.vue";
   
   const timeTrackingStore = useTimeTrackingStore();
 </script>
@@ -14,7 +15,10 @@
     <template #header>
       <div>
         <h4>Booked times</h4>
-        <Button label="New" @click="timeTrackingStore.addNewEntry" />
+        <Button outlined 
+                @click="timeTrackingStore.addNewEntry">
+          <IconPlusSmall />
+        </Button>
       </div>
     </template>
     

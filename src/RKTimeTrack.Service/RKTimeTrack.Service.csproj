@@ -31,6 +31,10 @@
         <None Remove="$(SpaRoot)**" />
         <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
     </ItemGroup>
+    <ItemGroup>
+      <Folder Include="ClientApp\src\areas\time-tracking\views\" />
+      <Folder Include="ClientApp\src\areas\topics\" />
+    </ItemGroup>
 
     <!-- Build: Restore npm dependencies and build Spa application -->
     <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build">

@@ -1,6 +1,8 @@
 ﻿<script setup lang="ts">
-  import {useTimeTrackingStore} from "@/stores/timeTrackingStore";
+  import {useTimeTrackingStore} from "@/stores/time-tracking-store";
   import TimeTrackingDayButton from "@/components/TimeTrackingDayButton.vue";
+  import IconMoveLeft from "@/components/icons/IconMoveLeft.vue";
+  import IconMoveRight from "@/components/icons/IconMoveRight.vue";
   
   const timeTrackingStore = useTimeTrackingStore();
 </script>
@@ -8,7 +10,10 @@
 <template>
   <div v-if="timeTrackingStore.currentWeek"
        class="navigation-container">
-    <Button label="<--" @click="timeTrackingStore.fetchWeekBeforeThisWeek"/>
+    <Button outlined 
+            @click="timeTrackingStore.fetchWeekBeforeThisWeek">
+      <IconMoveLeft />
+    </Button>
 
     <TimeTrackingDayButton v-model="timeTrackingStore.currentWeek.monday"
                            :is-selected="timeTrackingStore.currentWeek.monday == timeTrackingStore.selectedDay"
@@ -32,7 +37,10 @@
                            :is-selected="timeTrackingStore.currentWeek.sunday == timeTrackingStore.selectedDay"
                            @click="timeTrackingStore.selectSunday" />
 
-    <Button label="-->" @click="timeTrackingStore.fetchWeekAfterThisWeek"/>
+    <Button outlined 
+            @click="timeTrackingStore.fetchWeekAfterThisWeek">
+      <IconMoveRight />
+    </Button>
   </div>
 </template>
 

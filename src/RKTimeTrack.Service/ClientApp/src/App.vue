@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import {useTimeTrackingStore} from "@/stores/timeTrackingStore";
+  import {useTimeTrackingStore} from "@/stores/time-tracking-store";
   import WeekSelectionView from "@/views/WeekSelectionView.vue";
   import DayEntrySelectionView from "@/views/DayEntrySelectionView.vue";
   
