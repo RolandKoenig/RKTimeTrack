@@ -1,4 +1,4 @@
-﻿import {ref, type Ref, inject, computed} from 'vue'
+﻿import {ref, type Ref, inject, computed, watch} from 'vue'
 import {defineStore} from 'pinia'
 import {
     TimeTrackClient,
@@ -48,12 +48,25 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
             .map(x => x.name)
             .filter(onlyUnique);
     })
+
+    // Save changes directly
+    watch(
+        selectedDay, 
+        (newValue, oldValue) =>{
+            if(!oldValue){ return; }
+        
+            timeTrackClient.updateDay(new UpdateDayRequest({
+                date: oldValue.date,
+                entries: oldValue.entries ? [...oldValue.entries] : [],
+                type: oldValue.type
+            }));    
+        }, { 
+            deep: true 
+        });
     
     function selectedEntryCategoryChanged(){
         if(!selectedEntry.value){ return; }
         selectedEntry.value.topic.name = "";
-
-        pushCurrentDayToServer();
     }
     
     function selectMonday(){
@@ -89,18 +102,6 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
     function selectSunday(){
         selectedDay.value = currentWeek.value?.sunday;
         selectedEntry.value = null;
-    }
-    
-    function pushCurrentDayToServer(){
-        if(!selectedDay.value){ return; }
-        
-        // TODO: react on errors
-        
-        timeTrackClient.updateDay(new UpdateDayRequest({
-            date: selectedDay.value.date,
-            entries: selectedDay.value.entries,
-            type: selectedDay.value.type
-        }));
     }
     
     async function fetchCurrentWeek() {
@@ -208,8 +209,6 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
         
         selectedDay.value?.entries?.push(newEntry);
         selectedEntry.value = newEntry;
-
-        pushCurrentDayToServer();
     }
     
     /**
@@ -239,6 +238,5 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
         fetchInitialData, fetchCurrentWeek, fetchWeekBeforeThisWeek, fetchWeekAfterThisWeek,
         availableTopicCategories, availableTopicNames, selectedEntryCategoryChanged,
         addNewEntry,
-        pushCurrentDayToServer
     }
 });
