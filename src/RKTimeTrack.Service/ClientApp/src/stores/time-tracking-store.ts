@@ -271,12 +271,14 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
         return array.indexOf(value) === index;
     }
     
+    fetchInitialData();
+    
     return{
         currentWeek, 
         selectedDay, selectedEntry,
         dayTypeValues,
         selectMonday, selectTuesday, selectWednesday, selectThursday, selectFriday, selectSaturday, selectSunday,
-        fetchInitialData, fetchCurrentWeek, fetchWeekBeforeThisWeek, fetchWeekAfterThisWeek,
+        fetchCurrentWeek, fetchWeekBeforeThisWeek, fetchWeekAfterThisWeek,
         availableTopicCategories, availableTopicNames, selectedEntryCategoryChanged,
         addNewEntry, copySelectedEntry, deleteSelectedEntry
     }

@@ -4,14 +4,11 @@
   import DayEntrySelectionView from "./timetracking/DayEntrySelectionView.vue";
   
   const timeTrackingStore = useTimeTrackingStore();
-  
-  timeTrackingStore.fetchInitialData();
 </script>
 
 <template>
   <div class="container">
     <div class="row pt-5 text-center">
-      <img class="d-block mx-auto mb-4" src="/RKTimeTrack.svg" alt="" width="48" height="48">
       <h2 v-if="timeTrackingStore.currentWeek">
         Year {{timeTrackingStore.currentWeek.year}}, Week {{timeTrackingStore.currentWeek.weekNumber}}
       </h2>
