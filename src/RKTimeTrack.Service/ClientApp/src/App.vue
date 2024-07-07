@@ -5,7 +5,7 @@
   
   const timeTrackingStore = useTimeTrackingStore();
   
-  timeTrackingStore.fetchCurrentWeek();
+  timeTrackingStore.fetchInitialData();
   
 </script>
 
@@ -30,40 +30,50 @@
           <div class="col-4 mb-3">
             <label for="selected-day-type" class="form-label">Type</label>
             <Select id="selected-day-type"
+                    variant="filled"
                     v-model="timeTrackingStore.selectedDay.type"
-                    :options="timeTrackingStore.dayTypeValues" />
+                    :options="timeTrackingStore.dayTypeValues"
+                    @change="timeTrackingStore.pushCurrentDayToServer" />
           </div>
         </div>
       </form>
-           
-      <h4>Booked times</h4>
+      
       <DayEntrySelectionView />
     </div>
     
     <div class="row py-4"
          v-if="timeTrackingStore.selectedEntry">
-      <h4>Current entry</h4>
       <form>
         <div class="row">
           <div class="col-6 mb-3">
             <label for="current-row-category" class="form-label">Category</label>
-            <InputText id="current-row-category" v-model="timeTrackingStore.selectedEntry.topic.category" />
+            <Select id="selected-entry-category"
+                    variant="filled"
+                    v-model="timeTrackingStore.selectedEntry.topic.category"
+                    :options="timeTrackingStore.availableTopicCategories"
+                    @change="timeTrackingStore.selectedEntryCategoryChanged"/>
           </div>
           <div class="col-6 mb-3">
             <label for="current-row-name" class="form-label">Name</label>
-            <InputText id="current-row-name" v-model="timeTrackingStore.selectedEntry.topic.name" />
+            <Select id="selected-entry-category"
+                    variant="filled"
+                    v-model="timeTrackingStore.selectedEntry.topic.name"
+                    :options="timeTrackingStore.availableTopicNames"
+                    @change="timeTrackingStore.pushCurrentDayToServer" />
           </div>
         </div>
         <div class="row">
           <div class="col-6 mb-3">
             <label for="current-row-effort" class="form-label">Effort (h)</label>
             <InputNumber id="current-row-effort" 
-                         v-model="timeTrackingStore.selectedEntry.effortInHours" />
+                         v-model="timeTrackingStore.selectedEntry.effortInHours"
+                         @change="timeTrackingStore.pushCurrentDayToServer" />
           </div>
           <div class="col-6 mb-3">
             <label for="current-row-billed" class="form-label">Billed (h)</label>
             <InputNumber id="current-row-billed" 
-                         v-model="timeTrackingStore.selectedEntry.effortBilled" />
+                         v-model="timeTrackingStore.selectedEntry.effortBilled"
+                         @change="timeTrackingStore.pushCurrentDayToServer" />
           </div>
         </div>
         <div class="row">
@@ -71,21 +81,11 @@
             <label for="current-row-description" class="form-label">Description</label>
             <Textarea id="current-row-description" 
                       v-model="timeTrackingStore.selectedEntry.description"
-                      rows="6"/>
+                      rows="6"
+                      @change="timeTrackingStore.pushCurrentDayToServer" />
           </div>
         </div>
-        <div class="row">
-          <Button label="Cancel" severity="secondary" class="w-25" outlined />
-          <Button label="Save" class="w-25" />
-        </div>
       </form>
-      
-
-    </div>
-
-    <div class="row py-4"
-         v-if="!timeTrackingStore.selectedEntry">
-      <h4>New entry</h4>
     </div>
 
   </div>

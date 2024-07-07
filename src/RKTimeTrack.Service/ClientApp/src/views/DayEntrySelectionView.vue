@@ -11,6 +11,13 @@
              :size="'small'"
              selectionMode="single"
              editMode="cell">
+    <template #header>
+      <div>
+        <h4>Booked times</h4>
+        <Button label="New" @click="timeTrackingStore.addNewEntry" />
+      </div>
+    </template>
+    
     <Column selectionMode="single"
             headerStyle="width: 3rem"></Column>
     <Column field="topic.category"
