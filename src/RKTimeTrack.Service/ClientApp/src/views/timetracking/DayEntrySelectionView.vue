@@ -1,6 +1,7 @@
 ﻿<script setup lang="ts">
   import {useTimeTrackingStore} from "@/stores/time-tracking-store";
   import IconPlusSmall from "@/components/icons/IconPlusSmall.vue";
+  import IconDeleteSmall from "@/components/icons/IconDeleteSmall.vue";
   
   const timeTrackingStore = useTimeTrackingStore();
 </script>
@@ -13,13 +14,28 @@
              selectionMode="single"
              editMode="cell">
     <template #header>
-      <div>
-        <h4>Booked times</h4>
-        <Button outlined 
-                @click="timeTrackingStore.addNewEntry">
-          <IconPlusSmall />
-        </Button>
-      </div>
+      <Toolbar>
+        <template #start>
+          <Button outlined
+                  class="grid-menu-button"
+                  @click="timeTrackingStore.addNewEntry">
+            <IconPlusSmall /> New Entry
+          </Button>
+          <Select id="selected-day-type"
+                  variant="filled"
+                  v-model="timeTrackingStore.selectedDay.type"
+                  :options="timeTrackingStore.dayTypeValues" />
+        </template>
+        <template #end>
+          <Button outlined
+                  severity="danger"
+                  class="grid-menu-button"
+                  :disabled="!timeTrackingStore.selectedEntry"
+                  @click="timeTrackingStore.deleteSelectedEntry">
+            <IconDeleteSmall /> Delete Entry
+          </Button>
+        </template>
+      </Toolbar>
     </template>
     
     <Column selectionMode="single"
@@ -43,5 +59,7 @@
 </template>
 
 <style scoped>
-
+  .grid-menu-button{
+    margin-right: 1rem;
+  }
 </style>

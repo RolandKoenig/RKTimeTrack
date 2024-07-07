@@ -10,32 +10,24 @@
 
 <template>
   <div class="container">
-    <div class="row py-5 text-center">
+    <div class="row pt-5 text-center">
       <img class="d-block mx-auto mb-4" src="/RKTimeTrack.svg" alt="" width="48" height="48">
       <h2 v-if="timeTrackingStore.currentWeek">
         Year {{timeTrackingStore.currentWeek.year}}, Week {{timeTrackingStore.currentWeek.weekNumber}}
       </h2>
     </div>
-
+    <div class="row py-1 text-center"
+         v-if="timeTrackingStore.selectedDay">
+      <h4>{{  timeTrackingStore.selectedDay.date }}</h4>
+    </div>
+    
     <div class="row">
       <WeekSelectionView />
     </div>
 
+
     <div v-if="timeTrackingStore.selectedDay"
          class="row py-4">
-      <h4>{{  timeTrackingStore.selectedDay.date }}</h4>
-      <form>
-        <div class="row">
-          <div class="col-4 mb-3">
-            <label for="selected-day-type" class="form-label">Type</label>
-            <Select id="selected-day-type"
-                    variant="filled"
-                    v-model="timeTrackingStore.selectedDay.type"
-                    :options="timeTrackingStore.dayTypeValues" />
-          </div>
-        </div>
-      </form>
-
       <DayEntrySelectionView />
     </div>
 

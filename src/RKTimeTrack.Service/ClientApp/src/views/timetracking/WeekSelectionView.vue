@@ -10,7 +10,7 @@
 <template>
   <div v-if="timeTrackingStore.currentWeek"
        class="navigation-container">
-    <Button outlined 
+    <Button text
             @click="timeTrackingStore.fetchWeekBeforeThisWeek">
       <IconMoveLeft />
     </Button>
@@ -37,7 +37,7 @@
                            :is-selected="timeTrackingStore.currentWeek.sunday == timeTrackingStore.selectedDay"
                            @click="timeTrackingStore.selectSunday" />
 
-    <Button outlined 
+    <Button text
             @click="timeTrackingStore.fetchWeekAfterThisWeek">
       <IconMoveRight />
     </Button>

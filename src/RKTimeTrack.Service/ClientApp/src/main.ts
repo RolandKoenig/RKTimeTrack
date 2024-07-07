@@ -16,6 +16,7 @@ import InputNumber from 'primevue/inputnumber'
 import InputText from 'primevue/inputtext'
 import Select from 'primevue/select';
 import Textarea from 'primevue/textarea';
+import Toolbar from "primevue/toolbar";
 
 // App
 import App from './App.vue'
@@ -50,6 +51,7 @@ app.component('InputNumber', InputNumber);
 app.component('InputText', InputText);
 app.component('Select', Select);
 app.component('Textarea', Textarea);
+app.component('Toolbar', Toolbar);
 
 // Place app inside html
 app.mount('#app')

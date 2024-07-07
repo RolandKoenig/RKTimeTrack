@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <TimeTrackingPage />
+  <RouterView />
 </template>
 
 <style scoped>

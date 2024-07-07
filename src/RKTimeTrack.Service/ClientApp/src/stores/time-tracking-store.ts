@@ -31,6 +31,21 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
         TimeTrackingDayType.Weekend,
         TimeTrackingDayType.WorkingDay
     ]);
+
+    // Save changes directly
+    watch(
+        selectedDay,
+        (newValue, oldValue) =>{
+            if(!oldValue){ return; }
+
+            timeTrackClient.updateDay(new UpdateDayRequest({
+                date: oldValue.date,
+                entries: oldValue.entries ? [...oldValue.entries] : [],
+                type: oldValue.type
+            }));
+        }, {
+            deep: true
+        });
     
     const availableTopicCategories = computed(() =>{
        return topicData.value
@@ -48,21 +63,6 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
             .map(x => x.name)
             .filter(onlyUnique);
     })
-
-    // Save changes directly
-    watch(
-        selectedDay, 
-        (newValue, oldValue) =>{
-            if(!oldValue){ return; }
-        
-            timeTrackClient.updateDay(new UpdateDayRequest({
-                date: oldValue.date,
-                entries: oldValue.entries ? [...oldValue.entries] : [],
-                type: oldValue.type
-            }));    
-        }, { 
-            deep: true 
-        });
     
     function selectedEntryCategoryChanged(){
         if(!selectedEntry.value){ return; }
@@ -211,6 +211,26 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
         selectedEntry.value = newEntry;
     }
     
+    function deleteSelectedEntry(){
+        if(isLoading.value){ return; }
+        if(!selectedDay.value){ return; }
+        if(!selectedEntry.value){ return; }
+        if(!selectedDay.value.entries){ return; }
+
+        const index = selectedDay.value.entries.indexOf(selectedEntry.value);
+        if(index < 0){ return; }
+
+        selectedDay.value.entries.splice(index, 1);
+        
+        if(selectedDay.value.entries.length > index){
+            selectedEntry.value = selectedDay.value.entries[index];
+        } else if(selectedDay.value.entries.length > 0){
+            selectedEntry.value = selectedDay.value.entries[index -1];
+        } else {
+            selectedEntry.value = null;
+        }
+    }
+    
     /**
      * Private helper function to ensure, that we only call one loading function in parallel
      */
@@ -237,6 +257,6 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
         selectMonday, selectTuesday, selectWednesday, selectThursday, selectFriday, selectSaturday, selectSunday,
         fetchInitialData, fetchCurrentWeek, fetchWeekBeforeThisWeek, fetchWeekAfterThisWeek,
         availableTopicCategories, availableTopicNames, selectedEntryCategoryChanged,
-        addNewEntry,
+        addNewEntry, deleteSelectedEntry
     }
 });
