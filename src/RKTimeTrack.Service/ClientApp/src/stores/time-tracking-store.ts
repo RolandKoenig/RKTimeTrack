@@ -196,6 +196,7 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
     function addNewEntry(){
         if(isLoading.value){ return; }
         if(!selectedDay.value){ return; }
+        if(!selectedDay.value.entries){ return; }
 
         const newEntry = new TimeTrackingEntry({
             description: "",
@@ -207,7 +208,27 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
             effortBilled: 0,
         });
         
-        selectedDay.value?.entries?.push(newEntry);
+        selectedDay.value.entries.push(newEntry);
+        selectedEntry.value = newEntry;
+    }
+    
+    function copySelectedEntry(){
+        if(isLoading.value){ return; }
+        if(!selectedEntry.value){ return; }
+        if(!selectedDay.value){ return; }
+        if(!selectedDay.value.entries){ return; }
+
+        const newEntry = new TimeTrackingEntry({
+            description: selectedEntry.value.description,
+            topic: new TimeTrackingTopicReference({
+                category: selectedEntry.value.topic.category,
+                name: selectedEntry.value.topic.name
+            }),
+            effortInHours: selectedEntry.value.effortInHours,
+            effortBilled: selectedEntry.value.effortBilled,
+        });
+
+        selectedDay.value.entries.push(newEntry);
         selectedEntry.value = newEntry;
     }
     
@@ -257,6 +278,6 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
         selectMonday, selectTuesday, selectWednesday, selectThursday, selectFriday, selectSaturday, selectSunday,
         fetchInitialData, fetchCurrentWeek, fetchWeekBeforeThisWeek, fetchWeekAfterThisWeek,
         availableTopicCategories, availableTopicNames, selectedEntryCategoryChanged,
-        addNewEntry, deleteSelectedEntry
+        addNewEntry, copySelectedEntry, deleteSelectedEntry
     }
 });
