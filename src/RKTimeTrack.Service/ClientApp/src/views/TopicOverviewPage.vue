@@ -17,13 +17,15 @@
                  editMode="cell">
         <Column field="category"
                 header="Category"
-                style="width: 40%" />
+                style="width: 40%"
+                sortable/>
         <Column field="name"
                 header="Name"
-                style="width: 40%" />
+                style="width: 40%"
+                sortable/>
         <Column field="budget"
                 header="Budget"
-                style="width: 20%" />
+                style="width: 20%"/>
       </DataTable>
     </div>
   </div>

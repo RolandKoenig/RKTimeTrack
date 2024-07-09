@@ -7,20 +7,18 @@ import {
     TimeTrackingEntry,
     TimeTrackingWeek,
     TimeTrackingTopicReference, 
-    TimeTrackingTopic,
     UpdateDayRequest
 } from "@/services/time-track-client.generated";
+import {useTopicStore} from "@/stores/topic-store";
 
 export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
     const timeTrackClient = inject<TimeTrackClient>("TimeTrackClient")!;
+    const topicStore = useTopicStore();
     
-    const topicData: Ref<TimeTrackingTopic[]> = ref([]); 
     const currentWeek: Ref<TimeTrackingWeek | null | undefined> = ref(null);
     const selectedDay: Ref<TimeTrackingDay | null | undefined> = ref(null);
     const selectedEntry: Ref<TimeTrackingEntry | null | undefined> = ref(null);
-    
     const isLoading: Ref<boolean> = ref(false);
-
     const dayTypeValues = ref([
         TimeTrackingDayType.CompensatoryTimeOff,
         TimeTrackingDayType.Holiday,
@@ -48,7 +46,7 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
         });
     
     const availableTopicCategories = computed(() =>{
-       return topicData.value
+       return topicStore.topics
            .map(x => x.category)
            .filter(onlyUnique);
     });
@@ -58,7 +56,7 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
         if(!selectedEntry.value.topic.category){ return []; }
         
         const filterCategory = selectedEntry.value.topic.category;
-        return topicData.value
+        return topicStore.topics
             .filter(x => x.category === filterCategory)
             .map(x => x.name)
             .filter(onlyUnique);
@@ -114,8 +112,6 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
 
     async function fetchInitialData() {
         await wrapLoadingCall(async () =>{
-            topicData.value = await timeTrackClient.getAllTopics();
-            
             currentWeek.value = await timeTrackClient.getCurrentWeek();
             selectedDay.value = currentWeek.value.monday;
             selectedEntry.value = null;
@@ -278,7 +274,7 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
         selectedDay, selectedEntry,
         dayTypeValues,
         selectMonday, selectTuesday, selectWednesday, selectThursday, selectFriday, selectSaturday, selectSunday,
-        fetchCurrentWeek, fetchWeekBeforeThisWeek, fetchWeekAfterThisWeek,
+        fetchWeekBeforeThisWeek, fetchWeekAfterThisWeek,
         availableTopicCategories, availableTopicNames, selectedEntryCategoryChanged,
         addNewEntry, copySelectedEntry, deleteSelectedEntry
     }
