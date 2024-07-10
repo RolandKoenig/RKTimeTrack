@@ -1,6 +1,18 @@
+<script setup lang="ts">
+  import {useIconSizeMapping} from "@/components/icons/icon-defaults";
+  
+  const props = defineProps({
+    size: {
+      type: String,
+      default: "normal"
+    }});
+  
+  const {width, height} = useIconSizeMapping(props.size);
+</script>
+
 <template>
   <svg xmlns="http://www.w3.org/2000/svg"
-       width="22" height="22"
+       :width="width" :height="height"
        viewBox="0 0 448 512"
        fill="currentColor">
     <!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->

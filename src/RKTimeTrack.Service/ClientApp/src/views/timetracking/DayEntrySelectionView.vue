@@ -1,11 +1,11 @@
 ﻿<script setup lang="ts">
-  import {useTimeTrackingStore} from "@/stores/time-tracking-store";
-  import IconPlusSmall from "@/components/icons/IconPlusSmall.vue";
-  import IconDeleteSmall from "@/components/icons/IconDeleteSmall.vue";
-  import IconCopySmall from "@/components/icons/IconCopySmall.vue";
-  import IconCalendarDaySmall from "@/components/icons/IconCalendarDaySmall.vue";
-  
-  const timeTrackingStore = useTimeTrackingStore();
+import {useTimeTrackingStore} from "@/stores/time-tracking-store";
+import IconPlus from "@/components/icons/IconPlus.vue";
+import IconDelete from "@/components/icons/IconDelete.vue";
+import IconCopy from "@/components/icons/IconCopy.vue";
+import IconCalendarDay from "@/components/icons/IconCalendarDay.vue";
+
+const timeTrackingStore = useTimeTrackingStore();
 </script>
 
 <template>
@@ -21,16 +21,16 @@
           <Button outlined
                   class="me-2"
                   @click="timeTrackingStore.addNewEntry">
-            <IconPlusSmall /> New Entry
+            <IconPlus size="small" /> New Entry
           </Button>
           <Button outlined
                   :disabled="!timeTrackingStore.selectedEntry"
                   @click="timeTrackingStore.copySelectedEntry">
-            <IconCopySmall /> Copy Entry
+            <IconCopy size="small" /> Copy Entry
           </Button>
 
           <Divider layout="vertical" />
-          <IconCalendarDaySmall />
+          <IconCalendarDay size="small" />
           <Select id="selected-day-type"
                   class="ms-2"
                   variant="filled"
@@ -43,7 +43,7 @@
                   class="grid-menu-button"
                   :disabled="!timeTrackingStore.selectedEntry"
                   @click="timeTrackingStore.deleteSelectedEntry">
-            <IconDeleteSmall /> Delete Entry
+            <IconDelete size="small" /> Delete Entry
           </Button>
         </template>
       </Toolbar>
