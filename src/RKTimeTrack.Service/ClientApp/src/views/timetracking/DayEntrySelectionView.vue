@@ -1,11 +1,11 @@
 ﻿<script setup lang="ts">
-import {useTimeTrackingStore} from "@/stores/time-tracking-store";
-import IconPlus from "@/components/icons/IconPlus.vue";
-import IconDelete from "@/components/icons/IconDelete.vue";
-import IconCopy from "@/components/icons/IconCopy.vue";
-import IconCalendarDay from "@/components/icons/IconCalendarDay.vue";
-
-const timeTrackingStore = useTimeTrackingStore();
+  import {useTimeTrackingStore} from "@/stores/time-tracking-store";
+  import IconPlus from "@/components/icons/IconPlus.vue";
+  import IconDelete from "@/components/icons/IconDelete.vue";
+  import IconCopy from "@/components/icons/IconCopy.vue";
+  import IconCalendarDay from "@/components/icons/IconCalendarDay.vue";
+  
+  const timeTrackingStore = useTimeTrackingStore();
 </script>
 
 <template>

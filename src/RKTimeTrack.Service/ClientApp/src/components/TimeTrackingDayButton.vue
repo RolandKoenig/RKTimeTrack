@@ -2,15 +2,16 @@
   import {TimeTrackingDay} from "@/services/time-track-client.generated";
   import {computed} from "vue";
 
-  const model = defineModel<TimeTrackingDay | undefined>();
+  // const model = defineModel<TimeTrackingDay | undefined>();
   const props = defineProps({
-    isSelected: Boolean
+    isSelected: Boolean,
+    timeTrackingDay: TimeTrackingDay
   });
 
   const daytypeCssClass = computed(() => {
-    if(!model.value){ return "" }
+    if(!props.timeTrackingDay){ return "" }
     
-    let result = `daytype-${model.value.type.toLowerCase()}`;
+    let result = `daytype-${props.timeTrackingDay.type.toLowerCase()}`;
     if(props.isSelected){
       result += " selected";
     }
@@ -19,11 +20,11 @@
   })
   
   const sumEffort = computed(() => {
-    if(!model.value){ return 0; }
-    if(!model.value.entries){ return 0; }
+    if(!props.timeTrackingDay){ return 0; }
+    if(!props.timeTrackingDay.entries){ return 0; }
     
     let sum = 0;
-    model.value.entries.forEach(x => sum+= x.effortInHours);
+    props.timeTrackingDay.entries.forEach(x => sum+= x.effortInHours);
     return sum;
   })
 </script>

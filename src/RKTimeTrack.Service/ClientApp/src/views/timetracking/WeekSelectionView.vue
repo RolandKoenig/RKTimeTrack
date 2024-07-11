@@ -15,25 +15,25 @@
       <IconMoveLeft />
     </Button>
 
-    <TimeTrackingDayButton v-model="timeTrackingStore.currentWeek.monday"
+    <TimeTrackingDayButton :time-tracking-day="timeTrackingStore.currentWeek.monday"
                            :is-selected="timeTrackingStore.currentWeek.monday == timeTrackingStore.selectedDay"
                            @click="timeTrackingStore.selectMonday" />
-    <TimeTrackingDayButton v-model="timeTrackingStore.currentWeek.tuesday"
+    <TimeTrackingDayButton :time-tracking-day="timeTrackingStore.currentWeek.tuesday"
                            :is-selected="timeTrackingStore.currentWeek.tuesday == timeTrackingStore.selectedDay"
                            @click="timeTrackingStore.selectTuesday" />
-    <TimeTrackingDayButton v-model="timeTrackingStore.currentWeek.wednesday"
+    <TimeTrackingDayButton :time-tracking-day="timeTrackingStore.currentWeek.wednesday"
                            :is-selected="timeTrackingStore.currentWeek.wednesday == timeTrackingStore.selectedDay"
                            @click="timeTrackingStore.selectWednesday" />
-    <TimeTrackingDayButton v-model="timeTrackingStore.currentWeek.thursday"
+    <TimeTrackingDayButton :time-tracking-day="timeTrackingStore.currentWeek.thursday"
                            :is-selected="timeTrackingStore.currentWeek.thursday == timeTrackingStore.selectedDay"
                            @click="timeTrackingStore.selectThursday" />
-    <TimeTrackingDayButton v-model="timeTrackingStore.currentWeek.friday"
+    <TimeTrackingDayButton :time-tracking-day="timeTrackingStore.currentWeek.friday"
                            :is-selected="timeTrackingStore.currentWeek.friday == timeTrackingStore.selectedDay"
                            @click="timeTrackingStore.selectFriday" />
-    <TimeTrackingDayButton v-model="timeTrackingStore.currentWeek.saturday"
+    <TimeTrackingDayButton :time-tracking-day="timeTrackingStore.currentWeek.saturday"
                            :is-selected="timeTrackingStore.currentWeek.saturday == timeTrackingStore.selectedDay"
                            @click="timeTrackingStore.selectSaturday" />
-    <TimeTrackingDayButton v-model="timeTrackingStore.currentWeek.sunday"
+    <TimeTrackingDayButton :time-tracking-day="timeTrackingStore.currentWeek.sunday"
                            :is-selected="timeTrackingStore.currentWeek.sunday == timeTrackingStore.selectedDay"
                            @click="timeTrackingStore.selectSunday" />
 
