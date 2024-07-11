@@ -1,13 +1,16 @@
 ﻿<script setup lang="ts">
   import {useTimeTrackingStore} from "@/stores/time-tracking-store";
-  import WeekSelectionView from "./timetracking/WeekSelectionView.vue";
+  import WeekDaySelectionView from "./timetracking/WeekDaySelectionView.vue";
   import DayEntrySelectionView from "./timetracking/DayEntrySelectionView.vue";
+  import DayEntryEditView from "./timetracking/DayEntryEditView.vue";
   
   const timeTrackingStore = useTimeTrackingStore();
 </script>
 
 <template>
   <div class="container">
+    
+    <!-- header -->
     <div class="row pt-5 text-center">
       <h2 v-if="timeTrackingStore.currentWeek">
         Year {{timeTrackingStore.currentWeek.year}}, Week {{timeTrackingStore.currentWeek.weekNumber}}
@@ -18,64 +21,22 @@
       <h4>{{  timeTrackingStore.selectedDay.date }}</h4>
     </div>
     
+    <!-- week/day selection -->
     <div class="row">
-      <WeekSelectionView />
+      <WeekDaySelectionView />
     </div>
-
-
+    
+    <!-- day entry selection -->
     <div v-if="timeTrackingStore.selectedDay"
          class="row py-4">
       <DayEntrySelectionView />
     </div>
 
+    <!-- day entry edit -->
     <div class="row py-4"
          v-if="timeTrackingStore.selectedEntry">
-      <form>
-        <div class="row">
-          <div class="col-6 mb-3">
-            <label for="current-row-category" class="form-label">Category</label>
-            <Select id="selected-entry-category"
-                    variant="filled"
-                    v-model="timeTrackingStore.selectedEntry.topic.category"
-                    :options="timeTrackingStore.availableTopicCategories"
-                    @change="timeTrackingStore.selectedEntryCategoryChanged"/>
-          </div>
-          <div class="col-6 mb-3">
-            <label for="current-row-name" class="form-label">Name</label>
-            <Select id="selected-entry-category"
-                    variant="filled"
-                    v-model="timeTrackingStore.selectedEntry.topic.name"
-                    :options="timeTrackingStore.availableTopicNames" />
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-6 mb-3">
-            <label for="current-row-effort" class="form-label">Effort (h)</label>
-            <InputNumber id="current-row-effort"
-                         v-model.lazy="timeTrackingStore.selectedEntry.effortInHours" />
-          </div>
-          <div class="col-6 mb-3">
-            <label for="current-row-billed" class="form-label">Billed (h)</label>
-            <InputNumber id="current-row-billed"
-                         v-model.lazy="timeTrackingStore.selectedEntry.effortBilled" />
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-12 mb-3">
-            <label for="current-row-description" class="form-label">Description</label>
-            <Textarea id="current-row-description"
-                      v-model.lazy="timeTrackingStore.selectedEntry.description"
-                      rows="6" />
-          </div>
-        </div>
-      </form>
+      <DayEntryEditView />
     </div>
 
   </div>
 </template>
-
-<style scoped>
-  input.p-inputtext, span.p-inputnumber, textarea.p-textarea, div.p-select{
-    width: 100%;
-  }
-</style>

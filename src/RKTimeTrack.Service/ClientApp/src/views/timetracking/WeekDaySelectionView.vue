@@ -1,6 +1,6 @@
 ﻿<script setup lang="ts">
   import {useTimeTrackingStore} from "@/stores/time-tracking-store";
-  import TimeTrackingDayButton from "@/components/TimeTrackingDayButton.vue";
+  import TimeTrackingDayButton from "./TimeTrackingDayButton.vue";
   import IconMoveLeft from "@/components/icons/IconMoveLeft.vue";
   import IconMoveRight from "@/components/icons/IconMoveRight.vue";
   

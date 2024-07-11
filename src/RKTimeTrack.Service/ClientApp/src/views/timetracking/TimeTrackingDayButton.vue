@@ -1,8 +1,7 @@
 ﻿<script setup lang="ts">
   import {TimeTrackingDay} from "@/services/time-track-client.generated";
   import {computed} from "vue";
-
-  // const model = defineModel<TimeTrackingDay | undefined>();
+  
   const props = defineProps({
     isSelected: Boolean,
     timeTrackingDay: TimeTrackingDay
@@ -27,6 +26,15 @@
     props.timeTrackingDay.entries.forEach(x => sum+= x.effortInHours);
     return sum;
   })
+  
+  const sumBilled = computed(() =>{
+    if(!props.timeTrackingDay){ return 0; }
+    if(!props.timeTrackingDay.entries){ return 0; }
+
+    let sum = 0;
+    props.timeTrackingDay.entries.forEach(x => sum+= x.effortBilled);
+    return sum;
+  });
 </script>
 
 <template>
@@ -34,7 +42,8 @@
        :class="daytypeCssClass">
     <Button :class="daytypeCssClass">
       <div class="daytype" >
-        <span>{{sumEffort}}</span>
+        <span>{{sumEffort}}</span><br />
+        <span v-if="sumBilled > 0" class="effortBilledSum">{{sumBilled}}</span>
       </div>
     </Button>
   </div>
@@ -52,6 +61,10 @@
     border-color: white;
     border-style: solid;
     background: transparent;
+  }
+  
+  span.effortBilledSum{
+    opacity: 0.6;
   }
   
   div.selected{
