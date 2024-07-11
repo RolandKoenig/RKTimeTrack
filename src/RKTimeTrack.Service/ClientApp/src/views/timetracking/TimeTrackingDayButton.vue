@@ -73,7 +73,7 @@
   }
   
   button.daytype-workingday{
-    
+    /* default button styling */
   }
 
   button.daytype-owneducation{

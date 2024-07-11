@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import {useTimeTrackingStore} from "@/stores/time-tracking-store";
-  import {required, minValue, minLength} from "@vuelidate/validators";
+  import {required, minValue} from "@vuelidate/validators";
   import {useVuelidate} from "@vuelidate/core";
   
   const timeTrackingStore = useTimeTrackingStore();
@@ -25,7 +25,7 @@
   <form v-if="timeTrackingStore.selectedEntry">
     <div class="row">
       <div class="col-6 mb-3">
-        <label for="current-row-category" class="form-label">Category<b>*</b></label>
+        <label for="current-row-category" class="form-label">Category</label>
         <Select id="selected-entry-category"
                 variant="filled"
                 v-model="timeTrackingStore.selectedEntry.topic.category"
@@ -37,7 +37,7 @@
         </div>
       </div>
       <div class="col-6 mb-3">
-        <label for="current-row-name" class="form-label">Name<b>*</b></label>
+        <label for="current-row-name" class="form-label">Name</label>
         <Select id="selected-entry-category"
                 variant="filled"
                 v-model="timeTrackingStore.selectedEntry.topic.name"
@@ -50,7 +50,7 @@
     </div>
     <div class="row">
       <div class="col-6 mb-3">
-        <label for="current-row-effort" class="form-label">Effort (h)<b>*</b></label>
+        <label for="current-row-effort" class="form-label">Effort (h)</label>
         <InputNumber id="current-row-effort"
                      v-model.lazy="timeTrackingStore.selectedEntry.effortInHours"
                      :invalid="v$.selectedEntry.effortInHours.$invalid"/>
@@ -70,7 +70,7 @@
     </div>
     <div class="row">
       <div class="col-12 mb-3">
-        <label for="current-row-description" class="form-label">Description<b>*</b></label>
+        <label for="current-row-description" class="form-label">Description</label>
         <Textarea id="current-row-description"
                   v-model.lazy="timeTrackingStore.selectedEntry.description"
                   rows="6"

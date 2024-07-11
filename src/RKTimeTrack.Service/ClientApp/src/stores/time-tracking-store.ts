@@ -35,7 +35,8 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
         selectedDay,
         (newValue, oldValue) =>{
             if(!oldValue){ return; }
-
+            if(!isDayValid(oldValue)){ return; }
+            
             timeTrackClient.updateDay(new UpdateDayRequest({
                 date: oldValue.date,
                 entries: oldValue.entries ? [...oldValue.entries] : [],
@@ -61,6 +62,20 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
             .map(x => x.name)
             .filter(onlyUnique);
     })
+    
+    function isDayValid(day: TimeTrackingDay): Boolean{
+        if(!day){ return false; }
+        if(!day.date){ return false; }
+        if(!day.type){ return false; }
+        if(!day.entries){ return false; }
+        
+        for(let loop=0; loop<day.entries.length; loop++){
+            if(day.entries[loop].effortInHours < 0){ return false; }
+            if(day.entries[loop].effortBilled < 0){ return false; }
+        }
+        
+        return true;
+    }
     
     function selectedEntryCategoryChanged(){
         if(!selectedEntry.value){ return; }
