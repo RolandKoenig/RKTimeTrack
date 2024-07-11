@@ -52,19 +52,19 @@
           <div class="col-6 mb-3">
             <label for="current-row-effort" class="form-label">Effort (h)</label>
             <InputNumber id="current-row-effort"
-                         v-model="timeTrackingStore.selectedEntry.effortInHours" />
+                         v-model.lazy="timeTrackingStore.selectedEntry.effortInHours" />
           </div>
           <div class="col-6 mb-3">
             <label for="current-row-billed" class="form-label">Billed (h)</label>
             <InputNumber id="current-row-billed"
-                         v-model="timeTrackingStore.selectedEntry.effortBilled" />
+                         v-model.lazy="timeTrackingStore.selectedEntry.effortBilled" />
           </div>
         </div>
         <div class="row">
           <div class="col-12 mb-3">
             <label for="current-row-description" class="form-label">Description</label>
             <Textarea id="current-row-description"
-                      v-model="timeTrackingStore.selectedEntry.description"
+                      v-model.lazy="timeTrackingStore.selectedEntry.description"
                       rows="6" />
           </div>
         </div>
