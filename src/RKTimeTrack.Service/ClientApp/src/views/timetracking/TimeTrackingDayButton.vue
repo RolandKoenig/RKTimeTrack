@@ -40,7 +40,7 @@
 <template>
   <div class="buttonBorder"
        :class="daytypeCssClass">
-    <Button :class="daytypeCssClass">
+    <Button :class="daytypeCssClass" v-bind="$attrs">
       <div class="daytype" >
         <span>{{sumEffort}}</span><br />
         <span v-if="sumBilled > 0" class="effortBilledSum">{{sumBilled}}</span>
