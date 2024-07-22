@@ -28,18 +28,4 @@ export class UiTimeTrackingWeek{
             UiTimeTrackingDay.fromBackendModel(backendModel.sunday)
         )
     }
-    
-    toBackendModel(): TimeTrackingWeek {
-        return new TimeTrackingWeek({
-            year: this.year,
-            weekNumber: this.weekNumber,
-            monday: this.monday.toBackendModel(),
-            tuesday: this.tuesday.toBackendModel(),
-            wednesday: this.wednesday.toBackendModel(),
-            thursday: this.thursday.toBackendModel(),
-            friday: this.friday.toBackendModel(),
-            saturday: this.saturday.toBackendModel(),
-            sunday: this.sunday.toBackendModel()
-        });
-    }
 }

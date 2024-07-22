@@ -2,22 +2,21 @@
 import {defineStore} from 'pinia'
 import {
     TimeTrackClient,
-    TimeTrackingDay,
     TimeTrackingDayType,
-    TimeTrackingEntry,
-    TimeTrackingWeek,
-    TimeTrackingTopicReference, 
     UpdateDayRequest
 } from "@/services/time-track-client.generated";
 import {useTopicStore} from "@/stores/topic-store";
+import {UiTimeTrackingWeek} from "@/stores/models/ui-time-tracking-week";
+import {UiTimeTrackingDay} from "@/stores/models/ui-time-tracking-day";
+import {UiTimeTrackingEntry} from "@/stores/models/ui-time-tracking-entry";
 
 export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
     const timeTrackClient = inject<TimeTrackClient>("TimeTrackClient")!;
     const topicStore = useTopicStore();
     
-    const currentWeek: Ref<TimeTrackingWeek | null | undefined> = ref(null);
-    const selectedDay: Ref<TimeTrackingDay | null | undefined> = ref(null);
-    const selectedEntry: Ref<TimeTrackingEntry | null | undefined> = ref(null);
+    const currentWeek: Ref<UiTimeTrackingWeek | null> = ref(null);
+    const selectedDay: Ref<UiTimeTrackingDay | null> = ref(null);
+    const selectedEntry: Ref<UiTimeTrackingEntry | null> = ref(null);
     const isLoading: Ref<boolean> = ref(false);
     const dayTypeValues = ref([
         TimeTrackingDayType.CompensatoryTimeOff,
@@ -36,12 +35,9 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
         (newValue, oldValue) =>{
             if(!oldValue){ return; }
             if(!isDayValid(oldValue)){ return; }
-            
-            timeTrackClient.updateDay(new UpdateDayRequest({
-                date: oldValue.date,
-                entries: oldValue.entries ? [...oldValue.entries] : [],
-                type: oldValue.type
-            }));
+
+            // TODO: async handling of updates
+            timeTrackClient.updateDay(new UpdateDayRequest(oldValue.toBackendModel()));
         }, {
             deep: true
         });
@@ -54,16 +50,16 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
     
     const availableTopicNames = computed(() =>{
         if(!selectedEntry.value){ return []; }
-        if(!selectedEntry.value.topic.category){ return []; }
+        if(!selectedEntry.value.topicCategory){ return []; }
         
-        const filterCategory = selectedEntry.value.topic.category;
+        const filterCategory = selectedEntry.value.topicCategory;
         return topicStore.topics
             .filter(x => x.category === filterCategory)
             .map(x => x.name)
             .filter(onlyUnique);
     })
     
-    function isDayValid(day: TimeTrackingDay): Boolean{
+    function isDayValid(day: UiTimeTrackingDay): Boolean{
         if(!day){ return false; }
         if(!day.date){ return false; }
         if(!day.type){ return false; }
@@ -79,47 +75,47 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
     
     function selectedEntryCategoryChanged(){
         if(!selectedEntry.value){ return; }
-        selectedEntry.value.topic.name = "";
+        selectedEntry.value.topicName = "";
     }
     
     function selectMonday(){
-        selectedDay.value = currentWeek.value?.monday;
+        selectedDay.value = currentWeek.value?.monday ?? null;
         selectedEntry.value = null;
     }
 
     function selectTuesday(){
-        selectedDay.value = currentWeek.value?.tuesday;
+        selectedDay.value = currentWeek.value?.tuesday ?? null;
         selectedEntry.value = null;
     }
 
     function selectWednesday(){
-        selectedDay.value = currentWeek.value?.wednesday;
+        selectedDay.value = currentWeek.value?.wednesday ?? null;
         selectedEntry.value = null;
     }
 
     function selectThursday(){
-        selectedDay.value = currentWeek.value?.thursday;
+        selectedDay.value = currentWeek.value?.thursday ?? null;
         selectedEntry.value = null;
     }
 
     function selectFriday(){
-        selectedDay.value = currentWeek.value?.friday;
+        selectedDay.value = currentWeek.value?.friday ?? null;
         selectedEntry.value = null;
     }
 
     function selectSaturday(){
-        selectedDay.value = currentWeek.value?.saturday;
+        selectedDay.value = currentWeek.value?.saturday ?? null;
         selectedEntry.value = null;
     }
 
     function selectSunday(){
-        selectedDay.value = currentWeek.value?.sunday;
+        selectedDay.value = currentWeek.value?.sunday ?? null;
         selectedEntry.value = null;
     }
     
     async function fetchCurrentWeek() {
         await wrapLoadingCall(async () =>{
-            currentWeek.value = await timeTrackClient.getCurrentWeek();
+            currentWeek.value = UiTimeTrackingWeek.fromBackendModel(await timeTrackClient.getCurrentWeek());
             selectedDay.value = currentWeek.value.monday;
             selectedEntry.value = null;
         })
@@ -127,7 +123,7 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
 
     async function fetchInitialData() {
         await wrapLoadingCall(async () =>{
-            currentWeek.value = await timeTrackClient.getCurrentWeek();
+            currentWeek.value = UiTimeTrackingWeek.fromBackendModel(await timeTrackClient.getCurrentWeek());
             selectedDay.value = currentWeek.value.monday;
             selectedEntry.value = null;
         })
@@ -146,15 +142,15 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
         const weekNumber = currentWeek.value.weekNumber;
         await wrapLoadingCall(async () =>{
             if(weekNumber > 1){
-                currentWeek.value = await timeTrackClient.getWeek(
-                    year, weekNumber - 1);
+                currentWeek.value = UiTimeTrackingWeek.fromBackendModel(await timeTrackClient.getWeek(
+                    year, weekNumber - 1));
                 selectedDay.value = currentWeek.value.monday;
                 selectedEntry.value = null;
             }else{
                 const previousYearMetadata = await timeTrackClient.getYearMetadata(year - 1);
-                currentWeek.value = await timeTrackClient.getWeek(
+                currentWeek.value = UiTimeTrackingWeek.fromBackendModel(await timeTrackClient.getWeek(
                     year - 1,
-                    previousYearMetadata.maxWeekNumber);
+                    previousYearMetadata.maxWeekNumber));
                 selectedDay.value = currentWeek.value.monday;
                 selectedEntry.value = null;
             }
@@ -174,30 +170,30 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
         const weekNumber = currentWeek.value.weekNumber;
         await wrapLoadingCall(async () =>{
             if(weekNumber === 53){
-                currentWeek.value = await timeTrackClient.getWeek(
+                currentWeek.value = UiTimeTrackingWeek.fromBackendModel(await timeTrackClient.getWeek(
                     year + 1,
-                    1);
+                    1));
                 selectedDay.value = currentWeek.value.monday;
                 selectedEntry.value = null;
             } else if(weekNumber === 52){
                 const actYearMetadata = await timeTrackClient.getYearMetadata(year);
                 if(actYearMetadata.maxWeekNumber === 53){
-                    currentWeek.value = await timeTrackClient.getWeek(
+                    currentWeek.value = UiTimeTrackingWeek.fromBackendModel(await timeTrackClient.getWeek(
                         year,
-                        weekNumber + 1);
+                        weekNumber + 1));
                     selectedDay.value = currentWeek.value.monday;
                     selectedEntry.value = null;
                 }else{
-                    currentWeek.value = await timeTrackClient.getWeek(
+                    currentWeek.value = UiTimeTrackingWeek.fromBackendModel(await timeTrackClient.getWeek(
                         year + 1,
-                        1);
+                        1));
                     selectedDay.value = currentWeek.value.monday;
                     selectedEntry.value = null;
                 }
             } else {
-                currentWeek.value = await timeTrackClient.getWeek(
+                currentWeek.value = UiTimeTrackingWeek.fromBackendModel(await timeTrackClient.getWeek(
                     year,
-                    weekNumber + 1);
+                    weekNumber + 1));
                 selectedDay.value = currentWeek.value.monday;
                 selectedEntry.value = null;
             }
@@ -209,15 +205,14 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
         if(!selectedDay.value){ return; }
         if(!selectedDay.value.entries){ return; }
 
-        const newEntry = new TimeTrackingEntry({
-            description: "",
-            topic: new TimeTrackingTopicReference({
-                category: "",
-                name: ""
-            }),
-            effortInHours: 0,
-            effortBilled: 0,
-        });
+        const newEntry = new UiTimeTrackingEntry(
+            undefined,
+            "",
+            "",
+            0,
+            0,
+            "",
+        );
         
         selectedDay.value.entries.push(newEntry);
         selectedEntry.value = newEntry;
@@ -229,15 +224,14 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
         if(!selectedDay.value){ return; }
         if(!selectedDay.value.entries){ return; }
 
-        const newEntry = new TimeTrackingEntry({
-            description: selectedEntry.value.description,
-            topic: new TimeTrackingTopicReference({
-                category: selectedEntry.value.topic.category,
-                name: selectedEntry.value.topic.name
-            }),
-            effortInHours: selectedEntry.value.effortInHours,
-            effortBilled: selectedEntry.value.effortBilled,
-        });
+        const newEntry = new UiTimeTrackingEntry(
+            undefined,
+            selectedEntry.value.topicCategory,
+            selectedEntry.value.topicName,
+            selectedEntry.value.effortInHours,
+            selectedEntry.value.effortBilled,
+            selectedEntry.value.description,
+        );
 
         selectedDay.value.entries.push(newEntry);
         selectedEntry.value = newEntry;

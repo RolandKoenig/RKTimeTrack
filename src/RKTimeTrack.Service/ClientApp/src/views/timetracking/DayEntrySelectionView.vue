@@ -51,10 +51,10 @@
     
     <Column selectionMode="single"
             headerStyle="width: 3rem"></Column>
-    <Column field="topic.category"
+    <Column field="topicCategory"
             header="Category"
             style="width: 12%"></Column>
-    <Column field="topic.name"
+    <Column field="topicName"
             header="Name"
             style="width: 12%"></Column>
     <Column field="effortInHours"

@@ -28,7 +28,7 @@
         <label for="current-row-category" class="form-label">Category</label>
         <Select id="selected-entry-category"
                 variant="filled"
-                v-model="timeTrackingStore.selectedEntry.topic.category"
+                v-model="timeTrackingStore.selectedEntry.topicCategory"
                 :options="timeTrackingStore.availableTopicCategories"
                 @change="timeTrackingStore.selectedEntryCategoryChanged"
                 :invalid="v$.selectedEntry.topic.category.$invalid"/>
@@ -40,7 +40,7 @@
         <label for="current-row-name" class="form-label">Name</label>
         <Select id="selected-entry-category"
                 variant="filled"
-                v-model="timeTrackingStore.selectedEntry.topic.name"
+                v-model="timeTrackingStore.selectedEntry.topicName"
                 :options="timeTrackingStore.availableTopicNames"
                 :invalid="v$.selectedEntry.topic.name.$invalid"/>
         <div v-for="error of v$.selectedEntry.topic.name.$silentErrors" :key="error.$uid">
