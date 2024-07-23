@@ -23,5 +23,5 @@ docker build -t rolandk87/rktimetrack:latest `
              -t rolandk87/rktimetrack:latest-$branchName `
              -t rolandk87/rktimetrack:$branchName-$commitHash `
              --platform linux/amd64 `
-             -f ../src/RKTimeTrack.Service/Dockerfile ../src
-docker push -a rolandk87/rktimetrack 
+             -f ../src/RKTimeTrack.Service/Dockerfile ../
+docker push -a rolandk87/rktimetrack
