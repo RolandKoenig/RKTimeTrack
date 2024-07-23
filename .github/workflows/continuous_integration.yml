@@ -1,0 +1,38 @@
+name: Continuous integration
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - .github/workflows/continuous_integration.yml
+      - scripts/build-and-test.ps1
+      - scripts/docker-build.ps1
+      - src/**
+
+jobs:
+  
+  # Default CI / Testing
+  build-and-test: 
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      
+    - name: Build and test
+      shell: pwsh
+      working-directory: ./scripts
+      run: ./build-and-test.ps1
+      
+  # Create and push container    
+  build-and-publish-container: 
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Docker build and publish
+        shell: pwsh
+        working-directory: ./scripts
+        run: |
+          ./docker-build-and-push.ps1 -DockerHubUser "${{ secrets.DOCKER_REGISTRY_USERNAME }}" `
+                                      -DockerHubPassword "${{ secrets.DOCKER_REGISTRY_PASSWORD }}"
