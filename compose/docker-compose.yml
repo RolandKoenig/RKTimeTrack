@@ -12,9 +12,9 @@ services:
     ports: 
       - "5200:80"
     environment:
-      FileBasedTimeTrackingRepository:PersistenceDirectory: "/var/opt/rk-time-track/store"
-      FileBasedTimeTrackingRepository:WriteIndentedJson: "true"
-      StaticTopicRepository:SourceFilePath: "/var/opt/rk-time-track/testdata/topics.json"
+      FileBasedTimeTrackingRepository__PersistenceDirectory: "/var/opt/rk-time-track/store"
+      FileBasedTimeTrackingRepository__WriteIndentedJson: "true"
+      StaticTopicRepository__SourceFilePath: "/var/opt/rk-time-track/testdata/topics.json"
     volumes:
       - type: bind
         source: ./ignoreforgit/store
