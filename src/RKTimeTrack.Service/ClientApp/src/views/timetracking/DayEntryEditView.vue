@@ -2,10 +2,34 @@
   import {useTimeTrackingStore} from "@/stores/time-tracking-store";
   import {required, minValue} from "@vuelidate/validators";
   import {useVuelidate} from "@vuelidate/core";
+  import {computed} from "vue";
   
   const timeTrackingStore = useTimeTrackingStore();
-
-  const rules = {
+  
+  const wrappedEffortInHours = computed({
+    get() {
+      return timeTrackingStore.selectedEntry?.effortInHours ?? 0;
+    },
+    set(newValue) {
+      if(timeTrackingStore.selectedEntry){
+        timeTrackingStore.selectedEntry.effortInHours = Math.round(newValue * 4) / 4;
+      }
+    }
+  })
+  
+  const wrappedEffortBilled = computed({
+    get() {
+      return timeTrackingStore.selectedEntry?.effortBilled ?? 0;
+    },
+    set(newValue) {
+      if(timeTrackingStore.selectedEntry){
+        timeTrackingStore.selectedEntry.effortBilled = Math.round(newValue * 4) / 4;
+      }
+    }
+  })
+  
+  // Configure validation
+  const validationRules = {
     selectedEntry: {
       topic: {
         category: { },
@@ -16,8 +40,7 @@
       description: { }
     }
   }
-  
-  const v$ = useVuelidate(rules, timeTrackingStore);
+  const v$ = useVuelidate(validationRules, timeTrackingStore);
   
 </script>
 
@@ -52,7 +75,9 @@
       <div class="col-6 mb-3">
         <label for="current-row-effort" class="form-label">Effort (h)</label>
         <InputNumber id="current-row-effort"
-                     v-model.lazy="timeTrackingStore.selectedEntry.effortInHours"
+                     v-model.lazy="wrappedEffortInHours"
+                     minFractionDigits="0"
+                     maxFractionDigits="2"
                      :invalid="v$.selectedEntry.effortInHours.$invalid"/>
         <div v-for="error of v$.selectedEntry.effortInHours.$silentErrors" :key="error.$uid">
           <div class="error-msg">{{ error.$message }}</div>
@@ -61,7 +86,9 @@
       <div class="col-6 mb-3">
         <label for="current-row-billed" class="form-label">Billed (h)</label>
         <InputNumber id="current-row-billed"
-                     v-model.lazy="timeTrackingStore.selectedEntry.effortBilled"
+                     v-model.lazy="wrappedEffortBilled"
+                     minFractionDigits="0"
+                     maxFractionDigits="2"
                      :invalid="v$.selectedEntry.effortBilled.$invalid"/>
         <div v-for="error of v$.selectedEntry.effortBilled.$silentErrors" :key="error.$uid">
           <div class="error-msg">{{ error.$message }}</div>

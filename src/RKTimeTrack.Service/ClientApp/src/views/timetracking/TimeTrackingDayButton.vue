@@ -4,7 +4,7 @@
   
   const props = defineProps({
     isSelected: Boolean,
-    timeTrackingDay: UiTimeTrackingDay
+    timeTrackingDay: UiTimeTrackingDay 
   });
 
   const daytypeCssClass = computed(() => {
