@@ -257,6 +257,14 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
         }
     }
     
+    function copyEffortToEffortBilled(){
+        if(isLoading.value){ return; }
+        if(!selectedDay.value){ return; }
+        if(!selectedEntry.value){ return; }
+        
+        selectedEntry.value.effortBilled = selectedEntry.value.effortInHours;
+    }
+    
     /**
      * Private helper function to ensure, that we only call one loading function in parallel
      */
@@ -285,6 +293,6 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
         selectMonday, selectTuesday, selectWednesday, selectThursday, selectFriday, selectSaturday, selectSunday,
         fetchWeekBeforeThisWeek, fetchWeekAfterThisWeek,
         availableTopicCategories, availableTopicNames, selectedEntryCategoryChanged,
-        addNewEntry, copySelectedEntry, deleteSelectedEntry
+        addNewEntry, copySelectedEntry, deleteSelectedEntry, copyEffortToEffortBilled
     }
 });

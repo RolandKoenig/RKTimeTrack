@@ -3,6 +3,7 @@
   import {required, minValue} from "@vuelidate/validators";
   import {useVuelidate} from "@vuelidate/core";
   import {computed} from "vue";
+  import IconCopyRight from "@/components/icons/IconCopyRight.vue";
   
   const timeTrackingStore = useTimeTrackingStore();
   
@@ -74,14 +75,25 @@
     <div class="row">
       <div class="col-6 mb-3">
         <label for="current-row-effort" class="form-label">Effort (h)</label>
-        <InputNumber id="current-row-effort"
-                     v-model.lazy="wrappedEffortInHours"
-                     :minFractionDigits="0"
-                     :maxFractionDigits="2"
-                     :invalid="v$.selectedEntry.effortInHours.$invalid"
-                     showButtons step="0.25"/>
-        <div v-for="error of v$.selectedEntry.effortInHours.$silentErrors" :key="error.$uid">
-          <div class="error-msg">{{ error.$message }}</div>
+        <div class="editor-and-button-container">
+          <div class="input-container">
+            <InputNumber id="current-row-effort"
+                         v-model.lazy="wrappedEffortInHours"
+                         :minFractionDigits="0"
+                         :maxFractionDigits="2"
+                         :invalid="v$.selectedEntry.effortInHours.$invalid"
+                         showButtons 
+                         :step="0.25"/>
+            <div v-for="error of v$.selectedEntry.effortInHours.$silentErrors" :key="error.$uid">
+              <div class="error-msg">{{ error.$message }}</div>
+            </div>
+          </div>
+          <div>
+            <Button text>
+              <IconCopyRight size="small"
+                             @click="timeTrackingStore.copyEffortToEffortBilled()"/>
+            </Button>
+          </div>
         </div>
       </div>
       <div class="col-6 mb-3">
@@ -91,7 +103,8 @@
                      :minFractionDigits="0"
                      :maxFractionDigits="2"
                      :invalid="v$.selectedEntry.effortBilled.$invalid"
-                     showButtons step="0.25"/>
+                     showButtons 
+                     :step="0.25"/>
         <div v-for="error of v$.selectedEntry.effortBilled.$silentErrors" :key="error.$uid">
           <div class="error-msg">{{ error.$message }}</div>
         </div>
@@ -113,6 +126,16 @@
 </template>
 
 <style scoped>
+  div.editor-and-button-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  div.input-container{
+    width: 100%;
+  }
+
   input.p-inputtext, span.p-inputnumber, textarea.p-textarea, div.p-select{
     width: 100%;
   }

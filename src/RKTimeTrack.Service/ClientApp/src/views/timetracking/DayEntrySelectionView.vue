@@ -63,15 +63,19 @@
             style="width: 12%"></Column>
     <Column field="effortInHours"
             header="Effort (h)"
-            style="width: 6%"></Column>
+            style="width: 6%" />
     <Column field="effortBilled"
             header="Billed (h)"
-            style="width: 6%"></Column>
+            style="width: 6%">
+      <template #body="slotProps">
+        <span v-if="slotProps.data.effortBilled != 0">{{ slotProps.data.effortBilled}}</span>
+      </template>
+    </Column>
     <Column field="description"
             header="Description"
             style="width: 64%">
       <template #body="slotProps">
-        <div class="column-container">
+        <div class="cell-container">
           <span class="row-content">{{ slotProps.data.description }}</span>
           <Button text
                   @click="copyToClipboard(slotProps.data.description)">
@@ -84,7 +88,7 @@
 </template>
 
 <style scoped>
-  div.column-container{
+  div.cell-container{
     display: flex;
     justify-content: space-between;
     align-items: center;
