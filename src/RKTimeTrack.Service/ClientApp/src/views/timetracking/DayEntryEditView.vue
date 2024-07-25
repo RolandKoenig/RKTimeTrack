@@ -78,7 +78,8 @@
                      v-model.lazy="wrappedEffortInHours"
                      minFractionDigits="0"
                      maxFractionDigits="2"
-                     :invalid="v$.selectedEntry.effortInHours.$invalid"/>
+                     :invalid="v$.selectedEntry.effortInHours.$invalid"
+                     showButtons step="0.25"/>
         <div v-for="error of v$.selectedEntry.effortInHours.$silentErrors" :key="error.$uid">
           <div class="error-msg">{{ error.$message }}</div>
         </div>
@@ -89,7 +90,8 @@
                      v-model.lazy="wrappedEffortBilled"
                      minFractionDigits="0"
                      maxFractionDigits="2"
-                     :invalid="v$.selectedEntry.effortBilled.$invalid"/>
+                     :invalid="v$.selectedEntry.effortBilled.$invalid"
+                     showButtons step="0.25"/>
         <div v-for="error of v$.selectedEntry.effortBilled.$silentErrors" :key="error.$uid">
           <div class="error-msg">{{ error.$message }}</div>
         </div>
