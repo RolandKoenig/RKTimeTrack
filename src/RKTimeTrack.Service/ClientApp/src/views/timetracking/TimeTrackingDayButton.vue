@@ -1,10 +1,10 @@
 ﻿<script setup lang="ts">
-  import {UiTimeTrackingDay} from "@/stores/models/ui-time-tracking-day";
   import {computed} from "vue";
+  import {UiTimeTrackingDay} from "@/stores/models/ui-time-tracking-day";
   
   const props = defineProps({
     isSelected: Boolean,
-    timeTrackingDay: UiTimeTrackingDay 
+    timeTrackingDay: UiTimeTrackingDay
   });
 
   const daytypeCssClass = computed(() => {
