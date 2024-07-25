@@ -6,6 +6,10 @@
   import IconCalendarDay from "@/components/icons/IconCalendarDay.vue";
   
   const timeTrackingStore = useTimeTrackingStore();
+  
+  function copyToClipboard(dataToCopy: string){
+    navigator.clipboard.writeText(dataToCopy);
+  }
 </script>
 
 <template>
@@ -65,10 +69,28 @@
             style="width: 6%"></Column>
     <Column field="description"
             header="Description"
-            style="width: 64%"></Column>
+            style="width: 64%">
+      <template #body="slotProps">
+        <div class="column-container">
+          <span class="row-content">{{ slotProps.data.description }}</span>
+          <Button text
+                  @click="copyToClipboard(slotProps.data.description)">
+            <IconCopy size="small"/>
+          </Button>
+        </div>
+      </template>
+    </Column>
   </DataTable>
 </template>
 
 <style scoped>
-
+  div.column-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .row-content{
+    width:100%;
+  }
 </style>

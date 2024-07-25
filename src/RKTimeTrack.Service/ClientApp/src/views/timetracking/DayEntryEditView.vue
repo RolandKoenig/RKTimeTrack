@@ -76,8 +76,8 @@
         <label for="current-row-effort" class="form-label">Effort (h)</label>
         <InputNumber id="current-row-effort"
                      v-model.lazy="wrappedEffortInHours"
-                     minFractionDigits="0"
-                     maxFractionDigits="2"
+                     :minFractionDigits="0"
+                     :maxFractionDigits="2"
                      :invalid="v$.selectedEntry.effortInHours.$invalid"
                      showButtons step="0.25"/>
         <div v-for="error of v$.selectedEntry.effortInHours.$silentErrors" :key="error.$uid">
@@ -88,8 +88,8 @@
         <label for="current-row-billed" class="form-label">Billed (h)</label>
         <InputNumber id="current-row-billed"
                      v-model.lazy="wrappedEffortBilled"
-                     minFractionDigits="0"
-                     maxFractionDigits="2"
+                     :minFractionDigits="0"
+                     :maxFractionDigits="2"
                      :invalid="v$.selectedEntry.effortBilled.$invalid"
                      showButtons step="0.25"/>
         <div v-for="error of v$.selectedEntry.effortBilled.$silentErrors" :key="error.$uid">
