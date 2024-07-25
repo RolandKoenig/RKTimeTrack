@@ -14,8 +14,8 @@ class TimeTrackingPersistenceService(
     private readonly ILogger _logger = logger;
 
     private Task? _persistenceLoopTask;
-    private CancellationToken _persistenceLoopCancellationToken = CancellationToken.None;
-
+    private readonly CancellationTokenSource _persistenceLoopCancellationTokenSource = new();
+    
     public async Task StartAsync(CancellationToken cancellationToken)
     {
         // Restore previous data
@@ -29,7 +29,6 @@ class TimeTrackingPersistenceService(
         }
         
         // Start persistence loop
-        _persistenceLoopCancellationToken = CancellationToken.None;
         _persistenceLoopTask = RunPersistenceLoopAsync();
     }
 
@@ -41,16 +40,17 @@ class TimeTrackingPersistenceService(
             return Task.CompletedTask;
         }
         
-        _persistenceLoopCancellationToken = cancellationToken;
+        _persistenceLoopCancellationTokenSource.Cancel();
         return persistenceLoopTask;
     }
 
     private async Task RunPersistenceLoopAsync()
     {
         var lastPersist = DateTimeOffset.MinValue;
-        while (!_persistenceLoopCancellationToken.IsCancellationRequested)
+        while (!_persistenceLoopCancellationTokenSource.Token.IsCancellationRequested)
         {
-            await Task.Delay(1000, _persistenceLoopCancellationToken);
+            try { await Task.Delay(1000, _persistenceLoopCancellationTokenSource.Token); }
+            catch (TaskCanceledException) { break; }
 
             // Check whether we have to persist or not
             if (lastPersist >= repository.LastChangeTimestamp)
