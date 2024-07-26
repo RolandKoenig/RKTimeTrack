@@ -4,6 +4,7 @@
   import IconDelete from "@/components/icons/IconDelete.vue";
   import IconCopy from "@/components/icons/IconCopy.vue";
   import IconCalendarDay from "@/components/icons/IconCalendarDay.vue";
+  import DescriptionTextElement from "@/views/timetracking/DescriptionTextElement.vue";
   
   const timeTrackingStore = useTimeTrackingStore();
   
@@ -76,7 +77,8 @@
             style="width: 64%">
       <template #body="slotProps">
         <div class="cell-container">
-          <span class="row-content">{{ slotProps.data.description }}</span>
+          <DescriptionTextElement class="row-content"
+                                  :description="slotProps.data.description" />
           <Button text
                   @click="copyToClipboard(slotProps.data.description)">
             <IconCopy size="small"/>
