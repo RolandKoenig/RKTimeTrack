@@ -17,6 +17,7 @@ import InputNumber from 'primevue/inputnumber'
 import InputText from 'primevue/inputtext'
 import Menubar from "primevue/menubar";
 import Select from 'primevue/select';
+import Tag from 'primevue/tag';
 import Textarea from 'primevue/textarea';
 import Toolbar from "primevue/toolbar";
 
@@ -54,6 +55,7 @@ app.component('InputNumber', InputNumber);
 app.component('InputText', InputText);
 app.component('Menubar', Menubar);
 app.component('Select', Select);
+app.component('Tag', Tag);
 app.component('Textarea', Textarea);
 app.component('Toolbar', Toolbar);
 
