@@ -5,6 +5,7 @@
   import IconCopy from "@/components/icons/IconCopy.vue";
   import IconCalendarDay from "@/components/icons/IconCalendarDay.vue";
   import DescriptionTextElement from "@/views/timetracking/DescriptionTextElement.vue";
+  import IconRefresh from "@/components/icons/IconRefresh.vue";
   
   const timeTrackingStore = useTimeTrackingStore();
   
@@ -29,9 +30,17 @@
             <IconPlus size="small" /> New Entry
           </Button>
           <Button outlined
+                  class="me-2"
                   :disabled="!timeTrackingStore.selectedEntry"
                   @click="timeTrackingStore.copySelectedEntry">
             <IconCopy size="small" /> Copy Entry
+          </Button>
+
+          <Divider layout="vertical" />
+          <Button outlined
+                  class="me-2"
+                  @click="timeTrackingStore.fetchCurrentWeekAgain">
+            <IconRefresh size="small" /> Refresh
           </Button>
 
           <Divider layout="vertical" />

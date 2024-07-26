@@ -15,6 +15,17 @@ export class UiTimeTrackingWeek{
     ) {
     }
     
+    tryGetDayByDate(date:string){
+        if(this.monday.date === date){ return this.monday; }
+        else if(this.tuesday.date === date){ return this.tuesday; }
+        else if(this.wednesday.date === date){ return this.wednesday; }
+        else if(this.thursday.date === date){ return this.thursday; }
+        else if(this.friday.date === date){ return this.friday; }
+        else if(this.saturday.date === date){ return this.saturday; }
+        else if(this.sunday.date === date){ return this.sunday; }
+        else{ return null; }
+    }
+    
     static fromBackendModel(backendModel: TimeTrackingWeek): UiTimeTrackingWeek{
         return new UiTimeTrackingWeek(
             backendModel.year,
