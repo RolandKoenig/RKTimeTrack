@@ -1,21 +1,41 @@
 ﻿<script setup lang="ts">
-  import {computed} from "vue";
-  import {UiTimeTrackingDay} from "@/stores/models/ui-time-tracking-day";
-  
-  const props = defineProps({
+import {computed} from "vue";
+import {UiTimeTrackingDay} from "@/stores/models/ui-time-tracking-day";
+import {TimeTrackingDayType} from "@/services/time-track-client.generated";
+
+const props = defineProps({
     isSelected: Boolean,
     timeTrackingDay: UiTimeTrackingDay
   });
 
-  const daytypeCssClass = computed(() => {
-    if(!props.timeTrackingDay){ return "" }
+  const selectionCssClass = computed(() => {
+    if(props.isSelected){ return "selected"; }
+    return "";
+  })
+  
+  const daytypeSeverity = computed(() =>{
+    if(!props.timeTrackingDay){ return "secondary"; }
     
-    let result = `daytype-${props.timeTrackingDay.type.toLowerCase()}`;
-    if(props.isSelected){
-      result += " selected";
+    switch(props.timeTrackingDay.type){
+      case TimeTrackingDayType.CompensatoryTimeOff:
+        return "help";
+      case TimeTrackingDayType.Holiday:
+        return "help";
+      case TimeTrackingDayType.Ill:
+        return "danger";
+      case TimeTrackingDayType.OwnEducation:
+        return "info";
+      case TimeTrackingDayType.PublicHoliday:
+        return "help";
+      case TimeTrackingDayType.Training:
+        return "info";
+      case TimeTrackingDayType.Weekend:
+        return "warn";
+      case TimeTrackingDayType.WorkingDay:
+        return "secondary";
+      default:
+        return "secondary";
     }
-    
-    return result;
   })
   
   const sumEffort = computed(() => {
@@ -39,8 +59,10 @@
 
 <template>
   <div class="buttonBorder"
-       :class="daytypeCssClass">
-    <Button :class="daytypeCssClass" v-bind="$attrs">
+       :class="selectionCssClass">
+    <Button :severity="daytypeSeverity" 
+            v-bind="$attrs"
+            raised>
       <div class="daytype" >
         <span>{{sumEffort}}</span><br />
         <span v-if="sumBilled > 0" class="effortBilledSum">{{sumBilled}}</span>
@@ -51,7 +73,7 @@
 
 <style scoped>
   div.daytype{
-    width:3rem;
+    width: 3rem;
     height: 3rem;
   }
   
@@ -70,46 +92,5 @@
   div.selected{
     border-color: #AAAAAA;
     background: #AAAAAA;
-  }
-  
-  button.daytype-workingday{
-    /* default button styling */
-  }
-
-  button.daytype-owneducation{
-    background-color: green;
-    border-color: green;
-  }
-
-  button.daytype-publicholiday{
-    background-color: indianred;
-    border-color: indianred;
-  }
-
-  button.daytype-ill{
-    background-color: gray;
-    border-color: gray;
-  }
-
-  button.daytype-training{
-    background-color: dodgerblue;
-    border-color: dodgerblue;
-  }
-  
-  button.daytype-holiday{
-    background-color: yellow;
-    border-color: yellow;
-    color: black;
-  }
-
-  button.daytype-compensatorytimeoff{
-    background-color: yellow;
-    border-color: yellow;
-    color: black;
-  }
-  
-  button.daytype-weekend{
-    background-color: sandybrown;
-    border-color: sandybrown;
   }
 </style>
