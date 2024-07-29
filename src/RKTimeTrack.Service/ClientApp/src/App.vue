@@ -28,6 +28,8 @@
   </Menubar>
   
   <RouterView />
+  
+  <Toast />
 </template>
 
 <style scoped>

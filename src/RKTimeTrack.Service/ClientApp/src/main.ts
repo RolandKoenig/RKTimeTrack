@@ -19,6 +19,8 @@ import Menubar from "primevue/menubar";
 import Select from 'primevue/select';
 import Tag from 'primevue/tag';
 import Textarea from 'primevue/textarea';
+import Toast from 'primevue/toast';
+import ToastService from 'primevue/toastservice';
 import Toolbar from "primevue/toolbar";
 
 // App
@@ -32,6 +34,7 @@ const app = createApp(App)
 
 // Configure App
 app.use(createPinia())
+app.use(ToastService);
 app.provide("TimeTrackClient", new TimeTrackClient());
 app.use(router)
 
@@ -57,6 +60,7 @@ app.component('Menubar', Menubar);
 app.component('Select', Select);
 app.component('Tag', Tag);
 app.component('Textarea', Textarea);
+app.component('Toast', Toast);
 app.component('Toolbar', Toolbar);
 
 // Place app inside html

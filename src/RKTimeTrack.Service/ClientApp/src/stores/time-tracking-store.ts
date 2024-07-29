@@ -9,10 +9,13 @@ import {useTopicStore} from "@/stores/topic-store";
 import {UiTimeTrackingWeek} from "@/stores/models/ui-time-tracking-week";
 import {UiTimeTrackingDay} from "@/stores/models/ui-time-tracking-day";
 import {UiTimeTrackingEntry} from "@/stores/models/ui-time-tracking-entry";
+import { useToast } from 'primevue/usetoast';
 
 export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
     const timeTrackClient = inject<TimeTrackClient>("TimeTrackClient")!;
+    
     const topicStore = useTopicStore();
+    const toast = useToast();
     
     const currentWeek: Ref<UiTimeTrackingWeek | null> = ref(null);
     const selectedDay: Ref<UiTimeTrackingDay | null> = ref(null);
@@ -37,7 +40,15 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
             if(!isDayValid(oldValue)){ return; }
 
             // TODO: async handling of updates
-            timeTrackClient.updateDay(new UpdateDayRequest(oldValue.toBackendModel()));
+            timeTrackClient.updateDay(new UpdateDayRequest(oldValue.toBackendModel()))
+                .catch(e =>{
+                    toast.add({
+                        severity: 'error',
+                        summary: 'Communication Error',
+                        detail: 'Unable to send data to backend!',
+                        life: 3000
+                    });
+                });
         }, {
             deep: true
         });
