@@ -17,24 +17,31 @@ const props = defineProps({
     if(!props.timeTrackingDay){ return "secondary"; }
     
     switch(props.timeTrackingDay.type){
-      case TimeTrackingDayType.CompensatoryTimeOff:
-        return "help";
-      case TimeTrackingDayType.Holiday:
-        return "help";
-      case TimeTrackingDayType.Ill:
-        return "danger";
-      case TimeTrackingDayType.OwnEducation:
-        return "info";
-      case TimeTrackingDayType.PublicHoliday:
-        return "help";
-      case TimeTrackingDayType.Training:
-        return "info";
-      case TimeTrackingDayType.Weekend:
-        return "warn";
-      case TimeTrackingDayType.WorkingDay:
-        return "secondary";
-      default:
-        return "secondary";
+      case TimeTrackingDayType.CompensatoryTimeOff: return "help";
+      case TimeTrackingDayType.Holiday: return "help";
+      case TimeTrackingDayType.Ill: return "danger";
+      case TimeTrackingDayType.OwnEducation: return "info";
+      case TimeTrackingDayType.PublicHoliday: return "help";
+      case TimeTrackingDayType.Training: return "info";
+      case TimeTrackingDayType.Weekend: return "warn";
+      case TimeTrackingDayType.WorkingDay: return "secondary";
+      default: return "secondary";
+    }
+  })
+
+  const daytypeAbbreviation = computed(() => {
+    if(!props.timeTrackingDay){ return ""; }
+
+    switch(props.timeTrackingDay.type){
+      case TimeTrackingDayType.CompensatoryTimeOff: return "ZA";
+      case TimeTrackingDayType.Holiday: return "UT";
+      case TimeTrackingDayType.Ill: return "KT";
+      case TimeTrackingDayType.OwnEducation: return "BT";
+      case TimeTrackingDayType.PublicHoliday: return "FT";
+      case TimeTrackingDayType.Training: return "ST";
+      case TimeTrackingDayType.Weekend: return "WE";
+      case TimeTrackingDayType.WorkingDay: return "";
+      default: return "";
     }
   })
   
@@ -63,18 +70,30 @@ const props = defineProps({
     <Button :severity="daytypeSeverity" 
             v-bind="$attrs"
             raised>
-      <div class="daytype" >
-        <span>{{sumEffort}}</span><br />
-        <span v-if="sumBilled > 0" class="effortBilledSum">{{sumBilled}}</span>
+      <div class="parent">
+        <div class="daytype" >
+          <span>{{sumEffort}}</span><br />
+          <span v-if="sumBilled > 0" class="effortBilledSum">{{sumBilled}}</span>
+        </div>
+        <div class="daytype">
+          <div class="text-end daytype-abbreviation">{{ daytypeAbbreviation }}</div>
+        </div>
       </div>
     </Button>
   </div>
 </template>
 
 <style scoped>
+  div.parent{
+    width: 3rem;
+    height: 3rem;
+    position: relative;
+  }
+
   div.daytype{
     width: 3rem;
     height: 3rem;
+    position: absolute;
   }
   
   div.buttonBorder{
@@ -92,5 +111,11 @@ const props = defineProps({
   div.selected{
     border-color: #AAAAAA;
     background: #AAAAAA;
+  }
+  
+  div.daytype-abbreviation{
+    margin: -8px;
+    font-size: 8pt;
+    opacity: 0.7;
   }
 </style>
