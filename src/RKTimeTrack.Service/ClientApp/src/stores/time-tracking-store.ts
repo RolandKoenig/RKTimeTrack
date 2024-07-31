@@ -135,7 +135,19 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
     async function fetchInitialData() {
         await wrapLoadingCall(async () =>{
             currentWeek.value = UiTimeTrackingWeek.fromBackendModel(await timeTrackClient.getCurrentWeek());
-            selectedDay.value = currentWeek.value.monday;
+
+            const today = new Date().getDay();
+            switch (today){
+                case 0: selectedDay.value = currentWeek.value.sunday; break;
+                case 1: selectedDay.value = currentWeek.value.monday; break;
+                case 2: selectedDay.value = currentWeek.value.tuesday; break;
+                case 3: selectedDay.value = currentWeek.value.wednesday; break;
+                case 4: selectedDay.value = currentWeek.value.thursday; break;
+                case 5: selectedDay.value = currentWeek.value.friday;  break;
+                case 6: selectedDay.value = currentWeek.value.saturday; break;
+                default: selectedDay.value = currentWeek.value.monday; break;
+            }
+        
             selectedEntry.value = null;
         })
     }
