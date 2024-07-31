@@ -63,8 +63,6 @@
       </Toolbar>
     </template>
     
-    <Column selectionMode="single"
-            headerStyle="width: 3rem"></Column>
     <Column field="topicCategory"
             header="Category"
             style="width: 12%"></Column>
