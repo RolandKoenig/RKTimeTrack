@@ -12,6 +12,25 @@ const props = defineProps({
     if(props.isSelected){ return "selected"; }
     return "";
   })
+
+  const tooltipText = computed(() =>{
+    if(!props.timeTrackingDay){ return ""; }
+    
+    let result = `${props.timeTrackingDay.type}`;
+    if(props.timeTrackingDay.entries.length > 0){
+      const sumEffort = props.timeTrackingDay.entries
+          .map(actEntry => actEntry.effortInHours)
+          .reduce((sum, currentValue) => sum + currentValue);
+      if(sumEffort > 0){ result += `\nEffort: ${sumEffort} h` }
+      
+      const sumBilled = props.timeTrackingDay.entries
+          .map(actEntry => actEntry.effortBilled)
+          .reduce((sum, currentValue) => sum + currentValue);
+      if(sumBilled > 0){ result += `\nBilled: ${sumBilled} h` }
+    }
+    
+    return result;
+  })
   
   const daytypeSeverity = computed(() =>{
     if(!props.timeTrackingDay){ return "secondary"; }
@@ -69,6 +88,7 @@ const props = defineProps({
        :class="selectionCssClass">
     <Button :severity="daytypeSeverity" 
             v-bind="$attrs"
+            v-tooltip="{ value: tooltipText, showDelay: 500 }"
             raised>
       <div class="parent">
         <div class="daytype" >
