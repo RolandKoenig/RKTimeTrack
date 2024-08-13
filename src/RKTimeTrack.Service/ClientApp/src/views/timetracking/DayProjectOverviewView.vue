@@ -17,7 +17,7 @@
       if(!summary[key]){
         summary[key] = actEntry.effortBilled
       }else{
-        summary[key] = summary[key] * actEntry.effortBilled;
+        summary[key] = summary[key] + actEntry.effortBilled;
       }
     }
     
