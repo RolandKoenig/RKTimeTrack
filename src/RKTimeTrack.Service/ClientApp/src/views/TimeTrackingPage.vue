@@ -3,6 +3,7 @@
   import WeekDaySelectionView from "./timetracking/WeekDaySelectionView.vue";
   import DayEntrySelectionView from "./timetracking/DayEntrySelectionView.vue";
   import DayEntryEditView from "./timetracking/DayEntryEditView.vue";
+  import DayProjectOverviewView from "@/views/timetracking/DayProjectOverviewView.vue";
   
   const timeTrackingStore = useTimeTrackingStore();
 </script>
@@ -36,6 +37,11 @@
     <div class="row py-4"
          v-if="timeTrackingStore.selectedEntry">
       <DayEntryEditView />
+    </div>
+    
+    <div class="row py-4"
+         v-if="timeTrackingStore.selectedDay">
+      <DayProjectOverviewView />
     </div>
 
   </div>
