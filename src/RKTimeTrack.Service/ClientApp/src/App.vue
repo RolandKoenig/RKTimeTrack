@@ -16,6 +16,8 @@
   <Menubar :model="menuItems">
     <template #start>
       <img width="40" height="40" src="/RKTimeTrack.svg" alt="">
+      &nbsp;&nbsp;
+      <b>RK TimeTrack</b>
     </template>
     <template #item="{ item, props }">
       <router-link v-slot="{ href, navigate }" :to="item.route" custom>
