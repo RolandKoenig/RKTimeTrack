@@ -41,6 +41,6 @@ public class UITests
 
         // Assert
         var title = await page.TitleAsync();
-        Assert.Equal("RolandK TimeTrack", title);
+        Assert.Equal("RK TimeTrack", title);
     }
 }
