@@ -23,10 +23,18 @@ jobs:
       working-directory: ./scripts
       run: ./build-and-test.ps1
       
-  # Create and push container    
+  # Create and push container   
+  #  - Only for branches 'playground' and 'production'
+  #  - playground updates https://rktimetrack-playground.rolandk.de
+  #  - production updates https://rktimetrack.rolandk.de
   build-and-publish-container: 
     runs-on: ubuntu-latest
     needs: build-and-test
+    if: 
+      contains('
+      refs/heads/playground
+      refs/heads/production
+      ', github.ref)
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
