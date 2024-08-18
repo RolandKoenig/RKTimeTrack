@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - .github/workflows/continuous_integration.yml
+      - .github/workflows/continuous_integration_and_delivery.yml
       - scripts/build-and-test.ps1
       - scripts/docker-build.ps1
       - src/**
