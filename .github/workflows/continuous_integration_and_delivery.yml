@@ -1,4 +1,4 @@
-name: Continuous integration
+name: Continuous integration and delivery
 
 on:
   workflow_dispatch:
