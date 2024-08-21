@@ -1,9 +1,13 @@
 ﻿<script setup lang="ts">
-import {computed} from "vue";
-import {UiTimeTrackingDay} from "@/stores/models/ui-time-tracking-day";
-import {TimeTrackingDayType} from "@/services/time-track-client.generated";
+  import {computed} from "vue";
+  import {UiTimeTrackingDay} from "@/stores/models/ui-time-tracking-day";
+  import {TimeTrackingDayType} from "@/services/time-track-client.generated";
+  import {getCurrentDateAsString} from "@/util/date-util";
+  import IconHome from "@/components/icons/IconHome.vue";
 
-const props = defineProps({
+  const currentDayString = getCurrentDateAsString();
+
+  const props = defineProps({
     isSelected: Boolean,
     timeTrackingDay: UiTimeTrackingDay
   });
@@ -11,6 +15,11 @@ const props = defineProps({
   const selectionCssClass = computed(() => {
     if(props.isSelected){ return "selected"; }
     return "";
+  })
+
+  const isToday = computed(() => {
+    if(!props.timeTrackingDay){ return false; }
+    return props.timeTrackingDay.date === currentDayString;
   })
 
   const tooltipText = computed(() =>{
@@ -91,12 +100,17 @@ const props = defineProps({
             v-tooltip="{ value: tooltipText, showDelay: 500 }"
             raised>
       <div class="parent">
-        <div class="daytype" >
+        <div class="dayinfo" >
           <span>{{sumEffort}}</span><br />
           <span v-if="sumBilled > 0" class="effortBilledSum">{{sumBilled}}</span>
         </div>
-        <div class="daytype">
-          <div class="text-end daytype-abbreviation">{{ daytypeAbbreviation }}</div>
+        <div class="dayinfo">
+          <div class="text-end dayinfo-abbreviation">{{ daytypeAbbreviation }}</div>
+        </div>
+        <div class="dayinfo">
+          <div v-if="isToday" class="text-start dayinfo-today">
+            <IconHome size="tiny" />
+          </div>
         </div>
       </div>
     </Button>
@@ -108,12 +122,6 @@ const props = defineProps({
     width: 3rem;
     height: 3rem;
     position: relative;
-  }
-
-  div.daytype{
-    width: 3rem;
-    height: 3rem;
-    position: absolute;
   }
   
   div.buttonBorder{
@@ -132,10 +140,22 @@ const props = defineProps({
     border-color: #AAAAAA;
     background: #AAAAAA;
   }
+
+  div.dayinfo{
+    width: 3rem;
+    height: 3rem;
+    position: absolute;
+  }
   
-  div.daytype-abbreviation{
+  div.dayinfo-abbreviation{
     margin: -8px;
-    font-size: 8pt;
+    font-size: 10px;
+    opacity: 0.7;
+  }
+
+  div.dayinfo-today{
+    margin: -21px 0px 0px -9px;
+    font-size: 10px;
     opacity: 0.7;
   }
 </style>

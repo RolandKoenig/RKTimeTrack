@@ -3,6 +3,8 @@
 export function useIconSizeMapping(size: String){
     const width = computed(() =>{
         switch (size){
+            case "tiny":
+                return 10;
             case "small":
                 return 22;
             case "normal":
