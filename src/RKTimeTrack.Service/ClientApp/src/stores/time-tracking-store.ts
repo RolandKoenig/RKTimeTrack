@@ -135,21 +135,35 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
     async function fetchInitialData() {
         await wrapLoadingCall(async () =>{
             currentWeek.value = UiTimeTrackingWeek.fromBackendModel(await timeTrackClient.getCurrentWeek());
-
-            const today = new Date().getDay();
-            switch (today){
-                case 0: selectedDay.value = currentWeek.value.sunday; break;
-                case 1: selectedDay.value = currentWeek.value.monday; break;
-                case 2: selectedDay.value = currentWeek.value.tuesday; break;
-                case 3: selectedDay.value = currentWeek.value.wednesday; break;
-                case 4: selectedDay.value = currentWeek.value.thursday; break;
-                case 5: selectedDay.value = currentWeek.value.friday;  break;
-                case 6: selectedDay.value = currentWeek.value.saturday; break;
-                default: selectedDay.value = currentWeek.value.monday; break;
+            
+            if(!trySelectDayByDayOfWeek(new Date().getDay())){
+                selectedEntry.value = null;
             }
-        
-            selectedEntry.value = null;
         })
+    }
+    
+    function tryGetSelectedDayOfWeek(): number{
+        if(!currentWeek.value){ return -1; }
+        if(!selectedDay.value){ return -1; }
+
+        const dateMilliseconds = Date.parse(selectedDay.value.date);
+        const date = new Date(dateMilliseconds);
+        return date.getDay();
+    }
+    
+    function trySelectDayByDayOfWeek(dayOfWeek: number): boolean{
+        if(!currentWeek.value){ return false; }
+        
+        switch (dayOfWeek){
+            case 0: selectedDay.value = currentWeek.value.sunday; return true;
+            case 1: selectedDay.value = currentWeek.value.monday; return true;
+            case 2: selectedDay.value = currentWeek.value.tuesday; return true;
+            case 3: selectedDay.value = currentWeek.value.wednesday; return true;
+            case 4: selectedDay.value = currentWeek.value.thursday; return true;
+            case 5: selectedDay.value = currentWeek.value.friday; return true;
+            case 6: selectedDay.value = currentWeek.value.saturday; return true;
+            default: selectedDay.value = currentWeek.value.monday; return false;
+        }
     }
     
     async function fetchCurrentWeekAgain(){
@@ -181,20 +195,26 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
             return;
         }
         
+        const selectedDayOfWeek = tryGetSelectedDayOfWeek();
+        
         const year = currentWeek.value.year;
         const weekNumber = currentWeek.value.weekNumber;
         await wrapLoadingCall(async () =>{
             if(weekNumber > 1){
                 currentWeek.value = UiTimeTrackingWeek.fromBackendModel(await timeTrackClient.getWeek(
                     year, weekNumber - 1));
-                selectedDay.value = currentWeek.value.monday;
+                if(!trySelectDayByDayOfWeek(selectedDayOfWeek)){
+                    selectedDay.value = currentWeek.value.monday;   
+                }
                 selectedEntry.value = null;
             }else{
                 const previousYearMetadata = await timeTrackClient.getYearMetadata(year - 1);
                 currentWeek.value = UiTimeTrackingWeek.fromBackendModel(await timeTrackClient.getWeek(
                     year - 1,
                     previousYearMetadata.maxWeekNumber));
-                selectedDay.value = currentWeek.value.monday;
+                if(!trySelectDayByDayOfWeek(selectedDayOfWeek)){
+                    selectedDay.value = currentWeek.value.monday;
+                }
                 selectedEntry.value = null;
             }
         })
@@ -209,6 +229,8 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
             return;
         }
 
+        const selectedDayOfWeek = tryGetSelectedDayOfWeek();
+        
         const year = currentWeek.value.year;
         const weekNumber = currentWeek.value.weekNumber;
         await wrapLoadingCall(async () =>{
@@ -216,7 +238,9 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
                 currentWeek.value = UiTimeTrackingWeek.fromBackendModel(await timeTrackClient.getWeek(
                     year + 1,
                     1));
-                selectedDay.value = currentWeek.value.monday;
+                if(!trySelectDayByDayOfWeek(selectedDayOfWeek)){
+                    selectedDay.value = currentWeek.value.monday;
+                }
                 selectedEntry.value = null;
             } else if(weekNumber === 52){
                 const actYearMetadata = await timeTrackClient.getYearMetadata(year);
@@ -224,20 +248,26 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
                     currentWeek.value = UiTimeTrackingWeek.fromBackendModel(await timeTrackClient.getWeek(
                         year,
                         weekNumber + 1));
-                    selectedDay.value = currentWeek.value.monday;
+                    if(!trySelectDayByDayOfWeek(selectedDayOfWeek)){
+                        selectedDay.value = currentWeek.value.monday;
+                    }
                     selectedEntry.value = null;
                 }else{
                     currentWeek.value = UiTimeTrackingWeek.fromBackendModel(await timeTrackClient.getWeek(
                         year + 1,
                         1));
-                    selectedDay.value = currentWeek.value.monday;
+                    if(!trySelectDayByDayOfWeek(selectedDayOfWeek)){
+                        selectedDay.value = currentWeek.value.monday;
+                    }
                     selectedEntry.value = null;
                 }
             } else {
                 currentWeek.value = UiTimeTrackingWeek.fromBackendModel(await timeTrackClient.getWeek(
                     year,
                     weekNumber + 1));
-                selectedDay.value = currentWeek.value.monday;
+                if(!trySelectDayByDayOfWeek(selectedDayOfWeek)){
+                    selectedDay.value = currentWeek.value.monday;
+                }
                 selectedEntry.value = null;
             }
         })
