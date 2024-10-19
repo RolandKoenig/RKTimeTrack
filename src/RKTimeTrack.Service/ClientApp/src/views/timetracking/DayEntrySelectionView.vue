@@ -6,12 +6,18 @@
   import IconCalendarDay from "@/components/icons/IconCalendarDay.vue";
   import DescriptionTextElement from "@/views/timetracking/DescriptionTextElement.vue";
   import IconRefresh from "@/components/icons/IconRefresh.vue";
+  import type {UiTimeTrackingEntry} from "@/stores/models/ui-time-tracking-entry";
+  import type {DataTableRowReorderEvent} from "primevue/datatable";
   
   const timeTrackingStore = useTimeTrackingStore();
   
   function copyToClipboard(dataToCopy: string){
     navigator.clipboard.writeText(dataToCopy);
   }
+
+  const onRowReorder = (event : DataTableRowReorderEvent) => {
+    timeTrackingStore.applyNewEntryCollection(event.value as UiTimeTrackingEntry[]);
+  };
 </script>
 
 <template>
@@ -20,7 +26,8 @@
              :value="timeTrackingStore.selectedDay.entries"
              :size="'small'"
              selectionMode="single"
-             editMode="cell">
+             editMode="cell"
+             @rowReorder="onRowReorder">
     <template #header>
       <Toolbar>
         <template #start>
@@ -62,7 +69,8 @@
         </template>
       </Toolbar>
     </template>
-    
+
+    <Column rowReorder headerStyle="width: 3rem" :reorderableColumn="false" />
     <Column field="topicCategory"
             header="Category"
             style="width: 12%"></Column>

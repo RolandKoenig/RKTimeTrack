@@ -291,6 +291,13 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
         selectedEntry.value = newEntry;
     }
     
+    function applyNewEntryCollection(entries : UiTimeTrackingEntry[]){
+        if(isLoading.value){ return; }
+        if(!selectedDay.value){ return; }
+        
+        selectedDay.value.entries = entries;
+    }
+    
     function copySelectedEntry(){
         if(isLoading.value){ return; }
         if(!selectedEntry.value){ return; }
@@ -366,6 +373,7 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
         selectMonday, selectTuesday, selectWednesday, selectThursday, selectFriday, selectSaturday, selectSunday,
         fetchCurrentWeekAgain, fetchWeekBeforeThisWeek, fetchWeekAfterThisWeek,
         availableTopicCategories, availableTopicNames, selectedEntryCategoryChanged,
-        addNewEntry, copySelectedEntry, deleteSelectedEntry, copyEffortToEffortBilled
+        addNewEntry, copySelectedEntry, deleteSelectedEntry, copyEffortToEffortBilled,
+        applyNewEntryCollection
     }
 });
