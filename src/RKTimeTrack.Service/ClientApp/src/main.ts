@@ -6,6 +6,7 @@ import { createPinia } from 'pinia'
 import "bootstrap/dist/css/bootstrap.min.css"
 
 // PrimeView
+import { definePreset } from "@primevue/themes";
 import PrimeVue from 'primevue/config';
 import Aura from '@primevue/themes/aura';
 import Button from "primevue/button"
@@ -28,6 +29,7 @@ import Tooltip from 'primevue/tooltip';
 import App from './App.vue'
 import router from './router'
 import { TimeTrackClient } from "@/services/time-track-client.generated";
+import { handleColorMode } from "@/util/color-mode-handling";
 
 //############################
 
@@ -41,13 +43,32 @@ app.use(router)
 
 app.directive('tooltip', Tooltip);
 
+// Configure theme
+const MyThemePreset = definePreset(Aura, {
+    semantic: {
+        primary: {
+            50: '{sky.50}',
+            100: '{sky.100}',
+            200: '{sky.200}',
+            300: '{sky.300}',
+            400: '{sky.400}',
+            500: '{sky.500}',
+            600: '{sky.600}',
+            700: '{sky.700}',
+            800: '{sky.800}',
+            900: '{sky.900}',
+            950: '{sky.950}'
+        }
+    }
+});
+
 // Configure PrimeVue
 app.use(PrimeVue, {
     theme: {
-        preset: Aura,
+        preset: MyThemePreset,
         options: {
             prefix: 'p',
-            darkModeSelector: 'dark',
+            darkModeSelector: '.p-color-mode-dark',
             cssLayer: false
         }
     }
@@ -68,3 +89,6 @@ app.component('Toolbar', Toolbar);
 
 // Place app inside html
 app.mount('#app')
+
+// Handle color mode for this application
+handleColorMode();

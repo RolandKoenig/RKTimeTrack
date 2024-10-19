@@ -127,7 +127,7 @@
   div.buttonBorder{
     border-width: 4px;
     border-radius: 4px;
-    border-color: white;
+    border-color: transparent;
     border-style: solid;
     background: transparent;
   }
@@ -137,8 +137,8 @@
   }
   
   div.selected{
-    border-color: #AAAAAA;
-    background: #AAAAAA;
+    border-color: #AAAAAA55;
+    background: #AAAAAA55;
   }
 
   div.dayinfo{
