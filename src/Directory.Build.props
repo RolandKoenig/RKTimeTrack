@@ -4,9 +4,15 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <LangVersion>12.0</LangVersion>
+        <IsPackable>false</IsPackable>
+        
+        <!-- Warning / error configuration -->
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <WarningsAsErrors />
         <NoWarn>1701,1702,1591</NoWarn>
-        <IsPackable>false</IsPackable>
+        
+        <!-- Page security warning -->
+        <WarningsNotAsErrors>NU1903</WarningsNotAsErrors>
+        
     </PropertyGroup>
 </Project>

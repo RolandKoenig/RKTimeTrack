@@ -5,7 +5,7 @@ using RKTimeTrack.Service.Mappings;
 
 namespace RKTimeTrack.Service.Api.Ui;
 
-public class YearApi
+static class YearApi
 {
     [ProducesResponseType(typeof(TimeTrackingYearMetadata), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
