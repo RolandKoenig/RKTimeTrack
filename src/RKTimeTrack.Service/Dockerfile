@@ -3,7 +3,7 @@
 
 #####################################
 # Build image
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /src
 
 # Install node to be able to use npm during build time
@@ -29,7 +29,7 @@ RUN dotnet publish "RKTimeTrack.Service.csproj" -c Release -o /app/publish /p:Us
 #####################################
 # Runtime image
 ## Configure OS
-FROM mcr.microsoft.com/dotnet/aspnet:8.0-jammy-chiseled-extra AS final
+FROM mcr.microsoft.com/dotnet/aspnet:9.0-noble-chiseled-extra AS final
 EXPOSE 80
 
 ## Copy application and define entrypoint
