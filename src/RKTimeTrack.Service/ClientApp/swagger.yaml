@@ -92,14 +92,12 @@ paths:
         - name: year
           in: path
           required: true
-          style: simple
           schema:
             type: integer
             format: int32
         - name: weekNumber
           in: path
           required: true
-          style: simple
           schema:
             type: integer
             format: int32
@@ -130,7 +128,6 @@ paths:
       parameters:
         - name: year
           in: path
-          style: simple
           schema:
             type: integer
             format: int32
@@ -210,10 +207,17 @@ components:
           type: number
         effortBilled:
           type: number
+        type:
+          $ref: '#/components/schemas/TimeTrackingEntryType'
         description:
           type: string
           nullable: true
       additionalProperties: false
+    TimeTrackingEntryType:
+      enum:
+        - Default
+        - Training
+      type: string
     TimeTrackingTopic:
       type: object
       properties:

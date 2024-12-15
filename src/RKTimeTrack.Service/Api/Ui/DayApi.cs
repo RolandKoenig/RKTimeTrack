@@ -14,7 +14,7 @@ static class DayApi
         [FromServices] IWebHostEnvironment environment,
         [FromServices] UpdateDayUseCase useCase,
         [FromBody] UpdateDayRequest request,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken)
     {
         // Call application logic
         var result = await useCase.UpdateDayAsync(request, cancellationToken);

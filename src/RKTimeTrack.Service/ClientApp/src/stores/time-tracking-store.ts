@@ -2,7 +2,8 @@
 import {defineStore} from 'pinia'
 import {
     TimeTrackClient,
-    TimeTrackingDayType,
+    TimeTrackingDayType, 
+    TimeTrackingEntryType,
     UpdateDayRequest
 } from "@/services/time-track-client.generated";
 import {useTopicStore} from "@/stores/topic-store";
@@ -31,7 +32,11 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
         TimeTrackingDayType.Weekend,
         TimeTrackingDayType.WorkingDay
     ]);
-
+    const entryTypeValues = ref([
+        TimeTrackingEntryType.Default,
+        TimeTrackingEntryType.Training
+    ])
+    
     // Save changes directly
     watch(
         selectedDay,
@@ -284,6 +289,7 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
             "",
             0,
             0,
+            TimeTrackingEntryType.Default,
             "",
         );
         
@@ -310,6 +316,7 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
             selectedEntry.value.topicName,
             selectedEntry.value.effortInHours,
             selectedEntry.value.effortBilled,
+            selectedEntry.value.type,
             selectedEntry.value.description,
         );
 
@@ -369,7 +376,7 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
     return{
         currentWeek, 
         selectedDay, selectedEntry,
-        dayTypeValues,
+        dayTypeValues, entryTypeValues,
         selectMonday, selectTuesday, selectWednesday, selectThursday, selectFriday, selectSaturday, selectSunday,
         fetchCurrentWeekAgain, fetchWeekBeforeThisWeek, fetchWeekAfterThisWeek,
         availableTopicCategories, availableTopicNames, selectedEntryCategoryChanged,

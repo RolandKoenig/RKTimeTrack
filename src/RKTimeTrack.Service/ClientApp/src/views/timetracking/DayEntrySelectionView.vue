@@ -8,6 +8,7 @@
   import IconRefresh from "@/components/icons/IconRefresh.vue";
   import type {UiTimeTrackingEntry} from "@/stores/models/ui-time-tracking-entry";
   import type {DataTableRowReorderEvent} from "primevue/datatable";
+  import IconTraining from "@/components/icons/IconTraining.vue";
   
   const timeTrackingStore = useTimeTrackingStore();
   
@@ -94,6 +95,15 @@
         <div class="cell-container">
           <DescriptionTextElement class="row-content"
                                   :description="slotProps.data.description" />
+          
+          <!-- Mark training entries with an icon -->
+          <Button v-if="slotProps.data.type == 'Training'"
+                  text
+                  disabled>
+            <IconTraining size="small"/>
+          </Button>
+          
+          <!-- Copy button -->
           <Button text
                   @click="copyToClipboard(slotProps.data.description)">
             <IconCopy size="small"/>

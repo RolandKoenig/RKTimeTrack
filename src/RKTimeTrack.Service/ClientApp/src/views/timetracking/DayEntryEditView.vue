@@ -38,6 +38,7 @@
       },
       effortInHours: { required, minValue: minValue(0) },
       effortBilled: { required, minValue: minValue(0) },
+      type: { required },
       description: { }
     }
   }
@@ -72,6 +73,7 @@
         </div>
       </div>
     </div>
+    
     <div class="row">
       <div class="col-6 mb-3">
         <label for="current-row-effort" class="form-label">Effort (h)</label>
@@ -110,6 +112,21 @@
         </div>
       </div>
     </div>
+    
+    <div clas="row">
+      <div class="col-6 mb-3">
+        <label for="current-row-entrytype" class="form-label">Entry Type</label>
+        <Select id="selected-entry-entrytype"
+                variant="filled"
+                v-model="timeTrackingStore.selectedEntry.type"
+                :options="timeTrackingStore.entryTypeValues"
+                :invalid="v$.selectedEntry.type.$invalid"/>
+        <div v-for="error of v$.selectedEntry.type.$silentErrors" :key="error.$uid">
+          <div class="error-msg">{{ error.$message }}</div>
+        </div>
+      </div>
+    </div>
+    
     <div class="row">
       <div class="col-12 mb-3">
         <label for="current-row-description" class="form-label">Description</label>
