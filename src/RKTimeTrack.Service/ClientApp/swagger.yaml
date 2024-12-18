@@ -227,6 +227,8 @@ components:
         name:
           type: string
           nullable: true
+        canBeInvoiced:
+          type: boolean
         budget:
           type: number
           nullable: true

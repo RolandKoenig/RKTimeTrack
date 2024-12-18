@@ -27,6 +27,7 @@
   {
     "category": "Category1",
     "name": "Name6 (With Budget)",
+    "canBeInvoiced": true,
     "budget": 30
   },
   {
@@ -57,6 +58,7 @@
   {
     "category": "Category2",
     "name": "Name6 (With Budget)",
+    "canBeInvoiced": true,
     "budget": 30
   }
 ]

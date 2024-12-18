@@ -23,6 +23,9 @@
                 header="Name"
                 style="width: 40%"
                 sortable/>
+        <Column field="canBeInvoiced"
+                header="Can be invoiced?"
+                style="width: 20%"/>
         <Column field="budget"
                 header="Budget"
                 style="width: 20%"/>

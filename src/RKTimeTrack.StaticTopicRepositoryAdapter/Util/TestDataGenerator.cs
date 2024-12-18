@@ -13,14 +13,14 @@ static class TestDataGenerator
         result.Add(new TimeTrackingTopic("Category1", "Name3"));
         result.Add(new TimeTrackingTopic("Category1", "Name4"));
         result.Add(new TimeTrackingTopic("Category1", "Name5"));
-        result.Add(new TimeTrackingTopic("Category1", "Name6 (With Budget)", new TimeTrackingBudget(30)));
+        result.Add(new TimeTrackingTopic("Category1", "Name6 (With Budget)", true, new TimeTrackingBudget(30)));
             
         result.Add(new TimeTrackingTopic("Category2", "Name1"));
         result.Add(new TimeTrackingTopic("Category2", "Name2"));
         result.Add(new TimeTrackingTopic("Category2", "Name3"));
         result.Add(new TimeTrackingTopic("Category2", "Name4"));
         result.Add(new TimeTrackingTopic("Category2", "Name5"));
-        result.Add(new TimeTrackingTopic("Category2", "Name6 (With Budget)", new TimeTrackingBudget(30)));
+        result.Add(new TimeTrackingTopic("Category2", "Name6 (With Budget)", true, new TimeTrackingBudget(30)));
             
         return result;
     }

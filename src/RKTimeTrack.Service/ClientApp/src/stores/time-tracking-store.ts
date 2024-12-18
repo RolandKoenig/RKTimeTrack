@@ -37,6 +37,44 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
         TimeTrackingEntryType.Training
     ])
     
+    const availableTopicCategories = computed(() =>{
+       return topicStore.topics
+           .map(x => x.category)
+           .filter(onlyUnique);
+    });
+    
+    const availableTopicNames = computed(() =>{
+        if(!selectedEntry.value){ return []; }
+        if(!selectedEntry.value.topicCategory){ return []; }
+        
+        const filterCategory = selectedEntry.value.topicCategory;
+        return topicStore.topics
+            .filter(x => x.category === filterCategory)
+            .map(x => x.name)
+            .filter(onlyUnique);
+    })
+
+    const canCurrentTopicBeInvoiced = computed(() => {
+        if(!selectedEntry.value){ return false; }
+        if(!selectedEntry.value?.topicName){ return false; }
+
+        const topic = topicStore.topics.find(x =>
+            x.category == selectedEntry.value!.topicCategory &&
+            x.name == selectedEntry.value!.topicName);
+
+        if(!topic || !topic.canBeInvoiced){ return false; }
+        return true;
+    });
+    
+    watch(
+        canCurrentTopicBeInvoiced,
+        (newValue, oldValue) => {
+            if(!selectedEntry.value){ return; }
+            if(!newValue){
+                selectedEntry.value.effortBilled = 0;
+            }
+        });
+    
     // Save changes directly
     watch(
         selectedDay,
@@ -57,23 +95,6 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
         }, {
             deep: true
         });
-    
-    const availableTopicCategories = computed(() =>{
-       return topicStore.topics
-           .map(x => x.category)
-           .filter(onlyUnique);
-    });
-    
-    const availableTopicNames = computed(() =>{
-        if(!selectedEntry.value){ return []; }
-        if(!selectedEntry.value.topicCategory){ return []; }
-        
-        const filterCategory = selectedEntry.value.topicCategory;
-        return topicStore.topics
-            .filter(x => x.category === filterCategory)
-            .map(x => x.name)
-            .filter(onlyUnique);
-    })
     
     function isDayValid(day: UiTimeTrackingDay): Boolean{
         if(!day){ return false; }
@@ -379,7 +400,7 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
         dayTypeValues, entryTypeValues,
         selectMonday, selectTuesday, selectWednesday, selectThursday, selectFriday, selectSaturday, selectSunday,
         fetchCurrentWeekAgain, fetchWeekBeforeThisWeek, fetchWeekAfterThisWeek,
-        availableTopicCategories, availableTopicNames, selectedEntryCategoryChanged,
+        availableTopicCategories, availableTopicNames, canCurrentTopicBeInvoiced,selectedEntryCategoryChanged,
         addNewEntry, copySelectedEntry, deleteSelectedEntry, copyEffortToEffortBilled,
         applyNewEntryCollection
     }

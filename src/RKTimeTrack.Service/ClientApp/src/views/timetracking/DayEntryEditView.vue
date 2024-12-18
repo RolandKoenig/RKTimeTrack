@@ -91,7 +91,8 @@
             </div>
           </div>
           <div>
-            <Button text>
+            <Button text
+                    :disabled="!timeTrackingStore.canCurrentTopicBeInvoiced">
               <IconCopyRight size="small"
                              @click="timeTrackingStore.copyEffortToEffortBilled()"/>
             </Button>
@@ -106,7 +107,8 @@
                      :maxFractionDigits="2"
                      :invalid="v$.selectedEntry.effortBilled.$invalid"
                      showButtons 
-                     :step="0.25"/>
+                     :step="0.25"
+                     :disabled="!timeTrackingStore.canCurrentTopicBeInvoiced" />
         <div v-for="error of v$.selectedEntry.effortBilled.$silentErrors" :key="error.$uid">
           <div class="error-msg">{{ error.$message }}</div>
         </div>

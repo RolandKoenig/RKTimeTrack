@@ -506,6 +506,7 @@ export enum TimeTrackingEntryType {
 export class TimeTrackingTopic implements ITimeTrackingTopic {
     category!: string | undefined;
     name!: string | undefined;
+    canBeInvoiced!: boolean;
     budget!: number | undefined;
 
     constructor(data?: ITimeTrackingTopic) {
@@ -521,6 +522,7 @@ export class TimeTrackingTopic implements ITimeTrackingTopic {
         if (_data) {
             this.category = _data["category"];
             this.name = _data["name"];
+            this.canBeInvoiced = _data["canBeInvoiced"];
             this.budget = _data["budget"];
         }
     }
@@ -536,6 +538,7 @@ export class TimeTrackingTopic implements ITimeTrackingTopic {
         data = typeof data === 'object' ? data : {};
         data["category"] = this.category;
         data["name"] = this.name;
+        data["canBeInvoiced"] = this.canBeInvoiced;
         data["budget"] = this.budget;
         return data;
     }
@@ -551,6 +554,7 @@ export class TimeTrackingTopic implements ITimeTrackingTopic {
 export interface ITimeTrackingTopic {
     category: string | undefined;
     name: string | undefined;
+    canBeInvoiced: boolean;
     budget: number | undefined;
 }
 
