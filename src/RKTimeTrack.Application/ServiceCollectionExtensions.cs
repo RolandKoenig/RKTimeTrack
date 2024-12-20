@@ -17,6 +17,7 @@ public static class ServiceCollectionExtensions
             .AddScoped<GetAllTopicsUseCase>()
             .AddScoped<GetWeekUseCase>()
             .AddScoped<GetYearMetadataUseCase>()
+            .AddScoped<SearchEntriesByTextUseCase>()
             .AddScoped<UpdateDayUseCase>();
 
         return services;

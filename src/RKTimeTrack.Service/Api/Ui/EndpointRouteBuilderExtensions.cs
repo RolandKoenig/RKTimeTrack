@@ -23,6 +23,11 @@ public static class EndpointRouteBuilderExtensions
             .WithName(RemoveAsyncFromMethodName(nameof(DayApi.UpdateDayAsync)))
             .WithOpenApi();
         
+        // Entry Api
+        endpointBuilder.MapPost("/api/ui/entries", EntryApi.SearchEntriesAsync)
+            .WithName(RemoveAsyncFromMethodName(nameof(EntryApi.SearchEntriesAsync)))
+            .WithOpenApi();
+        
         // Topic Api
         endpointBuilder.MapGet("/api/ui/topics", TopicApi.GetAllTopicsAsync)
             .WithName(RemoveAsyncFromMethodName(nameof(TopicApi.GetAllTopicsAsync)))

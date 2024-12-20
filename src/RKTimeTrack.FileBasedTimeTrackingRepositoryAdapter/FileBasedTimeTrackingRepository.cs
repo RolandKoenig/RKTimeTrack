@@ -28,7 +28,12 @@ class FileBasedTimeTrackingRepository : ITimeTrackingRepository
             return _store.StoreToDocument();
         }
     }
-    
+
+    public Task<IReadOnlyList<TimeTrackingDay>> GetAllDaysInAscendingOrderAsync(CancellationToken cancellationToken)
+    {
+        return Task.FromResult(_store.GetAllDaysInAscendingOrderAsync());
+    }
+
     public Task<TimeTrackingWeek> GetWeekAsync(int year, int weekNumber, CancellationToken cancellationToken)
     {
         lock (_lockObject)

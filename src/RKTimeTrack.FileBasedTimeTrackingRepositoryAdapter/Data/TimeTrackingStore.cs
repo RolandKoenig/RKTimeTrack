@@ -21,6 +21,8 @@ class TimeTrackingStore
     {
         this.Store = document.Days.ToImmutableList();
     }
+
+    public IReadOnlyList<TimeTrackingDay> GetAllDaysInAscendingOrderAsync() => this.Store;
     
     /// <summary>
     /// Is there a <see cref="TimeTrackingDay"/> for the given Date?
