@@ -24,6 +24,23 @@ public class ApiTests
     }
 
     [Fact]
+    public async Task GetCurrentWeek_WhichWasNeverAccessedBefore()
+    {
+        // Arrange
+        var httpClient = new HttpClient();
+        httpClient.BaseAddress = _server.RootUri;
+        
+        // Act
+        var week = await httpClient.GetFromJsonAsync<TimeTrackingWeek>("api/ui/week");
+        
+        // Assert
+        week.Should().NotBeNull();
+        
+        var today = DateOnly.FromDateTime(DateTimeOffset.Now.Date);
+        week!.GetAllDays().Should().Contain(x => x.Date == today);
+    }
+
+    [Fact]
     public async Task GetWeek_WhichWasNeverAccessedBefore()
     {
         // Arrange
