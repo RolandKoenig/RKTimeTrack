@@ -16,11 +16,11 @@ public class ApiTests
         WebHostServerFixture server,
         ITestOutputHelper testOutputHelper)
     {
-        PlaywrightUtil.EnsureBrowsersInstalled();
-        
         _server = server;
         _server.TestOutputHelper = testOutputHelper;
         _server.ProgramStartupMethod = Program.CreateApplication;
+        
+        _server.ResetRepositories();
     }
 
     [Fact]

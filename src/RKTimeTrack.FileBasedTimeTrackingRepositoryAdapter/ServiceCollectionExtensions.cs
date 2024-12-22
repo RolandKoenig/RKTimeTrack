@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using RKTimeTrack.Application.Ports;
+using RKTimeTrack.FileBasedTimeTrackingRepositoryAdapter.Data;
+using RKTimeTrack.FileBasedTimeTrackingRepositoryAdapter.Testing;
 
 namespace RKTimeTrack.FileBasedTimeTrackingRepositoryAdapter;
 
@@ -12,7 +14,6 @@ public static class ServiceCollectionExtensions
         var options = new FileBasedTimeTrackingRepositoryOptions();
         configure(options);
         
-        // Ensure single instance of FileBasedTimeTrackingRepository
         services
             .AddSingleton<FileBasedTimeTrackingRepository>()
             .AddSingleton<ITimeTrackingRepository, FileBasedTimeTrackingRepository>(x =>
@@ -20,6 +21,14 @@ public static class ServiceCollectionExtensions
         
         return services
             .AddSingleton(options)
+            .AddSingleton<TimeTrackingStore>()
             .AddHostedService<TimeTrackingPersistenceService>();
+    }
+    
+    public static IServiceCollection AddFileBasedTimeTrackingRepositoryTestInterface(
+        this IServiceCollection services)
+    {
+        return services
+            .AddSingleton<IFileBasedTimeTrackingRepositoryTestInterface, FileBasedTimeTrackingRepositoryTestInterface>();
     }
 }

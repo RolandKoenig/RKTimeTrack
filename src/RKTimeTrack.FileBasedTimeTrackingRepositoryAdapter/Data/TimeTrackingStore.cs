@@ -7,9 +7,26 @@ namespace RKTimeTrack.FileBasedTimeTrackingRepositoryAdapter.Data;
 
 class TimeTrackingStore
 {
-    public ImmutableList<TimeTrackingDay> Store { get; private set; } 
-        = ImmutableList<TimeTrackingDay>.Empty;
+    private DateTimeOffset _lastChangeTimestamp = DateTimeOffset.MinValue;
+    private ImmutableList<TimeTrackingDay> _store = ImmutableList<TimeTrackingDay>.Empty;
 
+    public ImmutableList<TimeTrackingDay> Store
+    {
+        get => _store;
+        private set 
+        {
+            _store = value;
+            _lastChangeTimestamp = DateTimeOffset.MinValue;
+        }
+    }
+    
+    public DateTimeOffset LastChangeTimestamp => _lastChangeTimestamp;
+    
+    public void Reset()
+    {
+        this.Store = ImmutableList<TimeTrackingDay>.Empty;
+    }
+    
     public TimeTrackingDocument StoreToDocument()
     {
         return new TimeTrackingDocument(
@@ -77,7 +94,6 @@ class TimeTrackingStore
         }
 
         this.Store = this.Store.Insert(~existingRowIndex, day);
-
         return day;
     }
 

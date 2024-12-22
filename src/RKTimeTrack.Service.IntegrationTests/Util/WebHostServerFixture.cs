@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using RKTimeTrack.FileBasedTimeTrackingRepositoryAdapter;
+using RKTimeTrack.FileBasedTimeTrackingRepositoryAdapter.Testing;
 using Serilog;
 using Xunit.Abstractions;
 
@@ -31,6 +33,15 @@ public class WebHostServerFixture : IDisposable
     public WebHostServerFixture()
     {
         _rootUriInitializer = new Lazy<Uri>(() => new Uri(StartAndGetRootUri()));
+    }
+
+    public void ResetRepositories()
+    {
+        if (this.Host == null) { return; }
+        
+        var fileBasedTimeTrackingRepositoryTestInterface = 
+            this.Host!.Services.GetRequiredService<IFileBasedTimeTrackingRepositoryTestInterface>();
+        fileBasedTimeTrackingRepositoryTestInterface.ResetRepository();
     }
 
     private static void RunInBackgroundThread(Action action)
@@ -88,7 +99,7 @@ public class WebHostServerFixture : IDisposable
             ["--environment", "IntegrationTests"], 
             webAppBuilder =>
             {
-                
+                webAppBuilder.Services.AddFileBasedTimeTrackingRepositoryTestInterface();
             },
             loggerConfig =>
             {
