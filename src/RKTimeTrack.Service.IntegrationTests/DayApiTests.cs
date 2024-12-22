@@ -129,9 +129,12 @@ public class DayApiTests
     }
     
     [Theory]
-    [InlineData(0f)]
-    [InlineData(2f)]
-    public async Task UpdateDay_Property_EffortInHours(float effortInHours)
+    [InlineData(0.0)]
+    [InlineData(0.25)]
+    [InlineData(0.5)]
+    [InlineData(0.75)]
+    [InlineData(2.0)]
+    public async Task UpdateDay_Property_EffortInHours(double effortInHours)
     {
         // Arrange
         var httpClient = new HttpClient();
@@ -155,5 +158,98 @@ public class DayApiTests
 
         week!.Tuesday.Should().NotBeNull();
         week.Tuesday.Entries[0].EffortInHours.Hours.Should().Be(effortInHours);
+    }
+    
+    [Theory]
+    [InlineData(0.0)]
+    [InlineData(0.25)]
+    [InlineData(0.5)]
+    [InlineData(0.75)]
+    [InlineData(2.0)]
+    public async Task UpdateDay_Property_EffortBilled(double effortBilled)
+    {
+        // Arrange
+        var httpClient = new HttpClient();
+        httpClient.BaseAddress = _server.RootUri;
+        
+        // Act
+        await httpClient.PostAsJsonAsync(
+            "api/ui/day",
+            new UpdateDay_Request(
+                new DateOnly(2024, 12, 17),
+                TimeTrackingDayType.WorkingDay,
+                [
+                    new TimeTrackingEntry(
+                        new TimeTrackingTopicReference("Category1", "Name1"),
+                        effortBilled,
+                        effortBilled)
+                ]));
+        
+        // Assert
+        var week = await httpClient.GetFromJsonAsync<TimeTrackingWeek>("api/ui/week/2024/51");
+        week.Should().NotBeNull();
+
+        week!.Tuesday.Should().NotBeNull();
+        week.Tuesday.Entries[0].EffortBilled.Hours.Should().Be(effortBilled);
+    }
+    
+    [Theory]
+    [InlineData(TimeTrackingEntryType.Default)]
+    [InlineData(TimeTrackingEntryType.Training)]
+    public async Task UpdateDay_Property_EntryType(TimeTrackingEntryType entryType)
+    {
+        // Arrange
+        var httpClient = new HttpClient();
+        httpClient.BaseAddress = _server.RootUri;
+        
+        // Act
+        await httpClient.PostAsJsonAsync(
+            "api/ui/day",
+            new UpdateDay_Request(
+                new DateOnly(2024, 12, 17),
+                TimeTrackingDayType.WorkingDay,
+                [
+                    new TimeTrackingEntry(
+                        new TimeTrackingTopicReference("Category1", "Name1"),
+                        0f,
+                        type: entryType)
+                ]));
+        
+        // Assert
+        var week = await httpClient.GetFromJsonAsync<TimeTrackingWeek>("api/ui/week/2024/51");
+        week.Should().NotBeNull();
+
+        week!.Tuesday.Should().NotBeNull();
+        week.Tuesday.Entries[0].Type.Should().Be(entryType);
+    }
+    
+    [Theory]
+    [InlineData("")]
+    [InlineData("Some dummy description")]
+    public async Task UpdateDay_Property_Description(string description)
+    {
+        // Arrange
+        var httpClient = new HttpClient();
+        httpClient.BaseAddress = _server.RootUri;
+        
+        // Act
+        await httpClient.PostAsJsonAsync(
+            "api/ui/day",
+            new UpdateDay_Request(
+                new DateOnly(2024, 12, 17),
+                TimeTrackingDayType.WorkingDay,
+                [
+                    new TimeTrackingEntry(
+                        new TimeTrackingTopicReference("Category1", "Name1"),
+                        0f,
+                        description: description)
+                ]));
+        
+        // Assert
+        var week = await httpClient.GetFromJsonAsync<TimeTrackingWeek>("api/ui/week/2024/51");
+        week.Should().NotBeNull();
+
+        week!.Tuesday.Should().NotBeNull();
+        week.Tuesday.Entries[0].Description.Should().Be(description);
     }
 }
