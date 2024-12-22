@@ -1,3 +1,4 @@
+using FluentAssertions;
 using Microsoft.Playwright;
 using RKTimeTrack.Service.IntegrationTests.Util;
 using Xunit;
@@ -6,13 +7,14 @@ using Xunit.Abstractions;
 namespace RKTimeTrack.Service.IntegrationTests;
 
 [Collection(nameof(TestEnvironmentCollection))]
-public class UITests
+public class UiTests
 {
     private const bool HEADLESS_MODE = true;
+    private static readonly float? SLOW_MODE_MILLISECONDS = null;
     
     private readonly WebHostServerFixture _server;
     
-    public UITests(
+    public UiTests(
         WebHostServerFixture server,
         ITestOutputHelper testOutputHelper)
     {
@@ -32,7 +34,8 @@ public class UITests
         using var playwright = await Playwright.CreateAsync();
         await using var browser = await playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions()
         {
-            Headless = HEADLESS_MODE
+            Headless = HEADLESS_MODE,
+            SlowMo = SLOW_MODE_MILLISECONDS
         });
         var page = await browser.NewPageAsync();
 
@@ -41,6 +44,6 @@ public class UITests
 
         // Assert
         var title = await page.TitleAsync();
-        Assert.Equal("RK TimeTrack", title);
+        title.Should().Be("RK TimeTrack");
     }
 }
