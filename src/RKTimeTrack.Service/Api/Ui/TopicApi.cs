@@ -12,10 +12,10 @@ static class TopicApi
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     internal static async Task<IResult> GetAllTopicsAsync(
         [FromServices] IWebHostEnvironment environment,
-        [FromServices] GetAllTopicsUseCase useCase,
+        [FromServices] GetAllTopics_UseCase useCase,
         CancellationToken cancellationToken)
     {
-        var request = new GetAllTopicsRequest();
+        var request = new GetAllTopics_Request();
         
         // Call application logic
         var result = await useCase.GetAllTopicsAsync(request, cancellationToken);

@@ -12,12 +12,12 @@ static class YearApi
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     internal static async Task<IResult> GetYearMetadataAsync(
         [FromServices] IWebHostEnvironment environment,
-        [FromServices] GetYearMetadataUseCase useCase,
+        [FromServices] GetYearMetadata_UseCase useCase,
         [FromRoute] int year = 0, 
         CancellationToken cancellationToken = default)
     {
         // Map request
-        var request = new GetYearMetadataRequest(year);
+        var request = new GetYearMetadata_Request(year);
         
         // Call application logic
         var result = await useCase.GetYearMetadataAsync(request, cancellationToken);

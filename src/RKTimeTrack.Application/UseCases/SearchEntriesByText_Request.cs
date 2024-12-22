@@ -2,11 +2,11 @@ using FluentValidation;
 
 namespace RKTimeTrack.Application.UseCases;
 
-public record SearchEntriesByTextRequest(
+public record SearchEntriesByText_Request(
     string SearchText,
     int MaxSearchResults = 20)
 {
-    public class Validator : AbstractValidator<SearchEntriesByTextRequest>
+    public class Validator : AbstractValidator<SearchEntriesByText_Request>
     {
         public Validator()
         {

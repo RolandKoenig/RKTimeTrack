@@ -7,16 +7,14 @@ using HandlerResult = OneOf.OneOf<
     TimeTrackingYearMetadata,
     CommonErrors.ValidationError>;
 
-public class GetYearMetadataUseCase
+public class GetYearMetadata_UseCase
 {
-    public async Task<HandlerResult> GetYearMetadataAsync(GetYearMetadataRequest request, CancellationToken cancellationToken)
+    public async Task<HandlerResult> GetYearMetadataAsync(GetYearMetadata_Request request, CancellationToken cancellationToken)
     {
-        // Validate
-        var validator = new GetYearMetadataRequest.Validator();
+        var validator = new GetYearMetadata_Request.Validator();
         var validationResult = await validator.ValidateAsync(request, cancellationToken);
         if (!validationResult.IsValid) { return new CommonErrors.ValidationError(validationResult.Errors); }
         
-        // Create and return result
         var calendarWeekOfLastDay = GermanCalendarWeekUtil.GetCalendarWeek(new DateOnly(request.Year, 12, 31));
         return new TimeTrackingYearMetadata(
             maxWeekNumber: calendarWeekOfLastDay switch

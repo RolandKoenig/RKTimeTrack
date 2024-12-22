@@ -12,8 +12,8 @@ static class EntryApi
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     internal static async Task<IResult> SearchEntriesAsync(
         [FromServices] IWebHostEnvironment environment,
-        [FromServices] SearchEntriesByTextUseCase useCase,
-        [FromBody] SearchEntriesByTextRequest request,
+        [FromServices] SearchEntriesByText_UseCase useCase,
+        [FromBody] SearchEntriesByText_Request request,
         CancellationToken cancellationToken)
     {
         // Call application logic

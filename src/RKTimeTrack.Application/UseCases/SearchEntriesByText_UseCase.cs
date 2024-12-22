@@ -7,16 +7,14 @@ using HandlerResult = OneOf.OneOf<
     IReadOnlyList<TimeTrackingEntry>,
     CommonErrors.ValidationError>;
 
-public class SearchEntriesByTextUseCase(ITimeTrackingRepository timeTrackingRepository)
+public class SearchEntriesByText_UseCase(ITimeTrackingRepository timeTrackingRepository)
 {
-    public async Task<HandlerResult> SearchEntriesByTextAsync(SearchEntriesByTextRequest request, CancellationToken cancellationToken)
+    public async Task<HandlerResult> SearchEntriesByTextAsync(SearchEntriesByText_Request request, CancellationToken cancellationToken)
     {
-        // Validate
-        var validator = new SearchEntriesByTextRequest.Validator();
+        var validator = new SearchEntriesByText_Request.Validator();
         var validationResult = await validator.ValidateAsync(request, cancellationToken);
         if (!validationResult.IsValid) { return new CommonErrors.ValidationError(validationResult.Errors); }
-
-        // Search logic
+        
         var allDaysInAscendingOrder = await timeTrackingRepository.GetAllDaysInAscendingOrderAsync(cancellationToken);
         var result = allDaysInAscendingOrder
             .Reverse()
