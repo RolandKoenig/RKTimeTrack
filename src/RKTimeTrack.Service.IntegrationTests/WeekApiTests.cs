@@ -8,11 +8,11 @@ using Xunit.Abstractions;
 namespace RKTimeTrack.Service.IntegrationTests;
 
 [Collection(nameof(TestEnvironmentCollection))]
-public class ApiTests
+public class WeekApiTests
 {
     private readonly WebHostServerFixture _server;
     
-    public ApiTests(
+    public WeekApiTests(
         WebHostServerFixture server,
         ITestOutputHelper testOutputHelper)
     {
@@ -20,7 +20,7 @@ public class ApiTests
         _server.TestOutputHelper = testOutputHelper;
         _server.ProgramStartupMethod = Program.CreateApplication;
         
-        _server.ResetRepositories();
+        _server.Reset();
     }
 
     [Fact]

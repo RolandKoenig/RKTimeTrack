@@ -3,7 +3,11 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
+using NSubstitute;
+using NSubstitute.ClearExtensions;
+using RKTimeTrack.Application.Ports;
 using RKTimeTrack.FileBasedTimeTrackingRepositoryAdapter;
 using RKTimeTrack.FileBasedTimeTrackingRepositoryAdapter.Testing;
 using Serilog;
@@ -25,6 +29,8 @@ public class WebHostServerFixture : IDisposable
     /// Dependency for logging into test results
     /// </summary>
     public ITestOutputHelper? TestOutputHelper { get; set; }
+
+    public ITopicRepository TopicRepositoryMock = Substitute.For<ITopicRepository>();
     
     public Uri RootUri => _rootUriInitializer.Value;
     
@@ -35,13 +41,15 @@ public class WebHostServerFixture : IDisposable
         _rootUriInitializer = new Lazy<Uri>(() => new Uri(StartAndGetRootUri()));
     }
 
-    public void ResetRepositories()
+    public void Reset()
     {
         if (this.Host == null) { return; }
         
         var fileBasedTimeTrackingRepositoryTestInterface = 
             this.Host!.Services.GetRequiredService<IFileBasedTimeTrackingRepositoryTestInterface>();
         fileBasedTimeTrackingRepositoryTestInterface.ResetRepository();
+        
+        this.TopicRepositoryMock.ClearSubstitute();
     }
 
     private static void RunInBackgroundThread(Action action)
@@ -99,7 +107,11 @@ public class WebHostServerFixture : IDisposable
             ["--environment", "IntegrationTests"], 
             webAppBuilder =>
             {
-                webAppBuilder.Services.AddFileBasedTimeTrackingRepositoryTestInterface();
+                var services = webAppBuilder.Services;
+                
+                services.AddFileBasedTimeTrackingRepositoryTestInterface();
+
+                services.Replace(ServiceDescriptor.Singleton<ITopicRepository>(TopicRepositoryMock));
             },
             loggerConfig =>
             {

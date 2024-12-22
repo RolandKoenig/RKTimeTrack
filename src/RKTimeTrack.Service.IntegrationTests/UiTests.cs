@@ -24,7 +24,7 @@ public class UiTests
         _server.TestOutputHelper = testOutputHelper;
         _server.ProgramStartupMethod = Program.CreateApplication;
         
-        _server.ResetRepositories();
+        _server.Reset();
     }
     
     [Fact]
