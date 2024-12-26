@@ -18,6 +18,10 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
       
+    - uses: actions/setup-dotnet@v4
+      with:
+        global-json-file: "./global.json"
+      
     - name: Build and test
       shell: pwsh
       working-directory: ./scripts
