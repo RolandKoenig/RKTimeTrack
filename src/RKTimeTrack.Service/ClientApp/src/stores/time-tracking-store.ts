@@ -62,13 +62,14 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
             x.category == selectedEntry.value!.topicCategory &&
             x.name == selectedEntry.value!.topicName);
 
+        // noinspection RedundantIfStatementJS
         if(!topic || !topic.canBeInvoiced){ return false; }
         return true;
     });
     
     watch(
         canCurrentTopicBeInvoiced,
-        (newValue, oldValue) => {
+        (newValue) => {
             if(!selectedEntry.value){ return; }
             if(!newValue){
                 selectedEntry.value.effortBilled = 0;
@@ -78,13 +79,13 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
     // Save changes directly
     watch(
         selectedDay,
-        (newValue, oldValue) =>{
+        (_, oldValue) =>{
             if(!oldValue){ return; }
             if(!isDayValid(oldValue)){ return; }
-
+            
             // TODO: async handling of updates
             timeTrackClient.updateDay(new UpdateDay_Request(oldValue.toBackendModel()))
-                .catch(e =>{
+                .catch(() =>{
                     toast.add({
                         severity: 'error',
                         summary: 'Communication Error',
@@ -393,6 +394,7 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
         return array.indexOf(value) === index;
     }
     
+    // noinspection JSIgnoredPromiseFromCall
     fetchInitialData();
     
     return{
