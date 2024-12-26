@@ -369,6 +369,7 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
         if(isLoading.value){ return; }
         if(!selectedDay.value){ return; }
         if(!selectedEntry.value){ return; }
+        if(!canCurrentTopicBeInvoiced.value){ return; }
         
         selectedEntry.value.effortBilled = selectedEntry.value.effortInHours;
     }
