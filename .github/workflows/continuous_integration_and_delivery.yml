@@ -17,7 +17,7 @@ jobs:
     steps:
     - uses: actions/setup-dotnet@v4
       with:
-        global-json-file: "/global.json"
+        global-json-file: "global.json"
           
     - name: Checkout code
       uses: actions/checkout@v2
