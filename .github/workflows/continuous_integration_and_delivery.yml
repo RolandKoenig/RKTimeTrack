@@ -15,12 +15,12 @@ jobs:
   build-and-test: 
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/setup-dotnet@v4
-      with:
-        global-json-file: "global.json"
-          
     - name: Checkout code
       uses: actions/checkout@v2
+      
+    - uses: actions/setup-dotnet@v4
+      with:
+        global-json-file: "./global.json"
       
     - name: Build and test
       shell: pwsh
