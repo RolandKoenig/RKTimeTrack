@@ -14,6 +14,11 @@ public class SearchEntriesByText_UseCase(ITimeTrackingRepository timeTrackingRep
         var validator = new SearchEntriesByText_Request.Validator();
         var validationResult = await validator.ValidateAsync(request, cancellationToken);
         if (!validationResult.IsValid) { return new CommonErrors.ValidationError(validationResult.Errors); }
+
+        if (string.IsNullOrWhiteSpace(request.SearchText))
+        {
+            return Array.Empty<TimeTrackingEntry>();
+        }
         
         var allDaysInAscendingOrder = await timeTrackingRepository.GetAllDaysInAscendingOrderAsync(cancellationToken);
         var result = allDaysInAscendingOrder

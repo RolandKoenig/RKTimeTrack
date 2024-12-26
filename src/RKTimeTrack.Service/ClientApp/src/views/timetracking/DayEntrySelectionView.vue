@@ -9,7 +9,7 @@
   import type {UiTimeTrackingEntry} from "@/stores/models/ui-time-tracking-entry";
   import type {DataTableRowReorderEvent} from "primevue/datatable";
   import IconTraining from "@/components/icons/IconTraining.vue";
-  
+    
   const timeTrackingStore = useTimeTrackingStore();
   
   function copyToClipboard(dataToCopy: string){
