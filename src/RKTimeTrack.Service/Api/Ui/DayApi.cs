@@ -12,8 +12,8 @@ static class DayApi
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     internal static async Task<IResult> UpdateDayAsync(
         [FromServices] IWebHostEnvironment environment,
-        [FromServices] UpdateDayUseCase useCase,
-        [FromBody] UpdateDayRequest request,
+        [FromServices] UpdateDay_UseCase useCase,
+        [FromBody] UpdateDay_Request request,
         CancellationToken cancellationToken)
     {
         // Call application logic

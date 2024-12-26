@@ -12,6 +12,7 @@ import Aura from '@primevue/themes/aura';
 import Button from "primevue/button"
 import Card from 'primevue/card';
 import DataTable from 'primevue/datatable';
+import Dialog from 'primevue/dialog';
 import Divider from "primevue/divider";
 import Column from 'primevue/column';
 import InputNumber from 'primevue/inputnumber'
@@ -77,6 +78,7 @@ app.component('Button', Button);
 app.component('Card', Card);
 app.component('Column', Column);
 app.component('DataTable', DataTable);
+app.component('Dialog', Dialog);
 app.component('Divider', Divider);
 app.component('InputNumber', InputNumber);
 app.component('InputText', InputText);

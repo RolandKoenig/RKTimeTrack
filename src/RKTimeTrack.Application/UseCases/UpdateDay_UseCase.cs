@@ -7,16 +7,14 @@ using HandlerResult = OneOf.OneOf<
     TimeTrackingDay,
     CommonErrors.ValidationError>;
 
-public class UpdateDayUseCase(ITimeTrackingRepository timeTrackingRepository)
+public class UpdateDay_UseCase(ITimeTrackingRepository timeTrackingRepository)
 {
-    public async Task<HandlerResult> UpdateDayAsync(UpdateDayRequest request, CancellationToken cancellationToken)
+    public async Task<HandlerResult> UpdateDayAsync(UpdateDay_Request request, CancellationToken cancellationToken)
     {
-        // Validate
-        var validator = new UpdateDayRequest.Validator();
+        var validator = new UpdateDay_Request.Validator();
         var validationResult = await validator.ValidateAsync(request, cancellationToken);
         if (!validationResult.IsValid) { return new CommonErrors.ValidationError(validationResult.Errors); }
         
-        // Update repository
         var result = await timeTrackingRepository.UpdateDayAsync(
             new TimeTrackingDay(request.Date, request.Type, request.Entries),
             cancellationToken);

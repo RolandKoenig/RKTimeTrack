@@ -1,27 +1,25 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using RKTimeTrack.Application.Models;
 using RKTimeTrack.Application.UseCases;
 using RKTimeTrack.Service.Mappings;
 
 namespace RKTimeTrack.Service.Api.Ui;
 
-static class YearApi
+static class EntryApi
 {
-    [ProducesResponseType(typeof(TimeTrackingYearMetadata), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(IReadOnlyList<TimeTrackingEntry>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-    internal static async Task<IResult> GetYearMetadataAsync(
+    internal static async Task<IResult> SearchEntriesAsync(
         [FromServices] IWebHostEnvironment environment,
-        [FromServices] GetYearMetadata_UseCase useCase,
-        [FromRoute] int year = 0, 
-        CancellationToken cancellationToken = default)
+        [FromServices] SearchEntriesByText_UseCase useCase,
+        [FromBody] SearchEntriesByText_Request request,
+        CancellationToken cancellationToken)
     {
-        // Map request
-        var request = new GetYearMetadata_Request(year);
-        
         // Call application logic
-        var result = await useCase.GetYearMetadataAsync(request, cancellationToken);
-
+        var result = 
+            await useCase.SearchEntriesByTextAsync(request, cancellationToken);
+        
         // Map response
         return result.Match(
             Results.Ok,

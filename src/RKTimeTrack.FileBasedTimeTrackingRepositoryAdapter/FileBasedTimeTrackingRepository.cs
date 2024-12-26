@@ -4,14 +4,13 @@ using RKTimeTrack.FileBasedTimeTrackingRepositoryAdapter.Data;
 
 namespace RKTimeTrack.FileBasedTimeTrackingRepositoryAdapter;
 
-class FileBasedTimeTrackingRepository : ITimeTrackingRepository
+class FileBasedTimeTrackingRepository(TimeTrackingStore store) : ITimeTrackingRepository
 {
-    private readonly object _lockObject = new();
-    private readonly TimeTrackingStore _store = new();
+    private readonly Lock _lockObject = new();
+    private readonly TimeTrackingStore _store = store;
     
-    private DateTimeOffset _lastChangeTimestamp = DateTimeOffset.MinValue;
-
-    public DateTimeOffset LastChangeTimestamp => _lastChangeTimestamp;
+    // ReSharper disable once InconsistentlySynchronizedField
+    public DateTimeOffset LastChangeTimestamp => _store.LastChangeTimestamp;
     
     public void RestoreFromDocument(TimeTrackingDocument document)
     {
@@ -28,7 +27,13 @@ class FileBasedTimeTrackingRepository : ITimeTrackingRepository
             return _store.StoreToDocument();
         }
     }
-    
+
+    public Task<IReadOnlyList<TimeTrackingDay>> GetAllDaysInAscendingOrderAsync(CancellationToken cancellationToken)
+    {
+        // ReSharper disable once InconsistentlySynchronizedField
+        return Task.FromResult(_store.GetAllDaysInAscendingOrderAsync());
+    }
+
     public Task<TimeTrackingWeek> GetWeekAsync(int year, int weekNumber, CancellationToken cancellationToken)
     {
         lock (_lockObject)
@@ -41,10 +46,7 @@ class FileBasedTimeTrackingRepository : ITimeTrackingRepository
     {
         lock (_lockObject)
         {
-            var result = Task.FromResult(_store.AddOrUpdateDay(day));
-            _lastChangeTimestamp = DateTimeOffset.UtcNow;
-            
-            return result;
+            return Task.FromResult(_store.AddOrUpdateDay(day));
         }
     }
 }

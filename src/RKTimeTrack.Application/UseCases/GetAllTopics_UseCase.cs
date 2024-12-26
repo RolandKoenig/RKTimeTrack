@@ -7,18 +7,17 @@ using HandlerResult = OneOf.OneOf<
     IReadOnlyCollection<TimeTrackingTopic>,
     CommonErrors.ValidationError>;
 
-public class GetAllTopicsUseCase(ITopicRepository topicRepository)
+public class GetAllTopics_UseCase(ITopicRepository topicRepository)
 {
 
-    public async Task<HandlerResult> GetAllTopicsAsync(GetAllTopicsRequest request, CancellationToken cancellationToken)
+    public async Task<HandlerResult> GetAllTopicsAsync(GetAllTopics_Request request, CancellationToken cancellationToken)
     {
-        // Validate
-        var validator = new GetAllTopicsRequest.Validator();
+        var validator = new GetAllTopics_Request.Validator();
         var validationResult = await validator.ValidateAsync(request, cancellationToken);
         if (!validationResult.IsValid) { return new CommonErrors.ValidationError(validationResult.Errors); }
-
-        // Execute UseCase
-        var result = await topicRepository.GetAllTopicsAsync(cancellationToken);
+        
+        var result = 
+            await topicRepository.GetAllTopicsAsync(cancellationToken);
         return HandlerResult.FromT0(result);
     }
 }

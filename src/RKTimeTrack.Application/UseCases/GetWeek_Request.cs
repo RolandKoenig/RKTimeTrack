@@ -4,9 +4,9 @@ using RKTimeTrack.Application.Util;
 namespace RKTimeTrack.Application.UseCases;
 
 // ReSharper disable once ClassNeverInstantiated.Global
-public record GetWeekRequest(int Year, int WeekNumber)
+public record GetWeek_Request(int Year, int WeekNumber)
 {
-    public class Validator : AbstractValidator<GetWeekRequest>
+    public class Validator : AbstractValidator<GetWeek_Request>
     {
         public Validator()
         {

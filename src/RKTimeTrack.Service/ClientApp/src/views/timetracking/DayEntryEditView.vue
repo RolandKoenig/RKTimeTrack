@@ -4,6 +4,7 @@
   import {useVuelidate} from "@vuelidate/core";
   import {computed} from "vue";
   import IconCopyRight from "@/components/icons/IconCopyRight.vue";
+  import SearchOldEntriesView from "@/views/timetracking/SearchOldEntriesView.vue";
   
   const timeTrackingStore = useTimeTrackingStore();
   
@@ -44,6 +45,10 @@
   }
   const v$ = useVuelidate(validationRules, timeTrackingStore);
   
+  function descriptionSelected(description: string){
+    if(!timeTrackingStore.selectedEntry){ return; }
+    timeTrackingStore.selectedEntry.description = description;
+  }
 </script>
 
 <template>
@@ -131,7 +136,11 @@
     
     <div class="row">
       <div class="col-12 mb-3">
-        <label for="current-row-description" class="form-label">Description</label>
+        <div class="editor-and-button-container">
+          <label for="current-row-description" class="form-label">Description</label>
+          <SearchOldEntriesView class="align-self-end"
+                                @description-selected="descriptionSelected"/>
+        </div>
         <Textarea id="current-row-description"
                   v-model.lazy="timeTrackingStore.selectedEntry.description"
                   rows="6"

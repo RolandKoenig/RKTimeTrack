@@ -13,12 +13,12 @@ static class WeekApi
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     internal static async Task<IResult> GetCurrentWeekAsync(
         [FromServices] IWebHostEnvironment environment,
-        [FromServices] GetWeekUseCase useCase,
+        [FromServices] GetWeek_UseCase useCase,
         CancellationToken cancellationToken)
     {
         // Map request
         var now = DateTime.UtcNow;
-        var request = new GetWeekRequest(
+        var request = new GetWeek_Request(
             now.Year, 
             GermanCalendarWeekUtil.GetCalendarWeek(DateOnly.FromDateTime(now)));
         
@@ -36,13 +36,13 @@ static class WeekApi
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     internal static async Task<IResult> GetWeekAsync(
         [FromServices] IWebHostEnvironment environment,
-        [FromServices] GetWeekUseCase useCase,
+        [FromServices] GetWeek_UseCase useCase,
         [FromRoute] int year, 
         [FromRoute] int weekNumber,
         CancellationToken cancellationToken)
     {
         // Map request
-        var request = new GetWeekRequest(year, weekNumber);
+        var request = new GetWeek_Request(year, weekNumber);
         
         // Call application logic
         var result = await useCase.GetWeekAsync(request, cancellationToken);

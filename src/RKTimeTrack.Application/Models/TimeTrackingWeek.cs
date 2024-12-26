@@ -28,4 +28,15 @@ public class TimeTrackingWeek(
    public TimeTrackingDay Saturday { get; } = saturday;
 
    public TimeTrackingDay Sunday { get; } = sunday;
+   
+   public IEnumerable<TimeTrackingDay> GetAllDays() => 
+   [
+       this.Monday, 
+       this.Tuesday, 
+       this.Wednesday, 
+       this.Thursday, 
+       this.Friday, 
+       this.Saturday, 
+       this.Sunday
+   ];
 }

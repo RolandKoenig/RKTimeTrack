@@ -4,7 +4,7 @@ import {
     TimeTrackClient,
     TimeTrackingDayType, 
     TimeTrackingEntryType,
-    UpdateDayRequest
+    UpdateDay_Request
 } from "@/services/time-track-client.generated";
 import {useTopicStore} from "@/stores/topic-store";
 import {UiTimeTrackingWeek} from "@/stores/models/ui-time-tracking-week";
@@ -83,7 +83,7 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
             if(!isDayValid(oldValue)){ return; }
 
             // TODO: async handling of updates
-            timeTrackClient.updateDay(new UpdateDayRequest(oldValue.toBackendModel()))
+            timeTrackClient.updateDay(new UpdateDay_Request(oldValue.toBackendModel()))
                 .catch(e =>{
                     toast.add({
                         severity: 'error',

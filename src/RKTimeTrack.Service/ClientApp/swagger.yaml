@@ -12,7 +12,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpdateDayRequest'
+              $ref: '#/components/schemas/UpdateDay_Request'
         required: true
       responses:
         '200':
@@ -21,6 +21,38 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/TimeTrackingDay'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+  /api/ui/entries:
+    post:
+      tags:
+        - EntryApi
+      operationId: SearchEntries
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchEntriesByText_Request'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TimeTrackingEntry'
         '400':
           description: Bad Request
           content:
@@ -173,6 +205,16 @@ components:
           type: string
           nullable: true
       additionalProperties: { }
+    SearchEntriesByText_Request:
+      type: object
+      properties:
+        searchText:
+          type: string
+          nullable: true
+        maxSearchResults:
+          type: integer
+          format: int32
+      additionalProperties: false
     TimeTrackingDay:
       type: object
       properties:
@@ -274,7 +316,7 @@ components:
           type: integer
           format: int32
       additionalProperties: false
-    UpdateDayRequest:
+    UpdateDay_Request:
       type: object
       properties:
         date:

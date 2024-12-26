@@ -21,7 +21,7 @@ export class TimeTrackClient {
     /**
      * @return OK
      */
-    updateDay(body: UpdateDayRequest): Promise<TimeTrackingDay> {
+    updateDay(body: UpdateDay_Request): Promise<TimeTrackingDay> {
         let url_ = this.baseUrl + "/api/ui/day";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -71,6 +71,68 @@ export class TimeTrackClient {
             });
         }
         return Promise.resolve<TimeTrackingDay>(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    searchEntries(body: SearchEntriesByText_Request): Promise<TimeTrackingEntry[]> {
+        let url_ = this.baseUrl + "/api/ui/entries";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processSearchEntries(_response);
+        });
+    }
+
+    protected processSearchEntries(response: Response): Promise<TimeTrackingEntry[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(TimeTrackingEntry.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return result200;
+            });
+        } else if (status === 400) {
+            return response.text().then((_responseText) => {
+            let result400: any = null;
+            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result400 = ProblemDetails.fromJS(resultData400);
+            return throwException("Bad Request", status, _responseText, _headers, result400);
+            });
+        } else if (status === 500) {
+            return response.text().then((_responseText) => {
+            let result500: any = null;
+            let resultData500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result500 = ProblemDetails.fromJS(resultData500);
+            return throwException("Internal Server Error", status, _responseText, _headers, result500);
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<TimeTrackingEntry[]>(null as any);
     }
 
     /**
@@ -365,6 +427,53 @@ export interface IProblemDetails {
     instance: string | undefined;
 
     [key: string]: any;
+}
+
+export class SearchEntriesByText_Request implements ISearchEntriesByText_Request {
+    searchText!: string | undefined;
+    maxSearchResults!: number;
+
+    constructor(data?: ISearchEntriesByText_Request) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.searchText = _data["searchText"];
+            this.maxSearchResults = _data["maxSearchResults"];
+        }
+    }
+
+    static fromJS(data: any): SearchEntriesByText_Request {
+        data = typeof data === 'object' ? data : {};
+        let result = new SearchEntriesByText_Request();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["searchText"] = this.searchText;
+        data["maxSearchResults"] = this.maxSearchResults;
+        return data;
+    }
+
+    clone(): SearchEntriesByText_Request {
+        const json = this.toJSON();
+        let result = new SearchEntriesByText_Request();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ISearchEntriesByText_Request {
+    searchText: string | undefined;
+    maxSearchResults: number;
 }
 
 export class TimeTrackingDay implements ITimeTrackingDay {
@@ -723,13 +832,13 @@ export interface ITimeTrackingYearMetadata {
     maxWeekNumber: number;
 }
 
-export class UpdateDayRequest implements IUpdateDayRequest {
+export class UpdateDay_Request implements IUpdateDay_Request {
     /** Date in format 'yyyy-mm-dd' */
     date!: string;
     type!: TimeTrackingDayType;
     entries!: TimeTrackingEntry[] | undefined;
 
-    constructor(data?: IUpdateDayRequest) {
+    constructor(data?: IUpdateDay_Request) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -750,9 +859,9 @@ export class UpdateDayRequest implements IUpdateDayRequest {
         }
     }
 
-    static fromJS(data: any): UpdateDayRequest {
+    static fromJS(data: any): UpdateDay_Request {
         data = typeof data === 'object' ? data : {};
-        let result = new UpdateDayRequest();
+        let result = new UpdateDay_Request();
         result.init(data);
         return result;
     }
@@ -769,15 +878,15 @@ export class UpdateDayRequest implements IUpdateDayRequest {
         return data;
     }
 
-    clone(): UpdateDayRequest {
+    clone(): UpdateDay_Request {
         const json = this.toJSON();
-        let result = new UpdateDayRequest();
+        let result = new UpdateDay_Request();
         result.init(json);
         return result;
     }
 }
 
-export interface IUpdateDayRequest {
+export interface IUpdateDay_Request {
     /** Date in format 'yyyy-mm-dd' */
     date: string;
     type: TimeTrackingDayType;

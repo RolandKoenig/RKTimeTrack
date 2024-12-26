@@ -1,5 +1,5 @@
-﻿using System.Reflection;
-using System.Text.Json;
+﻿using System.Collections.Immutable;
+using System.Reflection;
 using RKTimeTrack.Application.Models;
 using RKTimeTrack.Application.Util;
 
@@ -7,23 +7,39 @@ namespace RKTimeTrack.FileBasedTimeTrackingRepositoryAdapter.Data;
 
 class TimeTrackingStore
 {
-    private readonly List<TimeTrackingDay> _store = new();
+    private DateTimeOffset _lastChangeTimestamp = DateTimeOffset.MinValue;
+    private ImmutableList<TimeTrackingDay> _store = ImmutableList<TimeTrackingDay>.Empty;
 
-    public IReadOnlyList<TimeTrackingDay> Store => _store;
-
+    public ImmutableList<TimeTrackingDay> Store
+    {
+        get => _store;
+        private set 
+        {
+            _store = value;
+            _lastChangeTimestamp = DateTimeOffset.MinValue;
+        }
+    }
+    
+    public DateTimeOffset LastChangeTimestamp => _lastChangeTimestamp;
+    
+    public void Reset()
+    {
+        this.Store = ImmutableList<TimeTrackingDay>.Empty;
+    }
+    
     public TimeTrackingDocument StoreToDocument()
     {
         return new TimeTrackingDocument(
             Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? string.Empty,
-            _store.ToArray());
+            this.Store);
     }
     
     public void RestoreFromDocument(TimeTrackingDocument document)
     {
-        _store.Clear();
-        _store.Capacity = document.Days.Count;
-        _store.AddRange(document.Days);
+        this.Store = document.Days.ToImmutableList();
     }
+
+    public IReadOnlyList<TimeTrackingDay> GetAllDaysInAscendingOrderAsync() => this.Store;
     
     /// <summary>
     /// Is there a <see cref="TimeTrackingDay"/> for the given Date?
@@ -73,12 +89,11 @@ class TimeTrackingStore
         var existingRowIndex = SearchForDayIndex(day.Date);
         if (existingRowIndex > -1)
         {
-            _store[existingRowIndex] = day;
+            this.Store = this.Store.SetItem(existingRowIndex, day);
             return day;
         }
 
-        _store.Insert(~existingRowIndex, day);
-
+        this.Store = this.Store.Insert(~existingRowIndex, day);
         return day;
     }
 
@@ -101,7 +116,7 @@ class TimeTrackingStore
             date: date,
             type: dayType,
             entries: Array.Empty<TimeTrackingEntry>());
-        _store.Insert(~existingRowIndex, newDay);
+        this.Store = this.Store.Insert(~existingRowIndex, newDay);
         return newDay;
     }
     
@@ -114,7 +129,7 @@ class TimeTrackingStore
         var index = SearchForDayIndex(date);
         if (index > -1)
         {
-            return _store[index];
+            return this.Store[index];
         }
 
         return null;
@@ -130,11 +145,11 @@ class TimeTrackingStore
         // https://tutorials.eu/binary-search-in-c-sharp/
         
         var left = 0;
-        var right = _store.Count - 1;
+        var right = this.Store.Count - 1;
         while (left <= right)
         {
             var middle = (left + right) / 2;
-            var comparison = _store[middle].Date.CompareTo(date);
+            var comparison = this.Store[middle].Date.CompareTo(date);
             if (comparison == 0)
             {
                 return middle;

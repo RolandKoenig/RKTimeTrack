@@ -14,10 +14,11 @@ public static class ServiceCollectionExtensions
 
         // UseCases
         services
-            .AddScoped<GetAllTopicsUseCase>()
-            .AddScoped<GetWeekUseCase>()
-            .AddScoped<GetYearMetadataUseCase>()
-            .AddScoped<UpdateDayUseCase>();
+            .AddScoped<GetAllTopics_UseCase>()
+            .AddScoped<GetWeek_UseCase>()
+            .AddScoped<GetYearMetadata_UseCase>()
+            .AddScoped<SearchEntriesByText_UseCase>()
+            .AddScoped<UpdateDay_UseCase>();
 
         return services;
     }
