@@ -52,7 +52,7 @@
     <div class="row justify-content-md-end" >
       <div class="col-3">
         <Button type="button"
-                label="Cancel"
+                label="Close"
                 severity="secondary"
                 style="width: 100%"
                 @click="dialogVisible = false" />

@@ -4,7 +4,7 @@
   import {useVuelidate} from "@vuelidate/core";
   import {computed} from "vue";
   import IconCopyRight from "@/components/icons/IconCopyRight.vue";
-  import SearchOldEntriesView from "@/views/timetracking/SearchOldEntriesView.vue";
+  import SearchOldEntriesButton from "@/views/timetracking/SearchOldEntriesButton.vue";
   
   const timeTrackingStore = useTimeTrackingStore();
   
@@ -138,8 +138,8 @@
       <div class="col-12 mb-3">
         <div class="editor-and-button-container">
           <label for="current-row-description" class="form-label">Description</label>
-          <SearchOldEntriesView class="align-self-end"
-                                @description-selected="descriptionSelected"/>
+          <SearchOldEntriesButton class="align-self-end"
+                                  @description-selected="descriptionSelected"/>
         </div>
         <Textarea id="current-row-description"
                   v-model.lazy="timeTrackingStore.selectedEntry.description"
