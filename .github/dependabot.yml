@@ -1,8 +1,5 @@
 version: 2
 
-# Template from
-# https://devblogs.microsoft.com/dotnet/using-dependabot-to-manage-dotnet-sdk-updates/
-
 updates:
 
   # .NET SDK 
@@ -19,7 +16,7 @@ updates:
       all-dependencies:
         patterns:
           - "*"
-          - 
+
   # NPM (Vue.js Client app)
   - package-ecosystem: "npm"
     directory: "/src/RKTimeTrack.Service/ClientApp"
@@ -34,6 +31,7 @@ updates:
       all-dependencies:
         patterns:
           - "*"
+
   # Nuget for all .NET projects   
   - package-ecosystem: "nuget"
     directory: "/"
