@@ -4,6 +4,8 @@ version: 2
 # https://devblogs.microsoft.com/dotnet/using-dependabot-to-manage-dotnet-sdk-updates/
 
 updates:
+
+  # .NET SDK 
   - package-ecosystem: "dotnet-sdk"
     directory: "/"
     schedule:
@@ -17,9 +19,10 @@ updates:
       all-dependencies:
         patterns:
           - "*"
-            
-  - package-ecosystem: "nuget"
-    directory: "/src"
+          - 
+  # NPM (Vue.js Client app)
+  - package-ecosystem: "npm"
+    directory: "/src/RKTimeTrack.Service/ClientApp"
     schedule:
       interval: "weekly"
       day: "wednesday"
@@ -31,9 +34,113 @@ updates:
       all-dependencies:
         patterns:
           - "*"
-            
-  - package-ecosystem: "npm"
-    directory: "/src/RKTimeTrack.Service/ClientApp"
+  # Nuget for all .NET projects   
+  - package-ecosystem: "nuget"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "wednesday"
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - "version-update:semver-major"
+    groups:
+      all-dependencies:
+        patterns:
+          - "*"
+  - package-ecosystem: "nuget"
+    directory: "/src/RKTimeTrack.Application"
+    schedule:
+      interval: "weekly"
+      day: "wednesday"
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - "version-update:semver-major"
+    groups:
+      all-dependencies:
+        patterns:
+          - "*"
+  - package-ecosystem: "nuget"
+    directory: "/src/RKTimeTrack.Application.Tests"
+    schedule:
+      interval: "weekly"
+      day: "wednesday"
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - "version-update:semver-major"
+    groups:
+      all-dependencies:
+        patterns:
+          - "*"
+  - package-ecosystem: "nuget"
+    directory: "/src/RKTimeTrack.FileBasedTimeTrackingRepositoryAdapter"
+    schedule:
+      interval: "weekly"
+      day: "wednesday"
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - "version-update:semver-major"
+    groups:
+      all-dependencies:
+        patterns:
+          - "*"
+  - package-ecosystem: "nuget"
+    directory: "/src/RKTimeTrack.FileBasedTimeTrackingRepositoryAdapter.Tests"
+    schedule:
+      interval: "weekly"
+      day: "wednesday"
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - "version-update:semver-major"
+    groups:
+      all-dependencies:
+        patterns:
+          - "*"
+  - package-ecosystem: "nuget"
+    directory: "/src/RKTimeTrack.Service"
+    schedule:
+      interval: "weekly"
+      day: "wednesday"
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - "version-update:semver-major"
+    groups:
+      all-dependencies:
+        patterns:
+          - "*"
+  - package-ecosystem: "nuget"
+    directory: "/src/RKTimeTrack.Service.IntegrationTests"
+    schedule:
+      interval: "weekly"
+      day: "wednesday"
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - "version-update:semver-major"
+    groups:
+      all-dependencies:
+        patterns:
+          - "*"
+  - package-ecosystem: "nuget"
+    directory: "/src/RKTimeTrack.StaticTopicRepositoryAdapter"
+    schedule:
+      interval: "weekly"
+      day: "wednesday"
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - "version-update:semver-major"
+    groups:
+      all-dependencies:
+        patterns:
+          - "*"
+  - package-ecosystem: "nuget"
+    directory: "/src/RKTimeTrack.StaticTopicRepositoryAdapterTests"
     schedule:
       interval: "weekly"
       day: "wednesday"
