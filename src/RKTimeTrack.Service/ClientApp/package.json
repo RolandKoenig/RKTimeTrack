@@ -21,7 +21,7 @@
     "@vuelidate/validators": "^2.0.4",
     "bootstrap": "^5.3.3",
     "lodash": "^4.17.21",
-    "pinia": "^2.1.7",
+    "pinia": "^2.3.0",
     "primevue": "^4.0.0-rc.2",
     "uuid": "^10.0.0",
     "vue": "^3.4.21",
