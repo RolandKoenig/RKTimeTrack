@@ -28,6 +28,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config", "Config", "{B38631
 		global.json = global.json
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RKTimeTrack.Service.ContainerTests", "src\RKTimeTrack.Service.ContainerTests\RKTimeTrack.Service.ContainerTests.csproj", "{58DE3D28-BEE6-419B-B0EA-2F53908BF438}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -66,6 +68,10 @@ Global
 		{FCEE73D6-9E5B-40E5-B4DE-CCF4F48C771C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FCEE73D6-9E5B-40E5-B4DE-CCF4F48C771C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FCEE73D6-9E5B-40E5-B4DE-CCF4F48C771C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58DE3D28-BEE6-419B-B0EA-2F53908BF438}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58DE3D28-BEE6-419B-B0EA-2F53908BF438}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58DE3D28-BEE6-419B-B0EA-2F53908BF438}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58DE3D28-BEE6-419B-B0EA-2F53908BF438}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{23D1E0C1-0B3B-40A9-94EA-99AD6B06326F} = {CC396AFC-7E63-47B5-A500-4E6CACCC6ED6}
@@ -74,5 +80,6 @@ Global
 		{F5AE1DA2-19F5-4EA4-9034-15C739FAD96D} = {CC396AFC-7E63-47B5-A500-4E6CACCC6ED6}
 		{98842AC2-A5BE-462A-AC53-66697E965E63} = {580BA189-E461-4BC9-B408-5EFFF3F3AB85}
 		{FCEE73D6-9E5B-40E5-B4DE-CCF4F48C771C} = {CC396AFC-7E63-47B5-A500-4E6CACCC6ED6}
+		{58DE3D28-BEE6-419B-B0EA-2F53908BF438} = {580BA189-E461-4BC9-B408-5EFFF3F3AB85}
 	EndGlobalSection
 EndGlobal

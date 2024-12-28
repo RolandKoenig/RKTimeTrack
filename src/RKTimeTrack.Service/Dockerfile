@@ -4,6 +4,8 @@
 #####################################
 # Build image
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+ARG RESOURCE_REAPER_SESSION_ID="00000000-0000-0000-0000-000000000000"
+LABEL "org.testcontainers.resource-reaper-session"=$RESOURCE_REAPER_SESSION_ID
 WORKDIR /src
 
 # Install node to be able to use npm during build time
@@ -35,5 +37,5 @@ EXPOSE 80
 
 ## Copy application and define entrypoint
 WORKDIR /app
-COPY --from=publish --exclude=appsettings.Development.json /app/publish . 
+COPY --from=publish --exclude=appsettings.Development.json --chown=app /app/publish . 
 ENTRYPOINT ["dotnet", "RKTimeTrack.Service.dll"]
