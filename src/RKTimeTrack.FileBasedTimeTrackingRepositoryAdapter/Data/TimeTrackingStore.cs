@@ -16,7 +16,7 @@ class TimeTrackingStore
         private set 
         {
             _store = value;
-            _lastChangeTimestamp = DateTimeOffset.MinValue;
+            _lastChangeTimestamp = DateTimeOffset.UtcNow;
         }
     }
     
