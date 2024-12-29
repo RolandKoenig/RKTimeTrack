@@ -8,7 +8,9 @@ public enum TimeTrackingEntryType
     Default = 0,
     
     /// <summary>
-    /// I give training for others.
+    /// Training for others.
     /// </summary>
-    Training = 1
+    Training = 1,
+    
+    Standby = 2
 }
