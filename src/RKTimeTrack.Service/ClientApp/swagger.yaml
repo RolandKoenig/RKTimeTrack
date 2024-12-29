@@ -259,6 +259,7 @@ components:
       enum:
         - Default
         - Training
+        - Standby
       type: string
     TimeTrackingTopic:
       type: object

@@ -1,7 +1,7 @@
 ﻿<script setup lang="ts">
   import {computed} from "vue";
   import {UiTimeTrackingDay} from "@/stores/models/ui-time-tracking-day";
-  import {TimeTrackingDayType} from "@/services/time-track-client.generated";
+  import {TimeTrackingDayType, TimeTrackingEntryType} from "@/services/time-track-client.generated";
   import {getCurrentDateAsString} from "@/util/date-util";
   import IconHome from "@/components/icons/IconHome.vue";
 
@@ -21,6 +21,10 @@
     if(!props.timeTrackingDay){ return false; }
     return props.timeTrackingDay.date === currentDayString;
   })
+  
+  function isEntryTypeRelevantForSummaries(entryType: TimeTrackingEntryType) : boolean{
+    return entryType != TimeTrackingEntryType.Standby;
+  }
 
   const tooltipText = computed(() =>{
     if(!props.timeTrackingDay){ return ""; }
@@ -28,11 +32,13 @@
     let result = `${props.timeTrackingDay.type}`;
     if(props.timeTrackingDay.entries.length > 0){
       const sumEffort = props.timeTrackingDay.entries
+          .filter(actEntry => isEntryTypeRelevantForSummaries(actEntry.type))
           .map(actEntry => actEntry.effortInHours)
           .reduce((sum, currentValue) => sum + currentValue);
       if(sumEffort > 0){ result += `\nEffort: ${sumEffort} h` }
       
       const sumBilled = props.timeTrackingDay.entries
+          .filter(actEntry => isEntryTypeRelevantForSummaries(actEntry.type))
           .map(actEntry => actEntry.effortBilled)
           .reduce((sum, currentValue) => sum + currentValue);
       if(sumBilled > 0){ result += `\nBilled: ${sumBilled} h` }
@@ -78,7 +84,9 @@
     if(!props.timeTrackingDay.entries){ return 0; }
     
     let sum = 0;
-    props.timeTrackingDay.entries.forEach(x => sum+= x.effortInHours);
+    props.timeTrackingDay.entries
+        .filter(actEntry => isEntryTypeRelevantForSummaries(actEntry.type))
+        .forEach(x => sum+= x.effortInHours);
     return sum;
   })
   
@@ -87,7 +95,9 @@
     if(!props.timeTrackingDay.entries){ return 0; }
 
     let sum = 0;
-    props.timeTrackingDay.entries.forEach(x => sum+= x.effortBilled);
+    props.timeTrackingDay.entries
+        .filter(actEntry => isEntryTypeRelevantForSummaries(actEntry.type))
+        .forEach(x => sum+= x.effortBilled);
     return sum;
   });
 </script>
