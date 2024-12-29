@@ -35,9 +35,9 @@ public class WeekApiTests
         
         // Assert
         week.Should().NotBeNull();
-        
-        var today = DateOnly.FromDateTime(DateTimeOffset.Now.Date);
-        week!.GetAllDays().Should().Contain(x => x.Date == today);
+
+        var today = _server.TimeProviderMock.GetUtcNow();
+        week!.GetAllDays().Should().Contain(x => x.Date == DateOnly.FromDateTime(today.DateTime));
     }
 
     [Fact]
