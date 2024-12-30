@@ -6,17 +6,22 @@ namespace RKTimeTrack.Application.Tests.Util;
 public class GermanCalendarWeekUtilTests
 {
     [Theory]
-    [InlineData(2024, 1, 1, 1)]
-    public void GetCalendarWeek(int year, int month, int day, int expectedWeek)
+    [InlineData(2024, 1, 1, 1, false)]
+    [InlineData(2024, 12, 29, 52, false)]
+    [InlineData(2024, 12, 30, 1, true)]
+    [InlineData(2024, 12, 31, 1, true)]
+    [InlineData(2025, 1, 1, 1, false)]
+    public void GetCalendarWeek(int year, int month, int day, int expectedWeek, bool expectInNextYear)
     {
         // Arrange
         var date = new DateOnly(year, month, day);
 
         // Act
-        var actualWeek = GermanCalendarWeekUtil.GetCalendarWeek(date);
+        var actualWeek = GermanCalendarWeekUtil.GetCalendarWeek(date, out var nextYear);
 
         // Assert
         actualWeek.Should().Be(expectedWeek);
+        nextYear.Should().Be(expectInNextYear);
     }
 
     [Fact]
@@ -30,7 +35,7 @@ public class GermanCalendarWeekUtilTests
         var currentDate = startDate;
         while (currentDate <= endDate)
         {
-            var currentCalendarWeek = GermanCalendarWeekUtil.GetCalendarWeek(currentDate);
+            var currentCalendarWeek = GermanCalendarWeekUtil.GetCalendarWeek(currentDate, out var _);
             currentCalendarWeek.Should().BeGreaterOrEqualTo(1, because: $"wrong for date {currentDate}");
             currentCalendarWeek.Should().BeLessOrEqualTo(53, because: $"wrong for date {currentDate}");
 

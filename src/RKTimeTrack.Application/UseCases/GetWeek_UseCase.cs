@@ -33,7 +33,7 @@ public class GetWeek_UseCase(ITimeTrackingRepository timeTrackingRepository)
     {
         if (weekNumber != 53) { return; }
         
-        var calendarWeekOfLastDay = GermanCalendarWeekUtil.GetCalendarWeek(new DateOnly(year, 12, 31));
+        var calendarWeekOfLastDay = GermanCalendarWeekUtil.GetCalendarWeek(new DateOnly(year, 12, 31), out _);
         if (calendarWeekOfLastDay == 1)
         {
             year++;

@@ -21,7 +21,7 @@ public static class GermanCalendarWeekUtil
         weekNumber.MustBeLessThanOrEqualTo(CALENDAR_WEEK_MAX);
         
         var firstDayOfYearInFirstCalendarWeek = new DateOnly(year, 1, 1);
-        while (GetCalendarWeek(firstDayOfYearInFirstCalendarWeek) > 1)
+        while (GetCalendarWeek(firstDayOfYearInFirstCalendarWeek, out _) > 1)
         {
             firstDayOfYearInFirstCalendarWeek = firstDayOfYearInFirstCalendarWeek.AddDays(1);
         }
@@ -41,8 +41,10 @@ public static class GermanCalendarWeekUtil
     /// <summary>
     /// Gets the calendar week for the given date in germany.
     /// </summary>
-    public static int GetCalendarWeek(DateOnly date)
+    public static int GetCalendarWeek(DateOnly date, out bool nextYear)
     {
+        nextYear = false;
+        
         // Method from
         // https://mycsharp.de/forum/threads/83188/datetime-nummer-der-kalenderwoche-ermitteln?page=1
         
@@ -70,6 +72,7 @@ public static class GermanCalendarWeekUtil
             if (testCalendarWeek == 2)
             {
                 calendarWeek = 1;
+                nextYear = true;
             }
         }
         

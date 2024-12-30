@@ -18,9 +18,12 @@ static class WeekApi
     {
         // Map request
         var now = DateTime.UtcNow;
+        var weekOfYear = GermanCalendarWeekUtil.GetCalendarWeek(DateOnly.FromDateTime(now), out var nextYear);
+        var year = nextYear ? now.Year + 1 : now.Year;
+        
         var request = new GetWeek_Request(
-            now.Year, 
-            GermanCalendarWeekUtil.GetCalendarWeek(DateOnly.FromDateTime(now)));
+            year, 
+            weekOfYear);
         
         // Call application logic
         var result = await useCase.GetWeekAsync(request, cancellationToken);
