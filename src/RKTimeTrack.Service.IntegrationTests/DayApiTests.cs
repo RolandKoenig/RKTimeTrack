@@ -196,7 +196,7 @@ public class DayApiTests
     [Theory]
     [InlineData(TimeTrackingEntryType.Default)]
     [InlineData(TimeTrackingEntryType.Training)]
-    [InlineData(TimeTrackingEntryType.Standby)]
+    [InlineData(TimeTrackingEntryType.OnCall)]
     public async Task UpdateDay_Property_EntryType(TimeTrackingEntryType entryType)
     {
         // Arrange

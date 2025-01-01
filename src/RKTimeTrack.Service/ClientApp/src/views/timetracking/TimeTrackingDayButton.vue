@@ -23,7 +23,7 @@
   })
   
   function isEntryTypeRelevantForSummaries(entryType: TimeTrackingEntryType) : boolean{
-    return entryType != TimeTrackingEntryType.Standby;
+    return entryType != TimeTrackingEntryType.OnCall;
   }
 
   const tooltipText = computed(() =>{

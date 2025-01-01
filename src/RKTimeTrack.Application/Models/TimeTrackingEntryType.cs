@@ -12,5 +12,5 @@ public enum TimeTrackingEntryType
     /// </summary>
     Training = 1,
     
-    Standby = 2
+    OnCall = 2
 }

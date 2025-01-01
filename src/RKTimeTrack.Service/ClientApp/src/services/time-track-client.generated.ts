@@ -610,7 +610,7 @@ export interface ITimeTrackingEntry {
 export enum TimeTrackingEntryType {
     Default = "Default",
     Training = "Training",
-    Standby = "Standby",
+    OnCall = "OnCall",
 }
 
 export class TimeTrackingTopic implements ITimeTrackingTopic {

@@ -259,7 +259,7 @@ components:
       enum:
         - Default
         - Training
-        - Standby
+        - OnCall
       type: string
     TimeTrackingTopic:
       type: object

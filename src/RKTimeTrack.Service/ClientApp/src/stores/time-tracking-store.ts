@@ -35,7 +35,7 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
     const entryTypeValues = ref([
         TimeTrackingEntryType.Default,
         TimeTrackingEntryType.Training,
-        TimeTrackingEntryType.Standby
+        TimeTrackingEntryType.OnCall
     ])
     
     const availableTopicCategories = computed(() =>{
