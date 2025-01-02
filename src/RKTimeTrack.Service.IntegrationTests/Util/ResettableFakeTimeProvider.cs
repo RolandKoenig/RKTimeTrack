@@ -8,7 +8,7 @@ namespace RKTimeTrack.Service.IntegrationTests.Util;
 /// </summary>
 public class ResettableFakeTimeProvider : TimeProvider
 {
-    private readonly DateTimeOffset _startTimeStamp;
+    private readonly DateTimeOffset _defaultStartTimeStamp;
     private FakeTimeProvider _fakeTimeProvider;
 
     public override long TimestampFrequency => _fakeTimeProvider.TimestampFrequency;
@@ -21,17 +21,22 @@ public class ResettableFakeTimeProvider : TimeProvider
         set => _fakeTimeProvider.AutoAdvanceAmount = value;
     }
     
-    public ResettableFakeTimeProvider(DateTimeOffset startTimeStamp)
+    public ResettableFakeTimeProvider(DateTimeOffset defaultStartTimeStamp)
     {
-        _startTimeStamp = startTimeStamp;
-        _fakeTimeProvider = new FakeTimeProvider(startTimeStamp);
+        _defaultStartTimeStamp = defaultStartTimeStamp;
+        _fakeTimeProvider = new FakeTimeProvider(defaultStartTimeStamp);
     }
     
     public void Reset()
     {
-        _fakeTimeProvider = new FakeTimeProvider(_startTimeStamp);
+        _fakeTimeProvider = new FakeTimeProvider(_defaultStartTimeStamp);
     }
 
+    public void Reset(DateTimeOffset customStartTimeStamp)
+    {
+        _fakeTimeProvider = new FakeTimeProvider(customStartTimeStamp);
+    }
+    
     public override ITimer CreateTimer(TimerCallback callback, object? state, TimeSpan dueTime, TimeSpan period)
         => _fakeTimeProvider.CreateTimer(callback, state, dueTime, period);
     

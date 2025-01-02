@@ -23,10 +23,17 @@ public class WeekApiTests
         _server.Reset();
     }
 
-    [Fact]
-    public async Task GetCurrentWeek_WhichWasNeverAccessedBefore()
+    [Theory]
+    [InlineData(2024, 12, 1)]
+    [InlineData(2024, 12, 30)]
+    [InlineData(2024, 12, 31)]
+    [InlineData(2025, 1, 1)]
+    public async Task GetCurrentWeek_WhichWasNeverAccessedBefore(int year, int month, int day)
     {
         // Arrange
+        var startDate = new DateTimeOffset(year, month, day, 8, 0, 0, TimeSpan.Zero);
+        _server.TimeProviderMock.Reset(startDate);
+        
         var httpClient = new HttpClient();
         httpClient.BaseAddress = _server.RootUri;
         
@@ -35,9 +42,8 @@ public class WeekApiTests
         
         // Assert
         week.Should().NotBeNull();
-
-        var today = _server.TimeProviderMock.GetUtcNow();
-        week!.GetAllDays().Should().Contain(x => x.Date == DateOnly.FromDateTime(today.DateTime));
+        
+        week!.GetAllDays().Should().Contain(x => x.Date == DateOnly.FromDateTime(startDate.DateTime));
     }
 
     [Fact]
