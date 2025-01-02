@@ -7,6 +7,8 @@ namespace RKTimeTrack.FileBasedTimeTrackingRepositoryAdapter.Data;
 
 class TimeTrackingStore
 {
+    private readonly TimeProvider _timeProvider;
+    
     private DateTimeOffset _lastChangeTimestamp = DateTimeOffset.MinValue;
     private ImmutableList<TimeTrackingDay> _store = ImmutableList<TimeTrackingDay>.Empty;
 
@@ -16,11 +18,16 @@ class TimeTrackingStore
         private set 
         {
             _store = value;
-            _lastChangeTimestamp = DateTimeOffset.UtcNow;
+            _lastChangeTimestamp = _timeProvider.GetUtcNow();
         }
     }
     
     public DateTimeOffset LastChangeTimestamp => _lastChangeTimestamp;
+
+    public TimeTrackingStore(TimeProvider timeProvider)
+    {
+        _timeProvider = timeProvider;
+    }
     
     public void Reset()
     {
