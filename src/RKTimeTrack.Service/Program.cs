@@ -27,7 +27,6 @@ public static class Program
         
         // #########################################
         // Add services to the container.
-
         builder.Services.AddSerilog(
             config =>
             {
@@ -35,6 +34,7 @@ public static class Program
                 customizeLogger?.Invoke(config);
             });
         builder.Services.AddAuthorization();
+        builder.Services.AddSingleton(TimeProvider.System);
 
         // Add application services
         builder.Services.AddRKTimeTrackApplication();

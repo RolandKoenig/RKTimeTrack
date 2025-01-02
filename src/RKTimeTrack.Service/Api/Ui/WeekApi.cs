@@ -13,12 +13,15 @@ static class WeekApi
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     internal static async Task<IResult> GetCurrentWeekAsync(
         [FromServices] IWebHostEnvironment environment,
+        [FromServices] TimeProvider timeProvider,
         [FromServices] GetWeek_UseCase useCase,
         CancellationToken cancellationToken)
     {
         // Map request
-        var now = DateTime.UtcNow;
-        var weekOfYear = GermanCalendarWeekUtil.GetCalendarWeek(DateOnly.FromDateTime(now), out var nextYear);
+        var now = timeProvider.GetUtcNow();
+        var weekOfYear = GermanCalendarWeekUtil.GetCalendarWeek(
+            DateOnly.FromDateTime(now.DateTime),
+            out var nextYear);
         var year = nextYear ? now.Year + 1 : now.Year;
         
         var request = new GetWeek_Request(

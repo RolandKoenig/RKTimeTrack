@@ -18,6 +18,8 @@ namespace RKTimeTrack.Service.IntegrationTests.Util;
 // ReSharper disable once ClassNeverInstantiated.Global
 public class WebHostServerFixture : IDisposable
 {
+    private static readonly DateTimeOffset _mockedStartTimestamp = new DateTimeOffset(
+        2024, 12, 16, 11, 0, 0, TimeSpan.FromHours(1));
     private readonly Lazy<Uri> _rootUriInitializer;
 
     /// <summary>
@@ -30,7 +32,11 @@ public class WebHostServerFixture : IDisposable
     /// </summary>
     public ITestOutputHelper? TestOutputHelper { get; set; }
 
-    public ITopicRepository TopicRepositoryMock = Substitute.For<ITopicRepository>();
+    public DateTimeOffset MockedStartTimestamp => _mockedStartTimestamp;
+    
+    public ITopicRepository TopicRepositoryMock { get; } = Substitute.For<ITopicRepository>();
+
+    public ResettableFakeTimeProvider TimeProviderMock { get; } = new(_mockedStartTimestamp);
     
     public Uri RootUri => _rootUriInitializer.Value;
     
@@ -50,6 +56,7 @@ public class WebHostServerFixture : IDisposable
         fileBasedTimeTrackingRepositoryTestInterface.ResetRepository();
         
         this.TopicRepositoryMock.ClearSubstitute();
+        this.TimeProviderMock.Reset();
     }
 
     private static void RunInBackgroundThread(Action action)
@@ -111,7 +118,8 @@ public class WebHostServerFixture : IDisposable
                 
                 services.AddFileBasedTimeTrackingRepositoryTestInterface();
 
-                services.Replace(ServiceDescriptor.Singleton<ITopicRepository>(TopicRepositoryMock));
+                services.Replace(ServiceDescriptor.Singleton(TopicRepositoryMock));
+                services.Replace(ServiceDescriptor.Singleton<TimeProvider>(TimeProviderMock));
             },
             loggerConfig =>
             {

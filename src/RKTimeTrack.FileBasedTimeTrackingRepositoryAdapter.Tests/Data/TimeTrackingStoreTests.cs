@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using Microsoft.Extensions.Time.Testing;
 using RKTimeTrack.Application.Models;
 using RKTimeTrack.FileBasedTimeTrackingRepositoryAdapter.Data;
 
@@ -6,12 +7,13 @@ namespace RKTimeTrack.FileBasedTimeTrackingRepositoryAdapter.Tests.Data;
 
 public class TimeTrackingStoreTests
 {
-
     [Fact]
     public void AddDaysInCorrectOrder()
     {
         // Arrange
-        var sut = new TimeTrackingStore();
+        var startTimestamp = new DateTimeOffset(2024, 1, 1, 8, 0, 0, TimeSpan.Zero);
+        var timeProvider = new FakeTimeProvider(startTimestamp);
+        var sut = new TimeTrackingStore(timeProvider);
         
         // Act
         sut.AddOrUpdateDay(new TimeTrackingDay(
@@ -41,7 +43,9 @@ public class TimeTrackingStoreTests
     public void AddDaysInWrongOrder()
     {
         // Arrange
-        var sut = new TimeTrackingStore();
+        var startTimestamp = new DateTimeOffset(2024, 1, 1, 8, 0, 0, TimeSpan.Zero);
+        var timeProvider = new FakeTimeProvider(startTimestamp);
+        var sut = new TimeTrackingStore(timeProvider);
         
         // Act
         sut.AddOrUpdateDay(new TimeTrackingDay(
@@ -71,7 +75,9 @@ public class TimeTrackingStoreTests
     public void GetWeek_which_is_not_existing()
     {
         // Arrange
-        var sut = new TimeTrackingStore();
+        var startTimestamp = new DateTimeOffset(2024, 1, 1, 8, 0, 0, TimeSpan.Zero);
+        var timeProvider = new FakeTimeProvider(startTimestamp);
+        var sut = new TimeTrackingStore(timeProvider);
 
         // Act
         var week = sut.GetOrCreateWeek(2024, 25);
@@ -107,7 +113,9 @@ public class TimeTrackingStoreTests
     public void GetWeek_where_some_days_exist()
     {
         // Arrange
-        var sut = new TimeTrackingStore();
+        var startTimestamp = new DateTimeOffset(2024, 1, 1, 8, 0, 0, TimeSpan.Zero);
+        var timeProvider = new FakeTimeProvider(startTimestamp);
+        var sut = new TimeTrackingStore(timeProvider);
 
         // Act
         var createdFriday = sut.AddOrUpdateDay(new TimeTrackingDay(
@@ -158,7 +166,9 @@ public class TimeTrackingStoreTests
     public void GetWeek_where_all_days_exist()
     {
         // Arrange
-        var sut = new TimeTrackingStore();
+        var startTimestamp = new DateTimeOffset(2024, 1, 1, 8, 0, 0, TimeSpan.Zero);
+        var timeProvider = new FakeTimeProvider(startTimestamp);
+        var sut = new TimeTrackingStore(timeProvider);
 
         // Act
         var allDays = Enumerable.Range(0, 7).Select(x =>
@@ -211,7 +221,10 @@ public class TimeTrackingStoreTests
     public void AddOrUpdateDay_and_GetDay_in_fully_random_order(int seed)
     {
         // Arrange
-        var sut = new TimeTrackingStore();
+        var startTimestamp = new DateTimeOffset(2024, 1, 1, 8, 0, 0, TimeSpan.Zero);
+        var timeProvider = new FakeTimeProvider(startTimestamp);
+        var sut = new TimeTrackingStore(timeProvider);
+        
         var random = new Random(seed);
         var controlDictionary = new Dictionary<DateOnly, TimeTrackingDay>();
         
@@ -246,5 +259,29 @@ public class TimeTrackingStoreTests
             var actDayFromStore = sut.GetOrCreateDay(actControlDictionaryEntry.Key);
             actDayFromStore.Should().Be(actControlDictionaryEntry.Value);
         }
+    }
+    
+    [Fact]
+    public void EachUpdate_increases_LastChangeTimestamp()
+    {
+        // Arrange
+        var startTimestamp = new DateTimeOffset(2024, 1, 1, 8, 0, 0, TimeSpan.Zero);
+        var timeProvider = new FakeTimeProvider(startTimestamp);
+        var sut = new TimeTrackingStore(timeProvider);
+        
+        // Act + Assert
+        sut.AddOrUpdateDay(new TimeTrackingDay(
+            new DateOnly(2022, 1, 1), 
+            TimeTrackingDayType.Weekend,
+            Array.Empty<TimeTrackingEntry>()));
+        sut.LastChangeTimestamp.Should().Be(startTimestamp);
+        
+        var newTimestamp = startTimestamp.AddHours(1.5);
+        timeProvider.SetUtcNow(newTimestamp);
+        sut.AddOrUpdateDay(new TimeTrackingDay(
+            new DateOnly(2022, 1, 2), 
+            TimeTrackingDayType.Weekend,
+            Array.Empty<TimeTrackingEntry>()));
+        sut.LastChangeTimestamp.Should().Be(newTimestamp);
     }
 }
