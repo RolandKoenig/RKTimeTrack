@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RKTimeTrack.Application.Models;
 using RKTimeTrack.Application.UseCases;
-using RKTimeTrack.Application.Util;
 using RKTimeTrack.Service.Mappings;
 
 namespace RKTimeTrack.Service.Api.Ui;
@@ -18,15 +17,7 @@ static class WeekApi
         CancellationToken cancellationToken)
     {
         // Map request
-        var now = timeProvider.GetUtcNow();
-        var weekOfYear = GermanCalendarWeekUtil.GetCalendarWeek(
-            DateOnly.FromDateTime(now.DateTime),
-            out var nextYear);
-        var year = nextYear ? now.Year + 1 : now.Year;
-        
-        var request = new GetWeek_Request(
-            year, 
-            weekOfYear);
+        var request = new GetWeek_Request(null, null);
         
         // Call application logic
         var result = await useCase.GetWeekAsync(request, cancellationToken);
