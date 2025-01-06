@@ -16,11 +16,8 @@ static class WeekApi
         [FromServices] GetWeek_UseCase useCase,
         CancellationToken cancellationToken)
     {
-        // Map request
-        var request = new GetWeek_Request(null, null);
-        
         // Call application logic
-        var result = await useCase.GetWeekAsync(request, cancellationToken);
+        var result = await useCase.GetCurrentWeekAsync(cancellationToken);
 
         // Map response
         return result.Match(

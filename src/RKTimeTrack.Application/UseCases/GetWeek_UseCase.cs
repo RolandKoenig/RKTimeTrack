@@ -10,39 +10,32 @@ using HandlerResult = OneOf.OneOf<
 
 public class GetWeek_UseCase(ITimeTrackingRepository timeTrackingRepository, TimeProvider timeProvider)
 {
+    public async Task<HandlerResult> GetCurrentWeekAsync(CancellationToken cancellationToken)
+    {
+        GetCurrentWeek(out var year, out var weekNumber);
+        
+        CorrectLastWeekOfTheYear(ref year, ref weekNumber);
+        
+        return await timeTrackingRepository.GetWeekAsync(year, weekNumber, cancellationToken);
+    }
+    
     public async Task<HandlerResult> GetWeekAsync(GetWeek_Request request, CancellationToken cancellationToken)
     {
         var validator = new GetWeek_Request.Validator();
         var validationResult = await validator.ValidateAsync(request, cancellationToken);
         if (!validationResult.IsValid) { return new CommonErrors.ValidationError(validationResult.Errors); }
-
-        // Get current week
-        int year;
-        int weekNumber;
-        if (request.IsWeekProvided())
-        {
-            year = request.Year!.Value;
-            weekNumber = request.WeekNumber!.Value;
-        }
-        else
-        {
-            GetCurrentWeek(timeProvider, out year, out weekNumber);
-        }
         
-        // We need to correct some edge cases
+        var year = request.Year;
+        var weekNumber =request.WeekNumber;
         CorrectLastWeekOfTheYear(ref year, ref weekNumber);
         
-        // Get the week from the repository
-        var result = 
-            await timeTrackingRepository.GetWeekAsync(year, weekNumber, cancellationToken);
-        
-        return result;
+        return await timeTrackingRepository.GetWeekAsync(year, weekNumber, cancellationToken);
     }
 
     /// <summary>
     /// Get current week (year + weekNumber) from given <see cref="TimeProvider"/>
     /// </summary>
-    private static void GetCurrentWeek(TimeProvider timeProvider, out int year, out int weekNumber)
+    private void GetCurrentWeek(out int year, out int weekNumber)
     {
         var now = timeProvider.GetUtcNow();
         weekNumber = GermanCalendarWeekUtil.GetCalendarWeek(
