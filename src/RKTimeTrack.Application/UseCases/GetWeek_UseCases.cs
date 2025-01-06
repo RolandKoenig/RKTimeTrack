@@ -8,9 +8,9 @@ using HandlerResult = OneOf.OneOf<
     TimeTrackingWeek,
     CommonErrors.ValidationError>;
 
-public class GetWeek_UseCase(ITimeTrackingRepository timeTrackingRepository, TimeProvider timeProvider)
+public class GetWeek_UseCases(ITimeTrackingRepository timeTrackingRepository, TimeProvider timeProvider)
 {
-    public async Task<HandlerResult> GetCurrentWeekAsync(CancellationToken cancellationToken)
+    public async Task<TimeTrackingWeek> GetCurrentWeekAsync(CancellationToken cancellationToken)
     {
         GetCurrentWeek(out var year, out var weekNumber);
         

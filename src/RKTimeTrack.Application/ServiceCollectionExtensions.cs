@@ -10,7 +10,7 @@ public static class ServiceCollectionExtensions
         // UseCases
         services
             .AddScoped<GetAllTopics_UseCase>()
-            .AddScoped<GetWeek_UseCase>()
+            .AddScoped<GetWeek_UseCases>()
             .AddScoped<GetYearMetadata_UseCase>()
             .AddScoped<SearchEntriesByText_UseCase>()
             .AddScoped<UpdateDay_UseCase>();

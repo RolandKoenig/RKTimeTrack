@@ -8,21 +8,18 @@ namespace RKTimeTrack.Service.Api.Ui;
 static class WeekApi
 {
     [ProducesResponseType(typeof(TimeTrackingWeek), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     internal static async Task<IResult> GetCurrentWeekAsync(
         [FromServices] IWebHostEnvironment environment,
         [FromServices] TimeProvider timeProvider,
-        [FromServices] GetWeek_UseCase useCase,
+        [FromServices] GetWeek_UseCases useCases,
         CancellationToken cancellationToken)
     {
         // Call application logic
-        var result = await useCase.GetCurrentWeekAsync(cancellationToken);
+        var result = await useCases.GetCurrentWeekAsync(cancellationToken);
 
         // Map response
-        return result.Match(
-            Results.Ok,
-            validationError => validationError.ToResult(environment));
+        return Results.Ok(result);
     }
     
     [ProducesResponseType(typeof(TimeTrackingWeek), StatusCodes.Status200OK)]
@@ -30,7 +27,7 @@ static class WeekApi
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     internal static async Task<IResult> GetWeekAsync(
         [FromServices] IWebHostEnvironment environment,
-        [FromServices] GetWeek_UseCase useCase,
+        [FromServices] GetWeek_UseCases useCases,
         [FromRoute] int year, 
         [FromRoute] int weekNumber,
         CancellationToken cancellationToken)
@@ -39,11 +36,11 @@ static class WeekApi
         var request = new GetWeek_Request(year, weekNumber);
         
         // Call application logic
-        var result = await useCase.GetWeekAsync(request, cancellationToken);
+        var result = await useCases.GetWeekAsync(request, cancellationToken);
 
         // Map response
         return result.Match(
             Results.Ok,
-            validationError => validationError.ToResult(environment));
+            validationError => validationError.ToBadRequestResult(environment));
     }
 }

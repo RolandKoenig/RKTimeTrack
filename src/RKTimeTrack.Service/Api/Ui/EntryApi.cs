@@ -23,6 +23,6 @@ static class EntryApi
         // Map response
         return result.Match(
             Results.Ok,
-            validationError => validationError.ToResult(environment));
+            validationError => validationError.ToBadRequestResult(environment));
     }
 }

@@ -28,6 +28,7 @@ public class WeekApiTests
     [InlineData(2024, 12, 30)]
     [InlineData(2024, 12, 31)]
     [InlineData(2025, 1, 1)]
+    [InlineData(2025, 6, 1)]
     public async Task GetCurrentWeek_WhichWasNeverAccessedBefore(int year, int month, int day)
     {
         // Arrange

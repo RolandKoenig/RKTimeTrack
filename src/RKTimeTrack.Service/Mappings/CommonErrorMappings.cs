@@ -5,7 +5,7 @@ namespace RKTimeTrack.Service.Mappings;
 
 public static class CommonErrorMappings
 {
-    public static IResult ToResult(
+    public static IResult ToBadRequestResult(
         this CommonErrors.ValidationError error,
         IWebHostEnvironment env)
     {
