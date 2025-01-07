@@ -80,8 +80,9 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
     // Save changes directly
     watch(
         selectedDay,
-        (_, oldValue) =>{
+        (newValue, oldValue) =>{
             if(!oldValue){ return; }
+            if(newValue !== oldValue){ return; } // <-- We don't want to react, when user is just selecting another day
             if(!isDayValid(oldValue)){ return; }
             
             // TODO: async handling of updates
@@ -169,7 +170,6 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
             }
         })
     }
-    
     function tryGetSelectedDayOfWeek(): number{
         if(!currentWeek.value){ return -1; }
         if(!selectedDay.value){ return -1; }
