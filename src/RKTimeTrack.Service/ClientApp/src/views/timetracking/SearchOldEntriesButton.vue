@@ -4,14 +4,18 @@
   import type {DataTableRowClickEvent} from "primevue/datatable";
   import type {UiTimeTrackingEntry} from "@/stores/models/ui-time-tracking-entry";
   import IconSearch from "@/components/icons/IconSearch.vue";
-
+  
   const emit = defineEmits<{
     descriptionSelected: [description: string]
   }>()
   
   const store = useSearchOldEntriesStore();
   const dialogVisible = ref(false);
-
+  
+  function showDialog(){
+    dialogVisible.value = true
+  }
+  
   function rowClicked(event: DataTableRowClickEvent){
     const selectedData = event.data as UiTimeTrackingEntry;
     if(!selectedData.description){ return; }
@@ -23,7 +27,7 @@
 
 <template>
   <Button text
-          @click="dialogVisible = true">
+          @click="showDialog">
     <IconSearch size="small" />
   </Button>
 
@@ -32,6 +36,7 @@
       <label for="search-string"
              class="form-label">Search string</label>
       <InputText id="search-string"
+                 autofocus
                  v-model="store.searchString"/>
     </div>
     <div v-if="store.searchResults.length" 
