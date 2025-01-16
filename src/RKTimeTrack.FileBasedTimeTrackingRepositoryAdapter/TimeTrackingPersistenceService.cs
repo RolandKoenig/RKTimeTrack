@@ -1,13 +1,14 @@
 ﻿using System.Reflection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using RKTimeTrack.FileBasedTimeTrackingRepositoryAdapter.Data;
 
 namespace RKTimeTrack.FileBasedTimeTrackingRepositoryAdapter;
 
 class TimeTrackingPersistenceService(
     ILogger<TimeTrackingPersistenceService> logger,
-    FileBasedTimeTrackingRepositoryOptions options,
+    IOptions<FileBasedTimeTrackingRepositoryOptions> options,
     FileBasedTimeTrackingRepository repository)
     : IHostedService
 {
@@ -85,13 +86,13 @@ class TimeTrackingPersistenceService(
          var documentToWrite = repository.StoreToDocument();
          
          await using var outStream = File.Create(targetFile);
-         await documentToWrite.WriteToStreamAsync(outStream, options.WriteIndentedJson, cancellationToken);
+         await documentToWrite.WriteToStreamAsync(outStream, options.Value.WriteIndentedJson, cancellationToken);
     }
 
     private string GetTargetFilePath()
     {
-        var outDirectory = !string.IsNullOrEmpty(options.PersistenceDirectory)
-            ? options.PersistenceDirectory
+        var outDirectory = !string.IsNullOrEmpty(options.Value.PersistenceDirectory)
+            ? options.Value.PersistenceDirectory
             : Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
         var outFile = Path.Combine(outDirectory, "TimeTracking.json");
         return outFile;

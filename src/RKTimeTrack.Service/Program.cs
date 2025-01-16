@@ -40,8 +40,7 @@ public static class Program
         builder.Services.AddRKTimeTrackApplication();
         
         // Add adapters
-        builder.Services.AddFileBasedTimeTrackingRepository(
-            options => builder.Configuration.Bind("FileBasedTimeTrackingRepository", options));
+        builder.Services.AddFileBasedTimeTrackingRepository(builder.Configuration);
         builder.Services.AddStaticTopicRepositoryAdapter(
             options => builder.Configuration.Bind("StaticTopicRepository", options));
 
