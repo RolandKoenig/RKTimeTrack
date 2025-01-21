@@ -4,6 +4,25 @@
   import DayEntrySelectionView from "./timetracking/DayEntrySelectionView.vue";
   import DayEntryEditView from "./timetracking/DayEntryEditView.vue";
   import DayProjectOverviewView from "@/views/timetracking/DayProjectOverviewView.vue";
+  import {computed} from "vue";
+  
+  function getWeekdayName(dateString: string | null | undefined): string {
+    if (!dateString){ return ""; }
+    
+    const parts = dateString.split('-');
+    const year = parseInt(parts[0]);
+    const month = parseInt(parts[1]) - 1; // JavaScript months are zero-based
+    const day = parseInt(parts[2]);
+    const date = new Date(year, month, day);
+    
+    const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    
+    return weekdays[date.getDay()];
+  }
+  
+  const currentWeekDay = computed(
+      () => getWeekdayName(timeTrackingStore.selectedDay?.date)
+  )
   
   const timeTrackingStore = useTimeTrackingStore();
 </script>
@@ -19,7 +38,10 @@
     </div>
     <div class="row py-1 text-center"
          v-if="timeTrackingStore.selectedDay">
-      <h4>{{  timeTrackingStore.selectedDay.date }}</h4>
+      <h4>
+        {{  timeTrackingStore.selectedDay.date }}
+        <span v-if="currentWeekDay"> ({{ currentWeekDay }})</span>
+      </h4>
     </div>
     
     <!-- week/day selection -->
