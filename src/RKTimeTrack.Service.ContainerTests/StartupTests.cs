@@ -7,6 +7,7 @@ namespace RKTimeTrack.Service.ContainerTests;
 public class StartupTests(TestEnvironmentFixture fixture, ITestOutputHelper output)
 {
     [Fact]
+    [Trait("Category", "NeedsDocker")]
     public async Task Start_application_container_and_serve_index_page()
     {
         try
