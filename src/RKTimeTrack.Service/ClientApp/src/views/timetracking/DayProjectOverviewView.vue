@@ -1,8 +1,9 @@
 <script setup lang="ts">
-  import {useTimeTrackingStore} from "@/stores/time-tracking-store";
-  import {computed} from "vue";
+import {useTimeTrackingStore} from "@/stores/time-tracking-store";
+import {computed} from "vue";
+import {TimeTrackingEntryType} from "@/services/time-track-client.generated.ts";
 
-  const timeTrackingStore = useTimeTrackingStore();
+const timeTrackingStore = useTimeTrackingStore();
   
   const projects = computed(() => {
     if(!timeTrackingStore.selectedDay){ return []; }
@@ -12,6 +13,7 @@
       if(!actEntry.topicName){ continue; }
       if(!actEntry.topicCategory){ continue; }
       if(!actEntry.effortBilled){ continue; }
+      if(actEntry.type == TimeTrackingEntryType.OnCall){ continue; }
       
       const key = `${actEntry.topicCategory} - ${actEntry.topicName}`;
       if(!summary[key]){
