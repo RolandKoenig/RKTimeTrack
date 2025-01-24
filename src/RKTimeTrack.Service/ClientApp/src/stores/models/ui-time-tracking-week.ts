@@ -26,6 +26,13 @@ export class UiTimeTrackingWeek{
         else{ return null; }
     }
     
+    getAllDays(){
+        return [
+            this.monday, this.tuesday, this.wednesday,
+            this.thursday, this.friday, this.saturday,
+            this.sunday];
+    }
+    
     static fromBackendModel(backendModel: TimeTrackingWeek): UiTimeTrackingWeek{
         return new UiTimeTrackingWeek(
             backendModel.year,

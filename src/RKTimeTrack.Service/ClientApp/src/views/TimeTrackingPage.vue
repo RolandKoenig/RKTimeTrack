@@ -5,6 +5,7 @@
   import DayEntryEditView from "./timetracking/DayEntryEditView.vue";
   import DayProjectOverviewView from "@/views/timetracking/DayProjectOverviewView.vue";
   import {computed} from "vue";
+  import WeekSummaryRowView from "@/views/timetracking/WeekSummaryRowView.vue";
   
   function getWeekdayName(dateString: string | null | undefined): string {
     if (!dateString){ return ""; }
@@ -47,6 +48,11 @@
     <!-- week/day selection -->
     <div class="row">
       <WeekDaySelectionView />
+    </div>
+    
+    <!-- week summary -->
+    <div class="row">
+      <WeekSummaryRowView />
     </div>
     
     <!-- day entry selection -->
