@@ -39,7 +39,8 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
     ])
     
     const availableTopicCategories = computed(() =>{
-       return topicStore.topics
+        const now = new Date();
+        return topicStore.getTopicsVisibleAt(now)
            .map(x => x.category)
            .filter(onlyUnique);
     });
@@ -49,7 +50,8 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
         if(!selectedEntry.value.topicCategory){ return []; }
         
         const filterCategory = selectedEntry.value.topicCategory;
-        return topicStore.topics
+        const now = new Date();
+        return topicStore.getTopicsVisibleAt(now)
             .filter(x => x.category === filterCategory)
             .map(x => x.name)
             .filter(onlyUnique);
@@ -170,6 +172,7 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
             }
         })
     }
+    
     function tryGetSelectedDayOfWeek(): number{
         if(!currentWeek.value){ return -1; }
         if(!selectedDay.value){ return -1; }
