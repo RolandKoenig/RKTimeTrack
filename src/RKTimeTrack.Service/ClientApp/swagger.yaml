@@ -79,12 +79,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/TimeTrackingTopic'
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
         '500':
           description: Internal Server Error
           content:
@@ -103,12 +97,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/TimeTrackingWeek'
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
         '500':
           description: Internal Server Error
           content:
@@ -274,6 +262,14 @@ components:
           type: boolean
         budget:
           type: number
+          nullable: true
+        startDate:
+          type: string
+          description: Date in format 'yyyy-mm-dd'
+          nullable: true
+        endDate:
+          type: string
+          description: Date in format 'yyyy-mm-dd'
           nullable: true
       additionalProperties: false
     TimeTrackingTopicReference:
