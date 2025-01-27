@@ -56,7 +56,7 @@
     <div class="row">
       <div class="col-6 mb-3">
         <label for="current-row-category" class="form-label">Category</label>
-        <Select id="selected-entry-category"
+        <Select id="selected-entry-topic-category"
                 variant="filled"
                 v-model="timeTrackingStore.selectedEntry.topicCategory"
                 :options="timeTrackingStore.availableTopicCategories"
@@ -68,7 +68,7 @@
       </div>
       <div class="col-6 mb-3">
         <label for="current-row-name" class="form-label">Name</label>
-        <Select id="selected-entry-category"
+        <Select id="selected-entry-topic"
                 variant="filled"
                 v-model="timeTrackingStore.selectedEntry.topicName"
                 :options="timeTrackingStore.availableTopicNames"

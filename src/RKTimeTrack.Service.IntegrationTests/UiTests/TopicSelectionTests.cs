@@ -1,0 +1,245 @@
+using Microsoft.Playwright;
+using NSubstitute;
+using RKTimeTrack.Application.Models;
+using RKTimeTrack.Service.IntegrationTests.Util;
+using Xunit;
+using Xunit.Abstractions;
+
+namespace RKTimeTrack.Service.IntegrationTests.UiTests;
+
+[Collection(nameof(TestEnvironmentCollection))]
+public class TopicSelectionTests
+{
+    private const bool HEADLESS_MODE = true;
+    private static readonly float? SLOW_MODE_MILLISECONDS = null;
+    
+    private readonly WebHostServerFixture _server;
+    
+    public TopicSelectionTests(
+        WebHostServerFixture server,
+        ITestOutputHelper testOutputHelper)
+    {
+        PlaywrightUtil.EnsureBrowsersInstalled();
+        
+        _server = server;
+        _server.TestOutputHelper = testOutputHelper;
+        _server.ProgramStartupMethod = Program.CreateApplication;
+
+        _server.Reset();
+    }
+    
+    [Fact]
+    public async Task PossibleTopicCategories_single_default_category()
+    {
+        // Arrange
+        var rootUri = _server.RootUri;
+        
+        _server.TopicRepositoryMock.GetAllTopicsAsync(Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult<IReadOnlyList<TimeTrackingTopic>>([
+                    new TimeTrackingTopic("TestCategory1", "Topic1")
+                ]));
+        
+        using var playwright = await Playwright.CreateAsync();
+        await using var browser = await playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions()
+        {
+            Headless = HEADLESS_MODE,
+            SlowMo = SLOW_MODE_MILLISECONDS
+        });
+        
+        var page = await browser.NewPageAsync();
+        await page.Clock.SetFixedTimeAsync(_server.MockedStartTimestamp.UtcDateTime);
+        
+        // Act
+        await page.GotoAsync(rootUri.AbsoluteUri);
+        var possibleOptions = await GetShownTopicCategories(page);
+        
+        // Assert
+        Assert.Single(possibleOptions);
+        Assert.Equal("TestCategory1", possibleOptions[0]);
+    }
+    
+    [Fact]
+    public async Task PossibleTopicCategories_with_category_valid_for_current_date()
+    {
+        // Arrange
+        var rootUri = _server.RootUri;
+        
+        _server.TopicRepositoryMock.GetAllTopicsAsync(Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult<IReadOnlyList<TimeTrackingTopic>>([
+                new TimeTrackingTopic("TestCategory1", "Topic1"),
+                new TimeTrackingTopic(
+                    "TestCategory2", "Topic2", 
+                    startDate: DateOnly.FromDateTime(_server.MockedStartTimestamp.DateTime).AddDays(-1),
+                    endDate: DateOnly.FromDateTime(_server.MockedStartTimestamp.DateTime).AddDays(1))
+            ]));
+        
+        using var playwright = await Playwright.CreateAsync();
+        await using var browser = await playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions()
+        {
+            Headless = HEADLESS_MODE,
+            SlowMo = SLOW_MODE_MILLISECONDS
+        });
+        
+        var page = await browser.NewPageAsync();
+        await page.Clock.SetFixedTimeAsync(_server.MockedStartTimestamp.UtcDateTime);
+        
+        // Act
+        await page.GotoAsync(rootUri.AbsoluteUri);
+        var possibleOptions = await GetShownTopicCategories(page);
+        
+        // Assert
+        Assert.Equal(2, possibleOptions.Count);
+        Assert.Contains("TestCategory1", possibleOptions);
+        Assert.Contains("TestCategory2", possibleOptions);
+    }
+    
+    [Fact]
+    public async Task PossibleTopicCategories_with_category_with_EndDate_at_today()
+    {
+        // Arrange
+        var rootUri = _server.RootUri;
+        
+        _server.TopicRepositoryMock.GetAllTopicsAsync(Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult<IReadOnlyList<TimeTrackingTopic>>([
+                new TimeTrackingTopic("TestCategory1", "Topic1"),
+                new TimeTrackingTopic(
+                    "TestCategory2", "Topic2", 
+                    endDate: DateOnly.FromDateTime(_server.MockedStartTimestamp.DateTime))
+            ]));
+        
+        using var playwright = await Playwright.CreateAsync();
+        await using var browser = await playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions()
+        {
+            Headless = HEADLESS_MODE,
+            SlowMo = SLOW_MODE_MILLISECONDS
+        });
+        
+        var page = await browser.NewPageAsync();
+        await page.Clock.SetFixedTimeAsync(_server.MockedStartTimestamp.UtcDateTime);
+        
+        // Act
+        await page.GotoAsync(rootUri.AbsoluteUri);
+        var possibleOptions = await GetShownTopicCategories(page);
+        
+        // Assert
+        Assert.Equal(2, possibleOptions.Count);
+        Assert.Contains("TestCategory1", possibleOptions);
+        Assert.Contains("TestCategory2", possibleOptions);
+    }
+    
+    [Fact]
+    public async Task PossibleTopicCategories_with_category_with_StartDate_at_today()
+    {
+        // Arrange
+        var rootUri = _server.RootUri;
+        
+        _server.TopicRepositoryMock.GetAllTopicsAsync(Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult<IReadOnlyList<TimeTrackingTopic>>([
+                new TimeTrackingTopic("TestCategory1", "Topic1"),
+                new TimeTrackingTopic(
+                    "TestCategory2", "Topic2", 
+                    startDate: DateOnly.FromDateTime(_server.MockedStartTimestamp.DateTime))
+            ]));
+        
+        using var playwright = await Playwright.CreateAsync();
+        await using var browser = await playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions()
+        {
+            Headless = HEADLESS_MODE,
+            SlowMo = SLOW_MODE_MILLISECONDS
+        });
+        
+        var page = await browser.NewPageAsync();
+        await page.Clock.SetFixedTimeAsync(_server.MockedStartTimestamp.UtcDateTime);
+        
+        // Act
+        await page.GotoAsync(rootUri.AbsoluteUri);
+        var possibleOptions = await GetShownTopicCategories(page);
+        
+        // Assert
+        Assert.Equal(2, possibleOptions.Count);
+        Assert.Contains("TestCategory1", possibleOptions);
+        Assert.Contains("TestCategory2", possibleOptions);
+    }
+    
+    [Fact]
+    public async Task PossibleTopicCategories_with_filtered_category_because_of_EndDate()
+    {
+        // Arrange
+        var rootUri = _server.RootUri;
+        
+        _server.TopicRepositoryMock.GetAllTopicsAsync(Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult<IReadOnlyList<TimeTrackingTopic>>([
+                new TimeTrackingTopic("TestCategory1", "Topic1"),
+                new TimeTrackingTopic(
+                    "TestCategory2", "Topic2", 
+                    endDate: DateOnly.FromDateTime(_server.MockedStartTimestamp.DateTime).AddDays(-1))
+            ]));
+        
+        using var playwright = await Playwright.CreateAsync();
+        await using var browser = await playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions()
+        {
+            Headless = HEADLESS_MODE,
+            SlowMo = SLOW_MODE_MILLISECONDS
+        });
+        
+        var page = await browser.NewPageAsync();
+        await page.Clock.SetFixedTimeAsync(_server.MockedStartTimestamp.UtcDateTime);
+        
+        // Act
+        await page.GotoAsync(rootUri.AbsoluteUri);
+        var possibleOptions = await GetShownTopicCategories(page);
+        
+        // Assert
+        Assert.Single(possibleOptions);
+        Assert.Equal("TestCategory1", possibleOptions[0]);
+    }
+
+    [Fact]
+    public async Task PossibleTopicCategories_with_filtered_category_because_of_StartDate()
+    {
+        // Arrange
+        var rootUri = _server.RootUri;
+        
+        _server.TopicRepositoryMock.GetAllTopicsAsync(Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult<IReadOnlyList<TimeTrackingTopic>>([
+                new TimeTrackingTopic("TestCategory1", "Topic1"),
+                new TimeTrackingTopic(
+                    "TestCategory2", "Topic2", 
+                    startDate: DateOnly.FromDateTime(_server.MockedStartTimestamp.DateTime).AddDays(1))
+            ]));
+        
+        using var playwright = await Playwright.CreateAsync();
+        await using var browser = await playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions()
+        {
+            Headless = HEADLESS_MODE,
+            SlowMo = SLOW_MODE_MILLISECONDS
+        });
+        
+        var page = await browser.NewPageAsync();
+        await page.Clock.SetFixedTimeAsync(_server.MockedStartTimestamp.UtcDateTime);
+        
+        // Act
+        await page.GotoAsync(rootUri.AbsoluteUri);
+        var possibleOptions = await GetShownTopicCategories(page);
+        
+        // Assert
+        Assert.Single(possibleOptions);
+        Assert.Equal("TestCategory1", possibleOptions[0]);
+    }
+    
+    /// <summary>
+    /// Gets all possible options from the 'Category' Select component.
+    /// </summary>
+    private static async Task<IReadOnlyList<string>> GetShownTopicCategories(IPage page)
+    {
+        await page.GetByText("New Entry").ClickAsync();
+        await page
+            .Locator("#selected-entry-topic-category")
+            .Locator("svg.p-select-dropdown-icon")
+            .ClickAsync();
+
+        return await page
+            .Locator("#selected-entry-topic-category_list > li")
+            .AllInnerTextsAsync();
+    }
+}
