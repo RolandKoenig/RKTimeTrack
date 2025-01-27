@@ -4,28 +4,28 @@
 
   const timeTrackingStore = useTimeTrackingStore();
   
-  const totalEffort = computed(() =>{
+  const totalEffort = () => {
     if(!timeTrackingStore.currentWeek){ return 0; }
     return timeTrackingStore.currentWeek.getAllDays()
         .flatMap(day => day.entries)
         .map(entry => entry.effortInHours)
         .reduce((sum, currentValue) => sum + currentValue);
-  })
+  }
 
-  const totalBilled = computed(() =>{
+  const totalBilled = () => {
     if(!timeTrackingStore.currentWeek){ return 0; }
     return timeTrackingStore.currentWeek.getAllDays()
         .flatMap(day => day.entries)
         .map(entry => entry.effortBilled)
         .reduce((sum, currentValue) => sum + currentValue);
-  })
+  };
 
 </script>
 
 <template>
   <p class="text-center">
-    total effort: <span class="summaryValue">{{ totalEffort }}</span>,
-    total billed: <span class="summaryValue">{{ totalBilled }}</span> 
+    total effort: <span class="summaryValue">{{ totalEffort() }}</span>,
+    total billed: <span class="summaryValue">{{ totalBilled() }}</span> 
   </p>
 </template>
 
