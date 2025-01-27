@@ -21,7 +21,8 @@ class TimeTrackingPersistenceService(
     {
         // Restore previous data
         var targetFilepath = GetTargetFilePath();
-        if (File.Exists(targetFilepath))
+        if (File.Exists(targetFilepath) &&
+            (!options.Value.DisablePersistence))
         {
             await using var inStream = File.OpenRead(targetFilepath);
             var restoredDocument = await TimeTrackingDocument.LoadFromStreamAsync(inStream, cancellationToken);
@@ -52,6 +53,11 @@ class TimeTrackingPersistenceService(
         {
             try { await Task.Delay(1000, _persistenceLoopCancellationTokenSource.Token); }
             catch (TaskCanceledException) { break; }
+
+            if (options.Value.DisablePersistence)
+            {
+                continue;
+            }
 
             // Check whether we have to persist or not
             if (lastPersist >= repository.LastChangeTimestamp)
