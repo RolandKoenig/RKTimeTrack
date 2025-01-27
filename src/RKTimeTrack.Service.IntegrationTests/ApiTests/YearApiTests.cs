@@ -5,7 +5,7 @@ using RKTimeTrack.Service.IntegrationTests.Util;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace RKTimeTrack.Service.IntegrationTests;
+namespace RKTimeTrack.Service.IntegrationTests.ApiTests;
 
 [Collection(nameof(TestEnvironmentCollection))]
 public class YearApiTests
