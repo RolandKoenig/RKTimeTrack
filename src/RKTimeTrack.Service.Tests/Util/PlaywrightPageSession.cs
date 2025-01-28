@@ -1,6 +1,6 @@
 using Microsoft.Playwright;
 
-namespace RKTimeTrack.Service.IntegrationTests.Util;
+namespace RKTimeTrack.Service.Tests.Util;
 
 public class PlaywrightPageSession : IAsyncDisposable
 {

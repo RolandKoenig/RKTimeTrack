@@ -1,4 +1,4 @@
-namespace RKTimeTrack.Service.IntegrationTests;
+namespace RKTimeTrack.Service.Tests;
 
 internal static class TestSettings
 {

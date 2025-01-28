@@ -16,7 +16,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RKTimeTrack.FileBasedTimeTr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RKTimeTrack.FileBasedTimeTrackingRepositoryAdapter.Tests", "src\RKTimeTrack.FileBasedTimeTrackingRepositoryAdapter.Tests\RKTimeTrack.FileBasedTimeTrackingRepositoryAdapter.Tests.csproj", "{F5AE1DA2-19F5-4EA4-9034-15C739FAD96D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RKTimeTrack.Service.IntegrationTests", "src\RKTimeTrack.Service.IntegrationTests\RKTimeTrack.Service.IntegrationTests.csproj", "{98842AC2-A5BE-462A-AC53-66697E965E63}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RKTimeTrack.Service.Tests", "src\RKTimeTrack.Service.Tests\RKTimeTrack.Service.Tests.csproj", "{98842AC2-A5BE-462A-AC53-66697E965E63}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RKTimeTrack.StaticTopicRepositoryAdapterTests", "src\RKTimeTrack.StaticTopicRepositoryAdapterTests\RKTimeTrack.StaticTopicRepositoryAdapterTests.csproj", "{FCEE73D6-9E5B-40E5-B4DE-CCF4F48C771C}"
 EndProject

@@ -1,4 +1,4 @@
-namespace RKTimeTrack.Service.IntegrationTests.Util;
+namespace RKTimeTrack.Service.Tests.Util;
 
 internal static class PlaywrightUtil
 {

@@ -15,7 +15,7 @@ using RKTimeTrack.FileBasedTimeTrackingRepositoryAdapter.Testing;
 using Serilog;
 using Xunit.Abstractions;
 
-namespace RKTimeTrack.Service.IntegrationTests.Util;
+namespace RKTimeTrack.Service.Tests.Util;
 
 // ReSharper disable once ClassNeverInstantiated.Global
 public class WebHostServerFixture : IDisposable
