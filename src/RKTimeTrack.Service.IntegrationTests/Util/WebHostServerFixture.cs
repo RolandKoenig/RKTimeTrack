@@ -54,7 +54,7 @@ public class WebHostServerFixture : IDisposable
     /// <summary>
     /// Open a Playwright session and navigate to root page.
     /// </summary>
-    public async Task<PlaywrightSession> StartPlaywrightSessionOnRootPageAsync()
+    public async Task<PlaywrightPageSession> StartPlaywrightSessionOnRootPageAsync()
     {
         _playwright ??= await Playwright.CreateAsync();
         _browser ??= await _playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions()
@@ -63,17 +63,14 @@ public class WebHostServerFixture : IDisposable
             SlowMo = TestSettings.SLOW_MODE_MILLISECONDS
         });
         
-        Assertions.SetDefaultExpectTimeout(
-            (float)TestSettings.DEFAULT_EXPECT_TIMEOUT.TotalMilliseconds);
-        
-        var page = await _browser.NewPageAsync();
+        var browserContext = await _browser.NewContextAsync();
+        var page = await browserContext.NewPageAsync();
         
         // Set browser clock to backend clock
         await page.Clock.SetFixedTimeAsync(this.MockedStartTimestamp.UtcDateTime);
-        
         await page.GotoAsync(this.RootUri.AbsoluteUri);
         
-        return new PlaywrightSession(page);
+        return new PlaywrightPageSession(browserContext, page);
     }
 
     public void Reset()

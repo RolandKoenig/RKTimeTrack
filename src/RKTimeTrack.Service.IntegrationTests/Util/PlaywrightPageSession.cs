@@ -2,20 +2,22 @@ using Microsoft.Playwright;
 
 namespace RKTimeTrack.Service.IntegrationTests.Util;
 
-public class PlaywrightSession : IAsyncDisposable
+public class PlaywrightPageSession : IAsyncDisposable
 {
+    private IBrowserContext Context { get; }
+    
     public IPage Page { get; }
     
-    public PlaywrightSession(IPage page)
+    public PlaywrightPageSession(IBrowserContext context, IPage page)
     {
+        this.Context = context;
         this.Page = page;
     }
 
-    public ValueTask DisposeAsync()
+    public async ValueTask DisposeAsync()
     {
-        this.Page.CloseAsync();
-        
-        return ValueTask.CompletedTask;
+        await this.Page.CloseAsync();
+        await Context.DisposeAsync();
     }
     
     // Helper methods from
