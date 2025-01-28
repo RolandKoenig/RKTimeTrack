@@ -10,9 +10,6 @@ namespace RKTimeTrack.Service.IntegrationTests.UiTests;
 [Collection(nameof(TestEnvironmentCollection))]
 public class TopicSelectionTests
 {
-    private const bool HEADLESS_MODE = true;
-    private static readonly float? SLOW_MODE_MILLISECONDS = null;
-    
     private readonly WebHostServerFixture _server;
     
     public TopicSelectionTests(
@@ -32,26 +29,14 @@ public class TopicSelectionTests
     public async Task PossibleTopicCategories_single_default_category()
     {
         // Arrange
-        var rootUri = _server.RootUri;
-        
         _server.TopicRepositoryMock.GetAllTopicsAsync(Arg.Any<CancellationToken>())
             .Returns(Task.FromResult<IReadOnlyList<TimeTrackingTopic>>([
                     new TimeTrackingTopic("TestCategory1", "Topic1")
                 ]));
         
-        using var playwright = await Playwright.CreateAsync();
-        await using var browser = await playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions()
-        {
-            Headless = HEADLESS_MODE,
-            SlowMo = SLOW_MODE_MILLISECONDS
-        });
-        
-        var page = await browser.NewPageAsync();
-        await page.Clock.SetFixedTimeAsync(_server.MockedStartTimestamp.UtcDateTime);
-        
         // Act
-        await page.GotoAsync(rootUri.AbsoluteUri);
-        var possibleOptions = await GetShownTopicCategories(page);
+        await using var playwrightSession = await _server.StartPlaywrightSessionOnRootPageAsync();
+        var possibleOptions = await GetShownTopicCategories(playwrightSession.Page);
         
         // Assert
         Assert.Single(possibleOptions);
@@ -62,8 +47,6 @@ public class TopicSelectionTests
     public async Task PossibleTopicCategories_with_category_valid_for_current_date()
     {
         // Arrange
-        var rootUri = _server.RootUri;
-        
         _server.TopicRepositoryMock.GetAllTopicsAsync(Arg.Any<CancellationToken>())
             .Returns(Task.FromResult<IReadOnlyList<TimeTrackingTopic>>([
                 new TimeTrackingTopic("TestCategory1", "Topic1"),
@@ -73,19 +56,9 @@ public class TopicSelectionTests
                     endDate: DateOnly.FromDateTime(_server.MockedStartTimestamp.DateTime).AddDays(1))
             ]));
         
-        using var playwright = await Playwright.CreateAsync();
-        await using var browser = await playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions()
-        {
-            Headless = HEADLESS_MODE,
-            SlowMo = SLOW_MODE_MILLISECONDS
-        });
-        
-        var page = await browser.NewPageAsync();
-        await page.Clock.SetFixedTimeAsync(_server.MockedStartTimestamp.UtcDateTime);
-        
         // Act
-        await page.GotoAsync(rootUri.AbsoluteUri);
-        var possibleOptions = await GetShownTopicCategories(page);
+        await using var playwrightSession = await _server.StartPlaywrightSessionOnRootPageAsync();
+        var possibleOptions = await GetShownTopicCategories(playwrightSession.Page);
         
         // Assert
         Assert.Equal(2, possibleOptions.Count);
@@ -97,8 +70,6 @@ public class TopicSelectionTests
     public async Task PossibleTopicCategories_with_category_with_EndDate_at_today()
     {
         // Arrange
-        var rootUri = _server.RootUri;
-        
         _server.TopicRepositoryMock.GetAllTopicsAsync(Arg.Any<CancellationToken>())
             .Returns(Task.FromResult<IReadOnlyList<TimeTrackingTopic>>([
                 new TimeTrackingTopic("TestCategory1", "Topic1"),
@@ -107,19 +78,9 @@ public class TopicSelectionTests
                     endDate: DateOnly.FromDateTime(_server.MockedStartTimestamp.DateTime))
             ]));
         
-        using var playwright = await Playwright.CreateAsync();
-        await using var browser = await playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions()
-        {
-            Headless = HEADLESS_MODE,
-            SlowMo = SLOW_MODE_MILLISECONDS
-        });
-        
-        var page = await browser.NewPageAsync();
-        await page.Clock.SetFixedTimeAsync(_server.MockedStartTimestamp.UtcDateTime);
-        
         // Act
-        await page.GotoAsync(rootUri.AbsoluteUri);
-        var possibleOptions = await GetShownTopicCategories(page);
+        await using var playwrightSession = await _server.StartPlaywrightSessionOnRootPageAsync();
+        var possibleOptions = await GetShownTopicCategories(playwrightSession.Page);
         
         // Assert
         Assert.Equal(2, possibleOptions.Count);
@@ -131,8 +92,6 @@ public class TopicSelectionTests
     public async Task PossibleTopicCategories_with_category_with_StartDate_at_today()
     {
         // Arrange
-        var rootUri = _server.RootUri;
-        
         _server.TopicRepositoryMock.GetAllTopicsAsync(Arg.Any<CancellationToken>())
             .Returns(Task.FromResult<IReadOnlyList<TimeTrackingTopic>>([
                 new TimeTrackingTopic("TestCategory1", "Topic1"),
@@ -141,19 +100,9 @@ public class TopicSelectionTests
                     startDate: DateOnly.FromDateTime(_server.MockedStartTimestamp.DateTime))
             ]));
         
-        using var playwright = await Playwright.CreateAsync();
-        await using var browser = await playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions()
-        {
-            Headless = HEADLESS_MODE,
-            SlowMo = SLOW_MODE_MILLISECONDS
-        });
-        
-        var page = await browser.NewPageAsync();
-        await page.Clock.SetFixedTimeAsync(_server.MockedStartTimestamp.UtcDateTime);
-        
         // Act
-        await page.GotoAsync(rootUri.AbsoluteUri);
-        var possibleOptions = await GetShownTopicCategories(page);
+        await using var playwrightSession = await _server.StartPlaywrightSessionOnRootPageAsync();
+        var possibleOptions = await GetShownTopicCategories(playwrightSession.Page);
         
         // Assert
         Assert.Equal(2, possibleOptions.Count);
@@ -165,8 +114,6 @@ public class TopicSelectionTests
     public async Task PossibleTopicCategories_with_filtered_category_because_of_EndDate()
     {
         // Arrange
-        var rootUri = _server.RootUri;
-        
         _server.TopicRepositoryMock.GetAllTopicsAsync(Arg.Any<CancellationToken>())
             .Returns(Task.FromResult<IReadOnlyList<TimeTrackingTopic>>([
                 new TimeTrackingTopic("TestCategory1", "Topic1"),
@@ -175,19 +122,9 @@ public class TopicSelectionTests
                     endDate: DateOnly.FromDateTime(_server.MockedStartTimestamp.DateTime).AddDays(-1))
             ]));
         
-        using var playwright = await Playwright.CreateAsync();
-        await using var browser = await playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions()
-        {
-            Headless = HEADLESS_MODE,
-            SlowMo = SLOW_MODE_MILLISECONDS
-        });
-        
-        var page = await browser.NewPageAsync();
-        await page.Clock.SetFixedTimeAsync(_server.MockedStartTimestamp.UtcDateTime);
-        
         // Act
-        await page.GotoAsync(rootUri.AbsoluteUri);
-        var possibleOptions = await GetShownTopicCategories(page);
+        await using var playwrightSession = await _server.StartPlaywrightSessionOnRootPageAsync();
+        var possibleOptions = await GetShownTopicCategories(playwrightSession.Page);
         
         // Assert
         Assert.Single(possibleOptions);
@@ -198,8 +135,6 @@ public class TopicSelectionTests
     public async Task PossibleTopicCategories_with_filtered_category_because_of_StartDate()
     {
         // Arrange
-        var rootUri = _server.RootUri;
-        
         _server.TopicRepositoryMock.GetAllTopicsAsync(Arg.Any<CancellationToken>())
             .Returns(Task.FromResult<IReadOnlyList<TimeTrackingTopic>>([
                 new TimeTrackingTopic("TestCategory1", "Topic1"),
@@ -208,19 +143,9 @@ public class TopicSelectionTests
                     startDate: DateOnly.FromDateTime(_server.MockedStartTimestamp.DateTime).AddDays(1))
             ]));
         
-        using var playwright = await Playwright.CreateAsync();
-        await using var browser = await playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions()
-        {
-            Headless = HEADLESS_MODE,
-            SlowMo = SLOW_MODE_MILLISECONDS
-        });
-        
-        var page = await browser.NewPageAsync();
-        await page.Clock.SetFixedTimeAsync(_server.MockedStartTimestamp.UtcDateTime);
-        
         // Act
-        await page.GotoAsync(rootUri.AbsoluteUri);
-        var possibleOptions = await GetShownTopicCategories(page);
+        await using var playwrightSession = await _server.StartPlaywrightSessionOnRootPageAsync();
+        var possibleOptions = await GetShownTopicCategories(playwrightSession.Page);
         
         // Assert
         Assert.Single(possibleOptions);

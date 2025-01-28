@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Playwright;
 using NSubstitute;
 using NSubstitute.ClearExtensions;
 using RKTimeTrack.Application.Ports;
@@ -45,6 +46,28 @@ public class WebHostServerFixture : IDisposable
     public WebHostServerFixture()
     {
         _rootUriInitializer = new Lazy<Uri>(() => new Uri(StartAndGetRootUri()));
+    }
+
+    /// <summary>
+    /// Open a Playwright session and navigate to root page.
+    /// </summary>
+    public async Task<PlaywrightSession> StartPlaywrightSessionOnRootPageAsync()
+    {
+        var playwright = await Playwright.CreateAsync();
+        var browser = await playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions()
+        {
+            Headless = TestSettings.HEADLESS_MODE,
+            SlowMo = TestSettings.SLOW_MODE_MILLISECONDS
+        });
+        
+        var page = await browser.NewPageAsync();
+        
+        // Set browser clock to backend clock
+        await page.Clock.SetFixedTimeAsync(this.MockedStartTimestamp.UtcDateTime);
+        
+        await page.GotoAsync(this.RootUri.AbsoluteUri);
+        
+        return new PlaywrightSession(playwright, browser, page);
     }
 
     public void Reset()
