@@ -13,7 +13,7 @@ public class PlaywrightSession : IAsyncDisposable
     {
         _playwright = playwright;
         _browser = browser;
-        
+
         this.Page = page;
     }
 
@@ -22,4 +22,10 @@ public class PlaywrightSession : IAsyncDisposable
         await _browser.DisposeAsync();
         _playwright.Dispose();
     }
+    
+    // Helper methods from
+    // https://github.com/microsoft/playwright-dotnet/blob/main/src/Playwright.NUnit/PlaywrightTest.cs
+    public ILocatorAssertions Expect(ILocator locator) => Assertions.Expect(locator);
+    public IPageAssertions Expect(IPage page) => Assertions.Expect(page);
+    public IAPIResponseAssertions Expect(IAPIResponse response) => Assertions.Expect(response);
 }
