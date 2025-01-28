@@ -1,18 +1,18 @@
 using Microsoft.Playwright;
 using NSubstitute;
 using RKTimeTrack.Application.Models;
-using RKTimeTrack.Service.IntegrationTests.Util;
+using RKTimeTrack.Service.Tests.Util;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace RKTimeTrack.Service.IntegrationTests.UiTests;
+namespace RKTimeTrack.Service.Tests.UiTests;
 
 [Collection(nameof(TestEnvironmentCollection))]
-public class TopicSelectionTests
+public class DayEntryEditView_CategorySelectionTests
 {
     private readonly WebHostServerFixture _server;
     
-    public TopicSelectionTests(
+    public DayEntryEditView_CategorySelectionTests(
         WebHostServerFixture server,
         ITestOutputHelper testOutputHelper)
     {

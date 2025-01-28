@@ -1,3 +1,3 @@
 ﻿using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("RKTimeTrack.Service.IntegrationTests")]
+[assembly: InternalsVisibleTo("RKTimeTrack.Service.Tests")]

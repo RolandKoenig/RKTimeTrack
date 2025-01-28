@@ -1,10 +1,10 @@
 using FluentAssertions;
 using Microsoft.Playwright;
-using RKTimeTrack.Service.IntegrationTests.Util;
+using RKTimeTrack.Service.Tests.Util;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace RKTimeTrack.Service.IntegrationTests.UiTests;
+namespace RKTimeTrack.Service.Tests.UiTests;
 
 [Collection(nameof(TestEnvironmentCollection))]
 public class StartupTests

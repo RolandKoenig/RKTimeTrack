@@ -2,11 +2,11 @@ using System.Net.Http.Json;
 using FluentAssertions;
 using RKTimeTrack.Application.Models;
 using RKTimeTrack.Application.UseCases;
-using RKTimeTrack.Service.IntegrationTests.Util;
+using RKTimeTrack.Service.Tests.Util;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace RKTimeTrack.Service.IntegrationTests.ApiTests;
+namespace RKTimeTrack.Service.Tests.IntegrationTests;
 
 [Collection(nameof(TestEnvironmentCollection))]
 public class EntryApiTests
