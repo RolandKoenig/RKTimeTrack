@@ -60,6 +60,9 @@ public class WebHostServerFixture : IDisposable
             SlowMo = TestSettings.SLOW_MODE_MILLISECONDS
         });
         
+        Assertions.SetDefaultExpectTimeout(
+            (float)TestSettings.DEFAULT_EXPECT_TIMEOUT.TotalMilliseconds);
+        
         var page = await browser.NewPageAsync();
         
         // Set browser clock to backend clock

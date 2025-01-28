@@ -31,6 +31,8 @@ public class StartupTests
         await using var playwrightSession = await _server.StartPlaywrightSessionOnRootPageAsync();
         
         // Assert
-        await Assertions.Expect(playwrightSession.Page).ToHaveTitleAsync("RK TimeTrack");
+        await playwrightSession
+            .Expect(playwrightSession.Page)
+            .ToHaveTitleAsync("RK TimeTrack");
     }
 }
