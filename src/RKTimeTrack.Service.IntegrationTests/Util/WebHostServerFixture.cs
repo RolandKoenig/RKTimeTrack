@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.ExceptionServices;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting.Server;
@@ -19,10 +20,14 @@ namespace RKTimeTrack.Service.IntegrationTests.Util;
 // ReSharper disable once ClassNeverInstantiated.Global
 public class WebHostServerFixture : IDisposable
 {
-    private static readonly DateTimeOffset _mockedStartTimestamp = new DateTimeOffset(
+    private static readonly DateTimeOffset _mockedStartTimestamp = new(
         2024, 12, 16, 11, 0, 0, TimeSpan.FromHours(1));
     private readonly Lazy<Uri> _rootUriInitializer;
 
+    private IHost? _host;
+    private IBrowser? _browser;
+    private IPlaywright? _playwright;
+    
     /// <summary>
     /// Dependency for startup
     /// </summary>
@@ -41,8 +46,6 @@ public class WebHostServerFixture : IDisposable
     
     public Uri RootUri => _rootUriInitializer.Value;
     
-    private IHost? Host { get; set; }
-    
     public WebHostServerFixture()
     {
         _rootUriInitializer = new Lazy<Uri>(() => new Uri(StartAndGetRootUri()));
@@ -53,8 +56,8 @@ public class WebHostServerFixture : IDisposable
     /// </summary>
     public async Task<PlaywrightSession> StartPlaywrightSessionOnRootPageAsync()
     {
-        var playwright = await Playwright.CreateAsync();
-        var browser = await playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions()
+        _playwright ??= await Playwright.CreateAsync();
+        _browser ??= await _playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions()
         {
             Headless = TestSettings.HEADLESS_MODE,
             SlowMo = TestSettings.SLOW_MODE_MILLISECONDS
@@ -63,22 +66,22 @@ public class WebHostServerFixture : IDisposable
         Assertions.SetDefaultExpectTimeout(
             (float)TestSettings.DEFAULT_EXPECT_TIMEOUT.TotalMilliseconds);
         
-        var page = await browser.NewPageAsync();
+        var page = await _browser.NewPageAsync();
         
         // Set browser clock to backend clock
         await page.Clock.SetFixedTimeAsync(this.MockedStartTimestamp.UtcDateTime);
         
         await page.GotoAsync(this.RootUri.AbsoluteUri);
         
-        return new PlaywrightSession(playwright, browser, page);
+        return new PlaywrightSession(page);
     }
 
     public void Reset()
     {
-        if (this.Host == null) { return; }
+        if (_host == null) { return; }
         
         var fileBasedTimeTrackingRepositoryTestInterface = 
-            this.Host!.Services.GetRequiredService<IFileBasedTimeTrackingRepositoryTestInterface>();
+            _host!.Services.GetRequiredService<IFileBasedTimeTrackingRepositoryTestInterface>();
         fileBasedTimeTrackingRepositoryTestInterface.ResetRepository();
         
         this.TopicRepositoryMock.ClearSubstitute();
@@ -120,9 +123,9 @@ public class WebHostServerFixture : IDisposable
     private string StartAndGetRootUri()
     {
         // As the port is generated automatically, we can use IServerAddressesFeature to get the actual server URL
-        Host = CreateWebHost();
-        RunInBackgroundThread(Host.Start);
-        return Host.Services
+        _host = CreateWebHost();
+        RunInBackgroundThread(_host.Start);
+        return _host.Services
             .GetRequiredService<IServer>()
             .Features
             .Get<IServerAddressesFeature>()!
@@ -152,10 +155,45 @@ public class WebHostServerFixture : IDisposable
                 loggerConfig.WriteTo.Sink(new TestLoggerSink(this));
             });
     }
-        
-    public virtual void Dispose()
+
+    [SuppressMessage("ReSharper", "AsyncVoidMethod")]
+    public async void Dispose()
     {
-        Host?.Dispose();
-        Host?.StopAsync();
+        if (_host != null)
+        {
+            try
+            {
+                await _host.StopAsync();
+                _host.Dispose();
+            }
+            catch
+            {
+                // Nothing to do...
+            }
+        }
+
+        if (_browser != null)
+        {
+            try
+            {
+                await _browser.DisposeAsync();
+            }
+            catch
+            {
+                // Nothing to do...
+            }
+        }
+
+        if (_playwright != null)
+        {
+            try
+            {
+                _playwright.Dispose();
+            }
+            catch (Exception)
+            {
+                // Nothing to do
+            }
+        }
     }
 }
