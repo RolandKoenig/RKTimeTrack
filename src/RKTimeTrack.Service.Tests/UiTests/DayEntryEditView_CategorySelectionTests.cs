@@ -36,7 +36,7 @@ public class DayEntryEditView_CategorySelectionTests
         
         // Act
         await using var playwrightSession = await _server.StartPlaywrightSessionOnRootPageAsync();
-        var possibleOptions = await GetShownTopicCategories(playwrightSession.Page);
+        var possibleOptions = await GetShownTopicCategoriesAsync(playwrightSession.Page);
         
         // Assert
         Assert.Single(possibleOptions);
@@ -58,7 +58,7 @@ public class DayEntryEditView_CategorySelectionTests
         
         // Act
         await using var playwrightSession = await _server.StartPlaywrightSessionOnRootPageAsync();
-        var possibleOptions = await GetShownTopicCategories(playwrightSession.Page);
+        var possibleOptions = await GetShownTopicCategoriesAsync(playwrightSession.Page);
         
         // Assert
         Assert.Equal(2, possibleOptions.Count);
@@ -80,7 +80,7 @@ public class DayEntryEditView_CategorySelectionTests
         
         // Act
         await using var playwrightSession = await _server.StartPlaywrightSessionOnRootPageAsync();
-        var possibleOptions = await GetShownTopicCategories(playwrightSession.Page);
+        var possibleOptions = await GetShownTopicCategoriesAsync(playwrightSession.Page);
         
         // Assert
         Assert.Equal(2, possibleOptions.Count);
@@ -102,7 +102,7 @@ public class DayEntryEditView_CategorySelectionTests
         
         // Act
         await using var playwrightSession = await _server.StartPlaywrightSessionOnRootPageAsync();
-        var possibleOptions = await GetShownTopicCategories(playwrightSession.Page);
+        var possibleOptions = await GetShownTopicCategoriesAsync(playwrightSession.Page);
         
         // Assert
         Assert.Equal(2, possibleOptions.Count);
@@ -124,7 +124,7 @@ public class DayEntryEditView_CategorySelectionTests
         
         // Act
         await using var playwrightSession = await _server.StartPlaywrightSessionOnRootPageAsync();
-        var possibleOptions = await GetShownTopicCategories(playwrightSession.Page);
+        var possibleOptions = await GetShownTopicCategoriesAsync(playwrightSession.Page);
         
         // Assert
         Assert.Single(possibleOptions);
@@ -145,7 +145,7 @@ public class DayEntryEditView_CategorySelectionTests
         
         // Act
         await using var playwrightSession = await _server.StartPlaywrightSessionOnRootPageAsync();
-        var possibleOptions = await GetShownTopicCategories(playwrightSession.Page);
+        var possibleOptions = await GetShownTopicCategoriesAsync(playwrightSession.Page);
         
         // Assert
         Assert.Single(possibleOptions);
@@ -155,7 +155,7 @@ public class DayEntryEditView_CategorySelectionTests
     /// <summary>
     /// Gets all possible options from the 'Category' Select component.
     /// </summary>
-    private static async Task<IReadOnlyList<string>> GetShownTopicCategories(IPage page)
+    private static async Task<IReadOnlyList<string>> GetShownTopicCategoriesAsync(IPage page)
     {
         // Create a new entry to see the DayEntryEditView
         await page.GetByText("New Entry").ClickAsync();

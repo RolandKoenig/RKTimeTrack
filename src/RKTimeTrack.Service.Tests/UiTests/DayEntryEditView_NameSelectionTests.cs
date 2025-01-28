@@ -36,7 +36,7 @@ public class DayEntryEditView_NameSelectionTests
         
         // Act
         await using var playwrightSession = await _server.StartPlaywrightSessionOnRootPageAsync();
-        var possibleOptions = await GetShownTopicNames(
+        var possibleOptions = await GetShownTopicNamesAsync(
             playwrightSession.Page, "TestCategory1");
         
         // Assert
@@ -47,7 +47,7 @@ public class DayEntryEditView_NameSelectionTests
     /// <summary>
     /// Gets all possible options from the 'Name' Select component.
     /// </summary>
-    private static async Task<IReadOnlyList<string>> GetShownTopicNames(
+    private static async Task<IReadOnlyList<string>> GetShownTopicNamesAsync(
         IPage page, string categoryName)
     {
         // Create a new entry to see the DayEntryEditView
