@@ -157,12 +157,16 @@ public class DayEntryEditView_CategorySelectionTests
     /// </summary>
     private static async Task<IReadOnlyList<string>> GetShownTopicCategories(IPage page)
     {
+        // Create a new entry to see the DayEntryEditView
         await page.GetByText("New Entry").ClickAsync();
+        
+        // Open the Select component for the category
         await page
             .Locator("#selected-entry-topic-category")
-            .Locator("svg.p-select-dropdown-icon")
+            .GetByRole(AriaRole.Combobox)
             .ClickAsync();
 
+        // Get all entries in the Select component
         return await page
             .Locator("#selected-entry-topic-category_list > li")
             .AllInnerTextsAsync();
