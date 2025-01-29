@@ -66,6 +66,76 @@ public class DayEntryEditView_NameSelectionTests
     }
     
     [Fact]
+    public async Task PossibleTopicNames_with_topic_valid_for_current_date()
+    {
+        // Arrange
+        _server.TopicRepositoryMock.GetAllTopicsAsync(Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult<IReadOnlyList<TimeTrackingTopic>>([
+                new TimeTrackingTopic("TestCategory1", "Topic1"),
+                new TimeTrackingTopic(
+                    "TestCategory1", "Topic2",
+                    startDate: DateOnly.FromDateTime(_server.MockedStartTimestamp.DateTime).AddDays(-1),
+                    endDate: DateOnly.FromDateTime(_server.MockedStartTimestamp.DateTime).AddDays(1))
+            ]));
+        
+        // Act
+        await using var playwrightSession = await _server.StartPlaywrightSessionOnRootPageAsync();
+        var possibleOptions = await GetShownTopicNamesAsync(
+            playwrightSession.Page, "TestCategory1");
+
+        // Assert
+        Assert.Equal(2, possibleOptions.Count);
+        Assert.Equal("Topic1", possibleOptions[0]);
+        Assert.Equal("Topic2", possibleOptions[1]);
+    }
+    
+    [Fact]
+    public async Task PossibleTopicNames_with_topic_with_StartDate_at_today()
+    {
+        // Arrange
+        _server.TopicRepositoryMock.GetAllTopicsAsync(Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult<IReadOnlyList<TimeTrackingTopic>>([
+                new TimeTrackingTopic("TestCategory1", "Topic1"),
+                new TimeTrackingTopic(
+                    "TestCategory1", "Topic2",
+                    startDate: DateOnly.FromDateTime(_server.MockedStartTimestamp.DateTime))
+            ]));
+        
+        // Act
+        await using var playwrightSession = await _server.StartPlaywrightSessionOnRootPageAsync();
+        var possibleOptions = await GetShownTopicNamesAsync(
+            playwrightSession.Page, "TestCategory1");
+
+        // Assert
+        Assert.Equal(2, possibleOptions.Count);
+        Assert.Equal("Topic1", possibleOptions[0]);
+        Assert.Equal("Topic2", possibleOptions[1]);
+    }
+    
+    [Fact]
+    public async Task PossibleTopicNames_with_topic_with_EndDate_at_today()
+    {
+        // Arrange
+        _server.TopicRepositoryMock.GetAllTopicsAsync(Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult<IReadOnlyList<TimeTrackingTopic>>([
+                new TimeTrackingTopic("TestCategory1", "Topic1"),
+                new TimeTrackingTopic(
+                    "TestCategory1", "Topic2",
+                    endDate: DateOnly.FromDateTime(_server.MockedStartTimestamp.DateTime))
+            ]));
+        
+        // Act
+        await using var playwrightSession = await _server.StartPlaywrightSessionOnRootPageAsync();
+        var possibleOptions = await GetShownTopicNamesAsync(
+            playwrightSession.Page, "TestCategory1");
+
+        // Assert
+        Assert.Equal(2, possibleOptions.Count);
+        Assert.Equal("Topic1", possibleOptions[0]);
+        Assert.Equal("Topic2", possibleOptions[1]);
+    }
+    
+    [Fact]
     public async Task PossibleTopicNames_with_filtered_topic_name_because_of_StartDate()
     {
         // Arrange
