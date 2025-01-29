@@ -17,18 +17,24 @@
                  editMode="cell">
         <Column field="category"
                 header="Category"
-                style="width: 40%"
+                style="width: 30%"
                 sortable/>
         <Column field="name"
                 header="Name"
-                style="width: 40%"
+                style="width: 30%"
                 sortable/>
         <Column field="canBeInvoiced"
                 header="Can be invoiced?"
-                style="width: 20%"/>
+                style="width: 10%"/>
         <Column field="budget"
                 header="Budget"
-                style="width: 20%"/>
+                style="width: 10%"/>
+        <Column field="startDate"
+                header="Start Date"
+                style="width: 10%"/>
+        <Column field="endDate"
+                header="End Date"
+                style="width: 10%"/>
       </DataTable>
     </div>
   </div>
