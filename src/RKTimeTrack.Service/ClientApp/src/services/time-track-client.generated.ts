@@ -171,13 +171,6 @@ export class TimeTrackClient {
             }
             return result200;
             });
-        } else if (status === 400) {
-            return response.text().then((_responseText) => {
-            let result400: any = null;
-            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result400 = ProblemDetails.fromJS(resultData400);
-            return throwException("Bad Request", status, _responseText, _headers, result400);
-            });
         } else if (status === 500) {
             return response.text().then((_responseText) => {
             let result500: any = null;
@@ -221,13 +214,6 @@ export class TimeTrackClient {
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
             result200 = TimeTrackingWeek.fromJS(resultData200);
             return result200;
-            });
-        } else if (status === 400) {
-            return response.text().then((_responseText) => {
-            let result400: any = null;
-            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result400 = ProblemDetails.fromJS(resultData400);
-            return throwException("Bad Request", status, _responseText, _headers, result400);
             });
         } else if (status === 500) {
             return response.text().then((_responseText) => {
@@ -618,6 +604,10 @@ export class TimeTrackingTopic implements ITimeTrackingTopic {
     name!: string | undefined;
     canBeInvoiced!: boolean;
     budget!: number | undefined;
+    /** Date in format 'yyyy-mm-dd' */
+    startDate!: string | undefined;
+    /** Date in format 'yyyy-mm-dd' */
+    endDate!: string | undefined;
 
     constructor(data?: ITimeTrackingTopic) {
         if (data) {
@@ -634,6 +624,8 @@ export class TimeTrackingTopic implements ITimeTrackingTopic {
             this.name = _data["name"];
             this.canBeInvoiced = _data["canBeInvoiced"];
             this.budget = _data["budget"];
+            this.startDate = _data["startDate"];
+            this.endDate = _data["endDate"];
         }
     }
 
@@ -650,6 +642,8 @@ export class TimeTrackingTopic implements ITimeTrackingTopic {
         data["name"] = this.name;
         data["canBeInvoiced"] = this.canBeInvoiced;
         data["budget"] = this.budget;
+        data["startDate"] = this.startDate;
+        data["endDate"] = this.endDate;
         return data;
     }
 
@@ -666,6 +660,10 @@ export interface ITimeTrackingTopic {
     name: string | undefined;
     canBeInvoiced: boolean;
     budget: number | undefined;
+    /** Date in format 'yyyy-mm-dd' */
+    startDate: string | undefined;
+    /** Date in format 'yyyy-mm-dd' */
+    endDate: string | undefined;
 }
 
 export class TimeTrackingTopicReference implements ITimeTrackingTopicReference {

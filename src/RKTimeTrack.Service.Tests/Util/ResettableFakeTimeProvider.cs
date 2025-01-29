@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Time.Testing;
 
-namespace RKTimeTrack.Service.IntegrationTests.Util;
+namespace RKTimeTrack.Service.Tests.Util;
 
 /// <summary>
 /// Wrapper class around <see cref="FakeTimeProvider"/> to be able to

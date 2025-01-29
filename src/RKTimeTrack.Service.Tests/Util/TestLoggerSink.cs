@@ -1,7 +1,7 @@
 ﻿using Serilog.Core;
 using Serilog.Events;
 
-namespace RKTimeTrack.Service.IntegrationTests.Util;
+namespace RKTimeTrack.Service.Tests.Util;
 
 public class TestLoggerSink(WebHostServerFixture fixture) : ILogEventSink
 {

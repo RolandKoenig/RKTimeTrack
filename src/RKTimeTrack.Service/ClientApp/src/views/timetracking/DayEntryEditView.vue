@@ -55,8 +55,8 @@
   <form v-if="timeTrackingStore.selectedEntry">
     <div class="row">
       <div class="col-6 mb-3">
-        <label for="current-row-category" class="form-label">Category</label>
-        <Select id="selected-entry-category"
+        <label for="selected-entry-topic-category" class="form-label">Category</label>
+        <Select id="selected-entry-topic-category"
                 variant="filled"
                 v-model="timeTrackingStore.selectedEntry.topicCategory"
                 :options="timeTrackingStore.availableTopicCategories"
@@ -67,8 +67,8 @@
         </div>
       </div>
       <div class="col-6 mb-3">
-        <label for="current-row-name" class="form-label">Name</label>
-        <Select id="selected-entry-category"
+        <label for="selected-entry-topic-name" class="form-label">Name</label>
+        <Select id="selected-entry-topic-name"
                 variant="filled"
                 v-model="timeTrackingStore.selectedEntry.topicName"
                 :options="timeTrackingStore.availableTopicNames"
