@@ -1,5 +1,4 @@
 using System.Net.Http.Json;
-using FluentAssertions;
 using RKTimeTrack.Application.Models;
 using RKTimeTrack.Service.Tests.Util;
 using Xunit;
@@ -42,9 +41,8 @@ public class WeekApiTests
         var week = await httpClient.GetFromJsonAsync<TimeTrackingWeek>("api/ui/week");
         
         // Assert
-        week.Should().NotBeNull();
-        
-        week!.GetAllDays().Should().Contain(x => x.Date == DateOnly.FromDateTime(startDate.DateTime));
+        Assert.NotNull(week);
+        Assert.Contains(week!.GetAllDays(), x => x.Date == DateOnly.FromDateTime(startDate.DateTime));
     }
 
     [Fact]
@@ -58,41 +56,41 @@ public class WeekApiTests
         var week = await httpClient.GetFromJsonAsync<TimeTrackingWeek>("api/ui/week/2024/51");
         
         // Assert
-        week.Should().NotBeNull();
+        Assert.NotNull(week);
         
-        week!.Monday.Should().NotBeNull();
-        week.Monday.Date.Should().Be(new DateOnly(2024, 12, 16));
-        week.Monday.Type.Should().Be(TimeTrackingDayType.WorkingDay);
-        week.Monday.Entries.Should().BeEmpty();
+        Assert.NotNull(week!.Monday);
+        Assert.Equal(new DateOnly(2024, 12, 16), week.Monday.Date);
+        Assert.Equal(TimeTrackingDayType.WorkingDay, week.Monday.Type);
+        Assert.Empty(week.Monday.Entries);
         
-        week.Tuesday.Should().NotBeNull();
-        week.Tuesday.Date.Should().Be(new DateOnly(2024, 12, 17));
-        week.Tuesday.Type.Should().Be(TimeTrackingDayType.WorkingDay);
-        week.Tuesday.Entries.Should().BeEmpty();
+        Assert.NotNull(week.Tuesday);
+        Assert.Equal(new DateOnly(2024, 12, 17), week.Tuesday.Date);
+        Assert.Equal(TimeTrackingDayType.WorkingDay, week.Tuesday.Type);
+        Assert.Empty(week.Tuesday.Entries);
         
-        week.Wednesday.Should().NotBeNull();
-        week.Wednesday.Date.Should().Be(new DateOnly(2024, 12, 18));
-        week.Wednesday.Type.Should().Be(TimeTrackingDayType.WorkingDay);
-        week.Wednesday.Entries.Should().BeEmpty();
+        Assert.NotNull(week.Wednesday);
+        Assert.Equal(new DateOnly(2024, 12, 18), week.Wednesday.Date);
+        Assert.Equal(TimeTrackingDayType.WorkingDay, week.Wednesday.Type);
+        Assert.Empty(week.Wednesday.Entries);
         
-        week.Thursday.Should().NotBeNull();
-        week.Thursday.Date.Should().Be(new DateOnly(2024, 12, 19));
-        week.Thursday.Type.Should().Be(TimeTrackingDayType.WorkingDay);
-        week.Thursday.Entries.Should().BeEmpty();
+        Assert.NotNull(week.Thursday);
+        Assert.Equal(new DateOnly(2024, 12, 19), week.Thursday.Date);
+        Assert.Equal(TimeTrackingDayType.WorkingDay, week.Thursday.Type);
+        Assert.Empty(week.Thursday.Entries);
         
-        week.Friday.Should().NotBeNull();
-        week.Friday.Date.Should().Be(new DateOnly(2024, 12, 20));
-        week.Friday.Type.Should().Be(TimeTrackingDayType.WorkingDay);
-        week.Friday.Entries.Should().BeEmpty();
+        Assert.NotNull(week.Friday);
+        Assert.Equal(new DateOnly(2024, 12, 20), week.Friday.Date);
+        Assert.Equal(TimeTrackingDayType.WorkingDay, week.Friday.Type);
+        Assert.Empty(week.Friday.Entries);
         
-        week.Saturday.Should().NotBeNull();
-        week.Saturday.Date.Should().Be(new DateOnly(2024, 12, 21));
-        week.Saturday.Type.Should().Be(TimeTrackingDayType.Weekend);
-        week.Saturday.Entries.Should().BeEmpty();
+        Assert.NotNull(week.Saturday);
+        Assert.Equal(new DateOnly(2024, 12, 21), week.Saturday.Date);
+        Assert.Equal(TimeTrackingDayType.Weekend, week.Saturday.Type);
+        Assert.Empty(week.Saturday.Entries);
         
-        week.Sunday.Should().NotBeNull();
-        week.Sunday.Date.Should().Be(new DateOnly(2024, 12, 22));
-        week.Sunday.Type.Should().Be(TimeTrackingDayType.Weekend);
-        week.Sunday.Entries.Should().BeEmpty();
+        Assert.NotNull(week.Sunday);
+        Assert.Equal(new DateOnly(2024, 12, 22), week.Sunday.Date);
+        Assert.Equal(TimeTrackingDayType.Weekend, week.Sunday.Type);
+        Assert.Empty(week.Sunday.Entries);
     }
 }

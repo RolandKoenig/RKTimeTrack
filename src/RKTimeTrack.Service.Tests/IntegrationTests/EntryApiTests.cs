@@ -1,5 +1,4 @@
 using System.Net.Http.Json;
-using FluentAssertions;
 using RKTimeTrack.Application.Models;
 using RKTimeTrack.Application.UseCases;
 using RKTimeTrack.Service.Tests.Util;
@@ -65,9 +64,9 @@ public class EntryApiTests
         var response = await responseMessage.Content.ReadFromJsonAsync<IReadOnlyList<TimeTrackingEntry>>();
 
         // Assert
-        response.Should().NotBeNull();
-        response.Should().HaveCount(1);
-        response![0].Description.Should().Be("#4210 My dummy description 2");
+        Assert.NotNull(response);
+        Assert.Single(response);
+        Assert.Equal("#4210 My dummy description 2", response[0].Description);
     }
     
     [Fact]
@@ -111,8 +110,8 @@ public class EntryApiTests
         var response = await responseMessage.Content.ReadFromJsonAsync<IReadOnlyList<TimeTrackingEntry>>();
 
         // Assert
-        response.Should().NotBeNull();
-        response.Should().HaveCount(0);
+        Assert.NotNull(response);
+        Assert.Empty(response);
     }
     
     [Fact]
@@ -156,10 +155,10 @@ public class EntryApiTests
         var response = await responseMessage.Content.ReadFromJsonAsync<IReadOnlyList<TimeTrackingEntry>>();
 
         // Assert
-        response.Should().NotBeNull();
-        response.Should().HaveCount(2);
-        response![0].Description.Should().Be("#4210 My dummy description 2");
-        response[1].Description.Should().Be("#1023 My dummy description");
+        Assert.NotNull(response);
+        Assert.Equal(2, response.Count);
+        Assert.Equal("#4210 My dummy description 2", response[0].Description);
+        Assert.Equal("#1023 My dummy description", response[1].Description);
     }
     
     [Fact]
@@ -203,10 +202,10 @@ public class EntryApiTests
         var response = await responseMessage.Content.ReadFromJsonAsync<IReadOnlyList<TimeTrackingEntry>>();
 
         // Assert
-        response.Should().NotBeNull();
-        response.Should().HaveCount(2);
-        response![0].Description.Should().Be("#4210 My dummy description 2");
-        response[1].Description.Should().Be("#1023 My dummy description");
+        Assert.NotNull(response);
+        Assert.Equal(2, response.Count);
+        Assert.Equal("#4210 My dummy description 2", response[0].Description);
+        Assert.Equal("#1023 My dummy description", response[1].Description);
     }
     
     [Fact]
@@ -250,8 +249,8 @@ public class EntryApiTests
         var response = await responseMessage.Content.ReadFromJsonAsync<IReadOnlyList<TimeTrackingEntry>>();
 
         // Assert
-        response.Should().NotBeNull();
-        response.Should().HaveCount(1);
-        response![0].Description.Should().Be("#4210 My dummy description 2");
+        Assert.NotNull(response);
+        Assert.Single(response);
+        Assert.Equal("#4210 My dummy description 2", response[0].Description);
     }
 }
