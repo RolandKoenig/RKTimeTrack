@@ -1,6 +1,5 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using FluentAssertions;
 using RKTimeTrack.Application.Models;
 
 namespace RKTimeTrack.Application.Tests.Models;
@@ -21,27 +20,28 @@ public class TimeTrackingWeekTests
         var serializedString = JsonSerializer.Serialize(model, jsonOptions);
         
         // Assert
-        serializedString.Should().StartWith("""
-                                            {
-                                              "year": 2024,
-                                              "weekNumber": 25,
-                                              "monday": {
-                                                "date": "2024-06-17",
-                                                "type": "WorkingDay",
-                                                "entries": [
-                                                  {
-                                                    "topic": {
-                                                      "category": "TestCategory",
-                                                      "name": "TestName"
-                                                    },
-                                                    "effortInHours": 4,
-                                                    "effortBilled": 3,
-                                                    "type": "Default",
-                                                    "description": "DummyDescription"
-                                                  }
-                                                ]
-                                              }
-                                            """);
+        Assert.StartsWith("""
+                          {
+                            "year": 2024,
+                            "weekNumber": 25,
+                            "monday": {
+                              "date": "2024-06-17",
+                              "type": "WorkingDay",
+                              "entries": [
+                                {
+                                  "topic": {
+                                    "category": "TestCategory",
+                                    "name": "TestName"
+                                  },
+                                  "effortInHours": 4,
+                                  "effortBilled": 3,
+                                  "type": "Default",
+                                  "description": "DummyDescription"
+                                }
+                              ]
+                            }
+                          """,
+            serializedString);
     }
 
     [Fact]
@@ -58,7 +58,7 @@ public class TimeTrackingWeekTests
         var deserializedObject = JsonSerializer.Deserialize<TimeTrackingWeek>(serialization, jsonOptions);
         
         // Assert
-        deserializedObject.Should().BeEquivalentTo(model);
+        Assert.Equivalent(model, deserializedObject);
     }
 
     /// <summary>
