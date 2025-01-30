@@ -10,7 +10,6 @@ a freelance software architect and for some technology focused demos.
 RKTimeTrack is based on ASP.NET Core and Vue.js.
 Furthermore, the project is based on following technologies / projects:
  - [Bootstrap](https://getbootstrap.com/): Powerful, extensible, and feature-packed frontend toolkit
- - [FluentAssertions](https://github.com/fluentassertions/fluentassertions): A very extensive set of extension methods that allow you to more naturally specify the expected outcome of a TDD or BDD-style unit tests
  - [FluentValidation](https://github.com/FluentValidation/FluentValidation): A popular .NET validation library for building strongly-typed validation rules
  - [Light.GuardClauses](https://github.com/feO2x/Light.GuardClauses): A lightweight .NET library for expressive Guard Clauses.
  - [Microsoft.Playwright](https://playwright.dev/): Playwright enables reliable end-to-end testing for modern web apps

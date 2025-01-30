@@ -1,5 +1,4 @@
 using System.Net.Http.Json;
-using FluentAssertions;
 using NSubstitute;
 using RKTimeTrack.Application.Models;
 using RKTimeTrack.Service.Tests.Util;
@@ -41,18 +40,18 @@ public class TopicApiTests
         var topics = await httpClient.GetFromJsonAsync<IReadOnlyList<TimeTrackingTopic>>("api/ui/topics");
 
         // Assert
-        topics.Should().NotBeNull();
-        topics.Should().HaveCount(2);
-        
-        topics![0].Category.Should().Be("TestCategory");
-        topics[0].Name.Should().Be("Topic1");
-        topics[0].CanBeInvoiced.Should().BeFalse();
-        topics[0].Budget.Should().BeNull();
-        
-        topics[1].Category.Should().Be("TestCategory");
-        topics[1].Name.Should().Be("Topic2");
-        topics[1].CanBeInvoiced.Should().BeTrue();
-        topics[1].Budget.Should().NotBeNull();
-        topics[1].Budget!.Value.Hours.Should().Be(200);
+        Assert.NotNull(topics);
+        Assert.Equal(2, topics?.Count);
+
+        Assert.Equal("TestCategory", topics![0].Category);
+        Assert.Equal("Topic1", topics[0].Name);
+        Assert.False(topics[0].CanBeInvoiced);
+        Assert.Null(topics[0].Budget);
+
+        Assert.Equal("TestCategory", topics[1].Category);
+        Assert.Equal("Topic2", topics[1].Name);
+        Assert.True(topics[1].CanBeInvoiced);
+        Assert.NotNull(topics[1].Budget);
+        Assert.Equal(200, topics[1].Budget!.Value.Hours);
     }
 }

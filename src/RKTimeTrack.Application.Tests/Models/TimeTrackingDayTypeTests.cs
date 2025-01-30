@@ -1,4 +1,3 @@
-using FluentAssertions;
 using Light.GuardClauses.FrameworkExtensions;
 using RKTimeTrack.Application.Models;
 
@@ -13,10 +12,7 @@ public class TimeTrackingDayTypeTests
         var enumValues = Enum.GetValues<TimeTrackingDayType>();
         
         // Act
-        var act = () => enumValues.ForEach(x => x.GetExpectedWorkingHours());
-        
-        // Assert
-        act.Should().NotThrow();
+        enumValues.ForEach(x => x.GetExpectedWorkingHours());
     }
     
     [Fact]
@@ -26,9 +22,6 @@ public class TimeTrackingDayTypeTests
         var enumValues = Enum.GetValues<TimeTrackingDayType>();
         
         // Act
-        var act = () => enumValues.ForEach(x => x.GetCalculationFactorForWorkingHours());
-        
-        // Assert
-        act.Should().NotThrow();
+        enumValues.ForEach(x => x.GetCalculationFactorForWorkingHours());
     }
 }

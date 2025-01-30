@@ -1,5 +1,4 @@
 using System.Net.Http.Json;
-using FluentAssertions;
 using RKTimeTrack.Application.Models;
 using RKTimeTrack.Service.Tests.Util;
 using Xunit;
@@ -41,7 +40,7 @@ public class YearApiTests
         var yearMetadata = await httpClient.GetFromJsonAsync<TimeTrackingYearMetadata>($"api/ui/year/{year}/metadata");
         
         // Assert
-        yearMetadata.Should().NotBeNull();
-        yearMetadata!.MaxWeekNumber.Should().Be(expectedWeekCount);
+        Assert.NotNull(yearMetadata);
+        Assert.Equal(expectedWeekCount, yearMetadata.MaxWeekNumber);
     }
 }

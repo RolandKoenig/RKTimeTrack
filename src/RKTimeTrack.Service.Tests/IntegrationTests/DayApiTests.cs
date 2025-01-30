@@ -1,5 +1,4 @@
 using System.Net.Http.Json;
-using FluentAssertions;
 using RKTimeTrack.Application.Models;
 using RKTimeTrack.Application.UseCases;
 using RKTimeTrack.Service.Tests.Util;
@@ -48,18 +47,18 @@ public class DayApiTests
         
         // Assert
         var week = await httpClient.GetFromJsonAsync<TimeTrackingWeek>("api/ui/week/2024/51");
-        week.Should().NotBeNull();
+        Assert.NotNull(week);
 
-        week!.Tuesday.Should().NotBeNull();
-        week.Tuesday.Date.Should().Be(new DateOnly(2024, 12, 17));
-        week.Tuesday.Type.Should().Be(TimeTrackingDayType.WorkingDay);
-        week.Tuesday.Entries.Should().HaveCount(1);
-        week.Tuesday.Entries[0].Topic.Category.Should().Be("Category1");
-        week.Tuesday.Entries[0].Topic.Name.Should().Be("Name6 (With Budget)");
-        week.Tuesday.Entries[0].EffortInHours.Hours.Should().Be(4);
-        week.Tuesday.Entries[0].EffortBilled.Hours.Should().Be(2);
-        week.Tuesday.Entries[0].Type.Should().Be(TimeTrackingEntryType.Default);
-        week.Tuesday.Entries[0].Description.Should().Be("My dummy description");
+        Assert.NotNull(week!.Tuesday);
+        Assert.Equal(new DateOnly(2024, 12, 17), week.Tuesday.Date);
+        Assert.Equal(TimeTrackingDayType.WorkingDay, week.Tuesday.Type);
+        Assert.Single(week.Tuesday.Entries);
+        Assert.Equal("Category1", week.Tuesday.Entries[0].Topic.Category);
+        Assert.Equal("Name6 (With Budget)", week.Tuesday.Entries[0].Topic.Name);
+        Assert.Equal(4, week.Tuesday.Entries[0].EffortInHours.Hours);
+        Assert.Equal(2, week.Tuesday.Entries[0].EffortBilled.Hours);
+        Assert.Equal(TimeTrackingEntryType.Default, week.Tuesday.Entries[0].Type);
+        Assert.Equal("My dummy description", week.Tuesday.Entries[0].Description);
     }
     
     [Theory]
@@ -91,10 +90,10 @@ public class DayApiTests
         
         // Assert
         var week = await httpClient.GetFromJsonAsync<TimeTrackingWeek>("api/ui/week/2024/51");
-        week.Should().NotBeNull();
+        Assert.NotNull(week);
 
-        week!.Tuesday.Should().NotBeNull();
-        week.Tuesday.Type.Should().Be(dayType);
+        Assert.NotNull(week!.Tuesday);
+        Assert.Equal(dayType, week.Tuesday.Type);
     }
     
     [Theory]
@@ -121,11 +120,11 @@ public class DayApiTests
         
         // Assert
         var week = await httpClient.GetFromJsonAsync<TimeTrackingWeek>("api/ui/week/2024/51");
-        week.Should().NotBeNull();
+        Assert.NotNull(week);
 
-        week!.Tuesday.Should().NotBeNull();
-        week.Tuesday.Entries[0].Topic.Category.Should().Be(topicCategory);
-        week.Tuesday.Entries[0].Topic.Name.Should().Be(topicName);
+        Assert.NotNull(week!.Tuesday);
+        Assert.Equal(topicCategory, week.Tuesday.Entries[0].Topic.Category);
+        Assert.Equal(topicName, week.Tuesday.Entries[0].Topic.Name);
     }
     
     [Theory]
@@ -154,10 +153,10 @@ public class DayApiTests
         
         // Assert
         var week = await httpClient.GetFromJsonAsync<TimeTrackingWeek>("api/ui/week/2024/51");
-        week.Should().NotBeNull();
+        Assert.NotNull(week);
 
-        week!.Tuesday.Should().NotBeNull();
-        week.Tuesday.Entries[0].EffortInHours.Hours.Should().Be(effortInHours);
+        Assert.NotNull(week!.Tuesday);
+        Assert.Equal(effortInHours, week.Tuesday.Entries[0].EffortInHours.Hours);
     }
     
     [Theory]
@@ -187,10 +186,10 @@ public class DayApiTests
         
         // Assert
         var week = await httpClient.GetFromJsonAsync<TimeTrackingWeek>("api/ui/week/2024/51");
-        week.Should().NotBeNull();
+        Assert.NotNull(week);
 
-        week!.Tuesday.Should().NotBeNull();
-        week.Tuesday.Entries[0].EffortBilled.Hours.Should().Be(effortBilled);
+        Assert.NotNull(week!.Tuesday);
+        Assert.Equal(effortBilled, week.Tuesday.Entries[0].EffortBilled.Hours);
     }
     
     [Theory]
@@ -218,10 +217,10 @@ public class DayApiTests
         
         // Assert
         var week = await httpClient.GetFromJsonAsync<TimeTrackingWeek>("api/ui/week/2024/51");
-        week.Should().NotBeNull();
+        Assert.NotNull(week);
 
-        week!.Tuesday.Should().NotBeNull();
-        week.Tuesday.Entries[0].Type.Should().Be(entryType);
+        Assert.NotNull(week!.Tuesday);
+        Assert.Equal(entryType, week.Tuesday.Entries[0].Type);
     }
     
     [Theory]
@@ -248,9 +247,9 @@ public class DayApiTests
         
         // Assert
         var week = await httpClient.GetFromJsonAsync<TimeTrackingWeek>("api/ui/week/2024/51");
-        week.Should().NotBeNull();
+        Assert.NotNull(week);
 
-        week!.Tuesday.Should().NotBeNull();
-        week.Tuesday.Entries[0].Description.Should().Be(description);
+        Assert.NotNull(week!.Tuesday);
+        Assert.Equal(description, week.Tuesday.Entries[0].Description);
     }
 }

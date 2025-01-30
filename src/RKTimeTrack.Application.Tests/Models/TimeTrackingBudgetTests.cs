@@ -1,5 +1,4 @@
-﻿using FluentAssertions;
-using RKTimeTrack.Application.Models;
+﻿using RKTimeTrack.Application.Models;
 
 namespace RKTimeTrack.Application.Tests.Models;
 
@@ -19,17 +18,17 @@ public class TimeTrackingBudgetTests
         var budget = new TimeTrackingBudget(input);
         
         // Assert
-        budget.Hours.Should().Be(expectedOutput);
+        Assert.Equal(expectedOutput, budget.Hours);
     }
 
     [Fact]
     public void Do_not_allow_negative_budgets()
     {
         // Act
-        var actAction = () => new TimeTrackingBudget(-1);
+        Action actAction = () => new TimeTrackingBudget(-1);
         
         // Assert
-        actAction.Should().Throw<ArgumentException>();
+        Assert.Throws<ArgumentOutOfRangeException>(actAction);
     }
 
     [Fact]
@@ -39,6 +38,6 @@ public class TimeTrackingBudgetTests
         TimeTrackingBudget myBudget = 5.7;
         
         // Assert
-        myBudget.Hours.Should().Be(6);
+        Assert.Equal(6, myBudget.Hours);
     }
 }

@@ -1,5 +1,4 @@
-﻿using FluentAssertions;
-using RKTimeTrack.Application.Util;
+﻿using RKTimeTrack.Application.Util;
 
 namespace RKTimeTrack.Application.Tests.Util;
 
@@ -20,8 +19,8 @@ public class GermanCalendarWeekUtilTests
         var actualWeek = GermanCalendarWeekUtil.GetCalendarWeek(date, out var nextYear);
 
         // Assert
-        actualWeek.Should().Be(expectedWeek);
-        nextYear.Should().Be(expectInNextYear);
+        Assert.Equal(expectedWeek, actualWeek);
+        Assert.Equal(expectInNextYear, nextYear);
     }
 
     [Fact]
@@ -36,9 +35,7 @@ public class GermanCalendarWeekUtilTests
         while (currentDate <= endDate)
         {
             var currentCalendarWeek = GermanCalendarWeekUtil.GetCalendarWeek(currentDate, out var _);
-            currentCalendarWeek.Should().BeGreaterOrEqualTo(1, because: $"wrong for date {currentDate}");
-            currentCalendarWeek.Should().BeLessOrEqualTo(53, because: $"wrong for date {currentDate}");
-
+            Assert.InRange(currentCalendarWeek, 1, 53);
             currentDate = currentDate.AddDays(1);
         }
     }
@@ -61,9 +58,9 @@ public class GermanCalendarWeekUtilTests
         var actualDate = GermanCalendarWeekUtil.GetDateOfMonday(year, weekNumber);
 
         // Assert
-        actualDate.Year.Should().Be(expectedYear);
-        actualDate.Month.Should().Be(expectedMonth);
-        actualDate.Day.Should().Be(expectedDay);
-        actualDate.DayOfWeek.Should().Be(DayOfWeek.Monday);
+        Assert.Equal(expectedYear, actualDate.Year);
+        Assert.Equal(expectedMonth, actualDate.Month);
+        Assert.Equal(expectedDay, actualDate.Day);
+        Assert.Equal(DayOfWeek.Monday, actualDate.DayOfWeek);
     }
 }

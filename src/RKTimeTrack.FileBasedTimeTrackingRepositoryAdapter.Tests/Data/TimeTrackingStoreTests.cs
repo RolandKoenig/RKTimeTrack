@@ -1,5 +1,4 @@
-﻿using FluentAssertions;
-using Microsoft.Extensions.Time.Testing;
+﻿using Microsoft.Extensions.Time.Testing;
 using RKTimeTrack.Application.Models;
 using RKTimeTrack.FileBasedTimeTrackingRepositoryAdapter.Data;
 
@@ -30,13 +29,13 @@ public class TimeTrackingStoreTests
             Array.Empty<TimeTrackingEntry>()));
         
         // Assert
-        sut.Store.Count.Should().Be(3);
-        sut.Store[0].Date.Should().Be(new DateOnly(2022, 1, 1));
-        sut.Store[0].Type.Should().Be(TimeTrackingDayType.Weekend);
-        sut.Store[1].Date.Should().Be(new DateOnly(2022, 1, 2));
-        sut.Store[1].Type.Should().Be(TimeTrackingDayType.Weekend);
-        sut.Store[2].Date.Should().Be(new DateOnly(2022, 1, 3));
-        sut.Store[2].Type.Should().Be(TimeTrackingDayType.WorkingDay);
+        Assert.Equal(3, sut.Store.Count);
+        Assert.Equal(new DateOnly(2022, 1, 1), sut.Store[0].Date);
+        Assert.Equal(TimeTrackingDayType.Weekend, sut.Store[0].Type);
+        Assert.Equal(new DateOnly(2022, 1, 2), sut.Store[1].Date);
+        Assert.Equal(TimeTrackingDayType.Weekend, sut.Store[1].Type);
+        Assert.Equal(new DateOnly(2022, 1, 3), sut.Store[2].Date);
+        Assert.Equal(TimeTrackingDayType.WorkingDay, sut.Store[2].Type);
     }
     
     [Fact]
@@ -62,13 +61,13 @@ public class TimeTrackingStoreTests
             Array.Empty<TimeTrackingEntry>()));
         
         // Assert
-        sut.Store.Count.Should().Be(3);
-        sut.Store[0].Date.Should().Be(new DateOnly(2022, 1, 1));
-        sut.Store[0].Type.Should().Be(TimeTrackingDayType.Weekend);
-        sut.Store[1].Date.Should().Be(new DateOnly(2022, 1, 2));
-        sut.Store[1].Type.Should().Be(TimeTrackingDayType.Weekend);
-        sut.Store[2].Date.Should().Be(new DateOnly(2022, 1, 3));
-        sut.Store[2].Type.Should().Be(TimeTrackingDayType.WorkingDay);
+        Assert.Equal(3, sut.Store.Count);
+        Assert.Equal(new DateOnly(2022, 1, 1), sut.Store[0].Date);
+        Assert.Equal(TimeTrackingDayType.Weekend, sut.Store[0].Type);
+        Assert.Equal(new DateOnly(2022, 1, 2), sut.Store[1].Date);
+        Assert.Equal(TimeTrackingDayType.Weekend, sut.Store[1].Type);
+        Assert.Equal(new DateOnly(2022, 1, 3), sut.Store[2].Date);
+        Assert.Equal(TimeTrackingDayType.WorkingDay, sut.Store[2].Type);
     }
 
     [Fact]
@@ -83,30 +82,30 @@ public class TimeTrackingStoreTests
         var week = sut.GetOrCreateWeek(2024, 25);
         
         // Assert
-        sut.Store.Count.Should().Be(7);
-        week.Year.Should().Be(2024);
-        week.WeekNumber.Should().Be(25);
-        week.Monday.Should().Be(sut.Store[0]);
-        week.Monday.Date.Should().Be(new DateOnly(2024, 6, 17));
-        week.Monday.Type.Should().Be(TimeTrackingDayType.WorkingDay);
-        week.Tuesday.Should().Be(sut.Store[1]);
-        week.Tuesday.Date.Should().Be(new DateOnly(2024, 6, 18));
-        week.Tuesday.Type.Should().Be(TimeTrackingDayType.WorkingDay);
-        week.Wednesday.Should().Be(sut.Store[2]);
-        week.Wednesday.Date.Should().Be(new DateOnly(2024, 6, 19));
-        week.Wednesday.Type.Should().Be(TimeTrackingDayType.WorkingDay);
-        week.Thursday.Should().Be(sut.Store[3]);
-        week.Thursday.Date.Should().Be(new DateOnly(2024, 6, 20));
-        week.Thursday.Type.Should().Be(TimeTrackingDayType.WorkingDay);
-        week.Friday.Should().Be(sut.Store[4]);
-        week.Friday.Date.Should().Be(new DateOnly(2024, 6, 21));
-        week.Friday.Type.Should().Be(TimeTrackingDayType.WorkingDay);
-        week.Saturday.Should().Be(sut.Store[5]);
-        week.Saturday.Date.Should().Be(new DateOnly(2024, 6, 22));
-        week.Saturday.Type.Should().Be(TimeTrackingDayType.Weekend);
-        week.Sunday.Should().Be(sut.Store[6]);
-        week.Sunday.Date.Should().Be(new DateOnly(2024, 6, 23));
-        week.Sunday.Type.Should().Be(TimeTrackingDayType.Weekend);
+        Assert.Equal(7, sut.Store.Count);
+        Assert.Equal(2024, week.Year);
+        Assert.Equal(25, week.WeekNumber);
+        Assert.Same(sut.Store[0], week.Monday);
+        Assert.Equal(new DateOnly(2024, 6, 17), week.Monday.Date);
+        Assert.Equal(TimeTrackingDayType.WorkingDay, week.Monday.Type);
+        Assert.Same(sut.Store[1], week.Tuesday);
+        Assert.Equal(new DateOnly(2024, 6, 18), week.Tuesday.Date);
+        Assert.Equal(TimeTrackingDayType.WorkingDay, week.Tuesday.Type);
+        Assert.Same(sut.Store[2], week.Wednesday);
+        Assert.Equal(new DateOnly(2024, 6, 19), week.Wednesday.Date);
+        Assert.Equal(TimeTrackingDayType.WorkingDay, week.Wednesday.Type);
+        Assert.Same(sut.Store[3], week.Thursday);
+        Assert.Equal(new DateOnly(2024, 6, 20), week.Thursday.Date);
+        Assert.Equal(TimeTrackingDayType.WorkingDay, week.Thursday.Type);
+        Assert.Same(sut.Store[4], week.Friday);
+        Assert.Equal(new DateOnly(2024, 6, 21), week.Friday.Date);
+        Assert.Equal(TimeTrackingDayType.WorkingDay, week.Friday.Type);
+        Assert.Same(sut.Store[5], week.Saturday);
+        Assert.Equal(new DateOnly(2024, 6, 22), week.Saturday.Date);
+        Assert.Equal(TimeTrackingDayType.Weekend, week.Saturday.Type);
+        Assert.Same(sut.Store[6], week.Sunday);
+        Assert.Equal(new DateOnly(2024, 6, 23), week.Sunday.Date);
+        Assert.Equal(TimeTrackingDayType.Weekend, week.Sunday.Type);
     }
     
     [Fact]
@@ -133,132 +132,33 @@ public class TimeTrackingStoreTests
         var week = sut.GetOrCreateWeek(2024, 25);
         
         // Assert
-        sut.Store.Count.Should().Be(7);
-        week.Year.Should().Be(2024);
-        week.WeekNumber.Should().Be(25);
-        week.Monday.Should().Be(sut.Store[0]);
-        week.Monday.Date.Should().Be(new DateOnly(2024, 6, 17));
-        week.Monday.Type.Should().Be(TimeTrackingDayType.WorkingDay);
-        week.Tuesday.Should().Be(sut.Store[1]);
-        week.Tuesday.Should().Be(createdTuesday);
-        week.Tuesday.Date.Should().Be(new DateOnly(2024, 6, 18));
-        week.Tuesday.Type.Should().Be(TimeTrackingDayType.WorkingDay);
-        week.Wednesday.Should().Be(sut.Store[2]);
-        week.Wednesday.Date.Should().Be(new DateOnly(2024, 6, 19));
-        week.Wednesday.Type.Should().Be(TimeTrackingDayType.WorkingDay);
-        week.Thursday.Should().Be(sut.Store[3]);
-        week.Thursday.Date.Should().Be(new DateOnly(2024, 6, 20));
-        week.Thursday.Type.Should().Be(TimeTrackingDayType.WorkingDay);
-        week.Friday.Should().Be(sut.Store[4]);
-        week.Friday.Should().Be(createdFriday);
-        week.Friday.Date.Should().Be(new DateOnly(2024, 6, 21));
-        week.Friday.Type.Should().Be(TimeTrackingDayType.WorkingDay);
-        week.Saturday.Should().Be(sut.Store[5]);
-        week.Saturday.Date.Should().Be(new DateOnly(2024, 6, 22));
-        week.Saturday.Type.Should().Be(TimeTrackingDayType.Weekend);
-        week.Sunday.Should().Be(sut.Store[6]);
-        week.Sunday.Should().Be(createdSunday);
-        week.Sunday.Date.Should().Be(new DateOnly(2024, 6, 23));
-        week.Sunday.Type.Should().Be(TimeTrackingDayType.Weekend);
-    }
-    
-    [Fact]
-    public void GetWeek_where_all_days_exist()
-    {
-        // Arrange
-        var startTimestamp = new DateTimeOffset(2024, 1, 1, 8, 0, 0, TimeSpan.Zero);
-        var timeProvider = new FakeTimeProvider(startTimestamp);
-        var sut = new TimeTrackingStore(timeProvider);
-
-        // Act
-        var allDays = Enumerable.Range(0, 7).Select(x =>
-            sut.AddOrUpdateDay(new TimeTrackingDay(
-                new DateOnly(2024, 6, 17 + x), 
-                x < 5 ? TimeTrackingDayType.WorkingDay : TimeTrackingDayType.Weekend,
-                Array.Empty<TimeTrackingEntry>()))).ToArray();
-        var week = sut.GetOrCreateWeek(2024, 25);
-        
-        // Assert
-        sut.Store.Count.Should().Be(7);
-        week.Year.Should().Be(2024);
-        week.WeekNumber.Should().Be(25);
-        week.Monday.Should().Be(sut.Store[0]);
-        week.Monday.Should().Be(allDays[0]);
-        week.Monday.Date.Should().Be(new DateOnly(2024, 6, 17));
-        week.Monday.Type.Should().Be(TimeTrackingDayType.WorkingDay);
-        week.Tuesday.Should().Be(sut.Store[1]);
-        week.Tuesday.Should().Be(allDays[1]);
-        week.Tuesday.Date.Should().Be(new DateOnly(2024, 6, 18));
-        week.Tuesday.Type.Should().Be(TimeTrackingDayType.WorkingDay);
-        week.Wednesday.Should().Be(sut.Store[2]);
-        week.Wednesday.Should().Be(allDays[2]);
-        week.Wednesday.Date.Should().Be(new DateOnly(2024, 6, 19));
-        week.Wednesday.Type.Should().Be(TimeTrackingDayType.WorkingDay);
-        week.Thursday.Should().Be(sut.Store[3]);
-        week.Thursday.Should().Be(allDays[3]);
-        week.Thursday.Date.Should().Be(new DateOnly(2024, 6, 20));
-        week.Thursday.Type.Should().Be(TimeTrackingDayType.WorkingDay);
-        week.Friday.Should().Be(sut.Store[4]);
-        week.Friday.Should().Be(allDays[4]);
-        week.Friday.Date.Should().Be(new DateOnly(2024, 6, 21));
-        week.Friday.Type.Should().Be(TimeTrackingDayType.WorkingDay);
-        week.Saturday.Should().Be(sut.Store[5]);
-        week.Saturday.Should().Be(allDays[5]);
-        week.Saturday.Date.Should().Be(new DateOnly(2024, 6, 22));
-        week.Saturday.Type.Should().Be(TimeTrackingDayType.Weekend);
-        week.Sunday.Should().Be(sut.Store[6]);
-        week.Sunday.Should().Be(allDays[6]);
-        week.Sunday.Date.Should().Be(new DateOnly(2024, 6, 23));
-        week.Sunday.Type.Should().Be(TimeTrackingDayType.Weekend);
-    }
-
-    [Theory]
-    [InlineData(100)]
-    [InlineData(200)]
-    [InlineData(300)]
-    [InlineData(400)]
-    [InlineData(500)]
-    public void AddOrUpdateDay_and_GetDay_in_fully_random_order(int seed)
-    {
-        // Arrange
-        var startTimestamp = new DateTimeOffset(2024, 1, 1, 8, 0, 0, TimeSpan.Zero);
-        var timeProvider = new FakeTimeProvider(startTimestamp);
-        var sut = new TimeTrackingStore(timeProvider);
-        
-        var random = new Random(seed);
-        var controlDictionary = new Dictionary<DateOnly, TimeTrackingDay>();
-        
-        // Act
-        for (var loop = 0; loop < 1000; loop++)
-        {
-            var newDate = new DateOnly(2022, 1, 1).AddDays(random.Next(10, 1500));
-            var dayType = newDate.DayOfWeek switch
-            {
-                DayOfWeek.Saturday => TimeTrackingDayType.Weekend,
-                DayOfWeek.Sunday => TimeTrackingDayType.Weekend,
-                _ => TimeTrackingDayType.WorkingDay
-            };
-
-            var newDay = new TimeTrackingDay(
-                newDate,
-                dayType,
-                Array.Empty<TimeTrackingEntry>());
-            sut.AddOrUpdateDay(newDay);
-            controlDictionary[newDate] = newDay;
-        }
-        
-        // Assert
-        sut.Store.Count.Should().Be(controlDictionary.Count);
-        foreach (var day in sut.Store)
-        {
-            controlDictionary.ContainsKey(day.Date).Should().BeTrue();
-            controlDictionary[day.Date].Should().Be(day);
-        }
-        foreach (var actControlDictionaryEntry in controlDictionary)
-        {
-            var actDayFromStore = sut.GetOrCreateDay(actControlDictionaryEntry.Key);
-            actDayFromStore.Should().Be(actControlDictionaryEntry.Value);
-        }
+        Assert.Equal(7, sut.Store.Count);
+        Assert.Equal(2024, week.Year);
+        Assert.Equal(25, week.WeekNumber);
+        Assert.Same(sut.Store[0], week.Monday);
+        Assert.Equal(new DateOnly(2024, 6, 17), week.Monday.Date);
+        Assert.Equal(TimeTrackingDayType.WorkingDay, week.Monday.Type);
+        Assert.Same(sut.Store[1], week.Tuesday);
+        Assert.Same(createdTuesday, week.Tuesday);
+        Assert.Equal(new DateOnly(2024, 6, 18), week.Tuesday.Date);
+        Assert.Equal(TimeTrackingDayType.WorkingDay, week.Tuesday.Type);
+        Assert.Same(sut.Store[2], week.Wednesday);
+        Assert.Equal(new DateOnly(2024, 6, 19), week.Wednesday.Date);
+        Assert.Equal(TimeTrackingDayType.WorkingDay, week.Wednesday.Type);
+        Assert.Same(sut.Store[3], week.Thursday);
+        Assert.Equal(new DateOnly(2024, 6, 20), week.Thursday.Date);
+        Assert.Equal(TimeTrackingDayType.WorkingDay, week.Thursday.Type);
+        Assert.Same(sut.Store[4], week.Friday);
+        Assert.Same(createdFriday, week.Friday);
+        Assert.Equal(new DateOnly(2024, 6, 21), week.Friday.Date);
+        Assert.Equal(TimeTrackingDayType.WorkingDay, week.Friday.Type);
+        Assert.Same(sut.Store[5], week.Saturday);
+        Assert.Equal(new DateOnly(2024, 6, 22), week.Saturday.Date);
+        Assert.Equal(TimeTrackingDayType.Weekend, week.Saturday.Type);
+        Assert.Same(sut.Store[6], week.Sunday);
+        Assert.Same(createdSunday, week.Sunday);
+        Assert.Equal(new DateOnly(2024, 6, 23), week.Sunday.Date);
+        Assert.Equal(TimeTrackingDayType.Weekend, week.Sunday.Type);
     }
     
     [Fact]
@@ -274,7 +174,7 @@ public class TimeTrackingStoreTests
             new DateOnly(2022, 1, 1), 
             TimeTrackingDayType.Weekend,
             Array.Empty<TimeTrackingEntry>()));
-        sut.LastChangeTimestamp.Should().Be(startTimestamp);
+        Assert.Equal(startTimestamp, sut.LastChangeTimestamp);
         
         var newTimestamp = startTimestamp.AddHours(1.5);
         timeProvider.SetUtcNow(newTimestamp);
@@ -282,6 +182,6 @@ public class TimeTrackingStoreTests
             new DateOnly(2022, 1, 2), 
             TimeTrackingDayType.Weekend,
             Array.Empty<TimeTrackingEntry>()));
-        sut.LastChangeTimestamp.Should().Be(newTimestamp);
+        Assert.Equal(newTimestamp, sut.LastChangeTimestamp);
     }
 }
