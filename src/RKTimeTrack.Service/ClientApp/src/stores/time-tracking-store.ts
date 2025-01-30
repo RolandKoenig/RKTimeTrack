@@ -196,26 +196,6 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
             default: selectedDay.value = currentWeek.value.monday; return false;
         }
     }
-    
-    async function fetchCurrentWeekAgain(){
-        if(!currentWeek.value){
-            await fetchCurrentWeek();
-            return;
-        }
-        
-        const prevSelectedDayDate = selectedDay.value?.date;
-        await wrapLoadingCall(async () => {
-            currentWeek.value = UiTimeTrackingWeek.fromBackendModel(await timeTrackClient.getWeek(
-                currentWeek.value!.year, currentWeek.value!.weekNumber));
-            
-            if(prevSelectedDayDate){
-                selectedDay.value = currentWeek.value.tryGetDayByDate(prevSelectedDayDate);
-            }else{
-                selectedEntry.value = null;
-            }
-            selectedEntry.value = null;
-        });
-    }
 
     /**
      * Go one week backward
@@ -406,7 +386,7 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
         selectedDay, selectedEntry,
         dayTypeValues, entryTypeValues,
         selectMonday, selectTuesday, selectWednesday, selectThursday, selectFriday, selectSaturday, selectSunday,
-        fetchCurrentWeekAgain, fetchWeekBeforeThisWeek, fetchWeekAfterThisWeek,
+        fetchWeekBeforeThisWeek, fetchWeekAfterThisWeek,
         availableTopicCategories, availableTopicNames, canCurrentTopicBeInvoiced,selectedEntryCategoryChanged,
         addNewEntry, copySelectedEntry, deleteSelectedEntry, copyEffortToEffortBilled,
         applyNewEntryCollection
