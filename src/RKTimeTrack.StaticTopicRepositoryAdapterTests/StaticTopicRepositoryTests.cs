@@ -1,5 +1,4 @@
-﻿using FluentAssertions;
-using RKTimeTrack.Application.Models;
+﻿using RKTimeTrack.Application.Models;
 using RKTimeTrack.StaticTopicRepositoryAdapter;
 
 namespace RKTimeTrack.StaticTopicRepositoryAdapterTests;
@@ -42,15 +41,15 @@ public class StaticTopicRepositoryTests
             var allTopics = await staticTopicResository.GetAllTopicsAsync(CancellationToken.None);
         
             // Assert
-            allTopics.Should().NotBeEmpty();
-            allTopics.Should().HaveCount(2);
+            Assert.NotEmpty(allTopics);
+            Assert.Equal(2, allTopics.Count);
 
-            allTopics[0].Category.Should().Be("cat1");
-            allTopics[0].Name.Should().Be("name1");
-            allTopics[0].Budget.Should().BeNull();
-            allTopics[1].Category.Should().Be("cat1");
-            allTopics[1].Name.Should().Be("name2");
-            allTopics[1].Budget.Should().Be(new TimeTrackingBudget(40));
+            Assert.Equal("cat1", allTopics[0].Category);
+            Assert.Equal("name1", allTopics[0].Name);
+            Assert.Null(allTopics[0].Budget);
+            Assert.Equal("cat1", allTopics[1].Category);
+            Assert.Equal("name2", allTopics[1].Name);
+            Assert.Equal(new TimeTrackingBudget(40), allTopics[1].Budget);
         }
         finally
         {
@@ -74,6 +73,6 @@ public class StaticTopicRepositoryTests
         var allTopics = await staticTopicResository.GetAllTopicsAsync(CancellationToken.None);
         
         // Assert
-        allTopics.Should().NotBeEmpty();
+        Assert.NotEmpty(allTopics);
     }
 }

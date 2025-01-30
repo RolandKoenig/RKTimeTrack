@@ -1,4 +1,3 @@
-using FluentAssertions;
 using RKTimeTrack.StaticTopicRepositoryAdapter.Util;
 
 namespace RKTimeTrack.StaticTopicRepositoryAdapterTests.Util;
@@ -16,9 +15,9 @@ public class StaticTopicRepositoryUtilTests
         await task;
         
         // Assert
-        cancelTokenSource.IsCancellationRequested.Should().BeTrue();
-        task.IsCompleted.Should().BeTrue();
-        task.IsCompletedSuccessfully.Should().BeTrue();
+        Assert.True(cancelTokenSource.IsCancellationRequested);
+        Assert.True(task.IsCompleted);
+        Assert.True(task.IsCompletedSuccessfully);
     }
 
     [Fact]
@@ -33,8 +32,8 @@ public class StaticTopicRepositoryUtilTests
         await task;
         
         // Assert
-        cancelTokenSource.IsCancellationRequested.Should().BeTrue();
-        task.IsCompleted.Should().BeTrue();
-        task.IsCompletedSuccessfully.Should().BeTrue();
+        Assert.True(cancelTokenSource.IsCancellationRequested);
+        Assert.True(task.IsCompleted);
+        Assert.True(task.IsCompletedSuccessfully);
     }
 }
