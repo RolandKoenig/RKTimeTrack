@@ -44,6 +44,8 @@ public class WebHostServerFixture : IDisposable
 
     public ResettableFakeTimeProvider TimeProviderMock { get; } = new(_mockedStartTimestamp);
     
+    public IServiceProvider Services => _host?.Services ?? throw new InvalidOperationException("Host seems not to be initialized!");
+    
     public Uri RootUri => _rootUriInitializer.Value;
     
     public WebHostServerFixture()
