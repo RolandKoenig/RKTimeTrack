@@ -23,7 +23,7 @@ public class StartupTests
     }
     
     [Fact]
-    public async Task Open_Index_Page()
+    public async Task Initial_page_should_have_correct_title()
     {
         // Act
         await using var playwrightSession = await _server.StartPlaywrightSessionOnRootPageAsync();
