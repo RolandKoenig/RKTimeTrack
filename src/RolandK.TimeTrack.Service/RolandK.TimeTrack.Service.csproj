@@ -1,0 +1,62 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <!-- Spa configuration -->
+    <PropertyGroup>
+        <SpaRoot>ClientApp/</SpaRoot>
+        <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules/**</DefaultItemExcludes>
+        <SpaProxyServerUrl>http://localhost:5001</SpaProxyServerUrl>
+        <SpaProxyLaunchCommand>npm run dev</SpaProxyLaunchCommand>
+    </PropertyGroup>
+    
+    <!-- Package dependencies -->
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.SpaProxy" Version="9.0.1">
+            <Publish>false</Publish>
+        </PackageReference>
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.1" />
+        <PackageReference Include="Serilog.AspNetCore" Version="9.0.0" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="7.2.0" />
+    </ItemGroup>
+
+    <!-- Project dependencies -->
+    <ItemGroup>
+      <ProjectReference Include="..\RolandK.TimeTrack.Application\RolandK.TimeTrack.Application.csproj" />
+      <ProjectReference Include="..\RolandK.TimeTrack.FileBasedTimeTrackingRepositoryAdapter\RolandK.TimeTrack.FileBasedTimeTrackingRepositoryAdapter.csproj" />
+      <ProjectReference Include="..\RolandK.TimeTrack.StaticTopicRepositoryAdapter\RolandK.TimeTrack.StaticTopicRepositoryAdapter.csproj" />
+    </ItemGroup>
+
+    <!-- Don't publish the SPA source files, but do show them in the project files list -->
+    <ItemGroup>
+        <Content Remove="$(SpaRoot)**" />
+        <None Remove="$(SpaRoot)**" />
+        <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
+    </ItemGroup>
+
+    <!-- Build: Restore npm dependencies and build Spa application -->
+    <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build">
+        <Exec Command="node --version" ContinueOnError="true">
+            <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
+        </Exec>
+        <Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE." />
+        
+        <Message Importance="high" Text="Restoring dependencies using 'npm'. This may take several minutes..." />
+        <Exec WorkingDirectory="$(SpaRoot)"
+              Command="npm install" />
+        
+        <Message Importance="high" Text="Building SPA application using 'npm'. This may take several minutes..." />
+        <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build" />
+    </Target>
+
+    <!-- Publish: Copy dist folder of Spa application to wwwroot -->
+    <Target Name="PublishRunVite" AfterTargets="ComputeFilesToPublish">
+        <ItemGroup>
+            <DistFiles Include="$(SpaRoot)dist/**" />
+            <ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
+                <RelativePath>wwwroot/%(RecursiveDir)%(FileName)%(Extension)</RelativePath>
+                <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+                <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            </ResolvedFileToPublish>
+        </ItemGroup>
+    </Target>
+    
+</Project>

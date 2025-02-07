@@ -1,0 +1,71 @@
+using System.Text.Json;
+using Microsoft.Extensions.Logging;
+using RolandK.TimeTrack.Application.Models;
+using RolandK.TimeTrack.Application.Ports;
+using RolandK.TimeTrack.StaticTopicRepositoryAdapter.Util;
+
+namespace RolandK.TimeTrack.StaticTopicRepositoryAdapter;
+
+class StaticTopicRepository : ITopicRepository
+{
+    private readonly ILogger _logger;
+    private readonly StaticTopicRepositoryOptions _options;
+    private readonly Lazy<Task<IReadOnlyList<TimeTrackingTopic>>> _topics;
+
+    public StaticTopicRepository(
+        ILogger<StaticTopicRepository> logger,
+        StaticTopicRepositoryOptions options)
+    {
+        _logger = logger;
+        _options = options;
+        _topics = new Lazy<Task<IReadOnlyList<TimeTrackingTopic>>>(ReadOrGenerateAllTopicsAsync);
+    }
+    
+    private async Task<IReadOnlyList<TimeTrackingTopic>> ReadOrGenerateAllTopicsAsync()
+    {
+        if (_options.GenerateTestData) { return TestDataGenerator.CreateTestData(); }
+        
+        if (!string.IsNullOrEmpty(_options.SourceFilePath))
+        {
+            try
+            {
+                var jsonOptions = new JsonSerializerOptions(JsonSerializerDefaults.Web);
+
+                await using var inStream = File.OpenRead(_options.SourceFilePath);
+
+                var result = await JsonSerializer
+                    .DeserializeAsync<IReadOnlyList<TimeTrackingTopic>>(inStream, jsonOptions);
+                if (result == null)
+                {
+                    _logger.LogError(
+                        $"Unable to read from json file {_options.SourceFilePath}: Serializer returned null!");
+                    result = [];
+                }
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(
+                    ex,
+                    $"Unable to read from json file {_options.SourceFilePath}");
+            }
+        }
+
+        _logger.LogWarning($"{nameof(_options.SourceFilePath)} option not specified!");
+        return [];
+    }
+    
+    public async Task<IReadOnlyList<TimeTrackingTopic>> GetAllTopicsAsync(CancellationToken cancellationToken)
+    {
+        await Task.WhenAny(
+            StaticTopicRepositoryUtil.WaitForCancelAsync(cancellationToken),
+            _topics.Value);
+        if (!_topics.Value.IsCompleted)
+        {
+            throw new TimeoutException();
+        }
+        
+        return await _topics.Value;
+    }
+}

@@ -20,5 +20,5 @@ $branchName = git rev-parse --abbrev-ref HEAD
 docker login -u $DockerHubUser -p $DockerHubPassword
 docker build -t rolandk87/rktimetrack:latest-$branchName `
              --platform linux/amd64 `
-             -f ../src/RKTimeTrack.Service/Dockerfile ../
+             -f ../src/RolandK.TimeTrack.Service/Dockerfile ../
 docker push -a rolandk87/rktimetrack

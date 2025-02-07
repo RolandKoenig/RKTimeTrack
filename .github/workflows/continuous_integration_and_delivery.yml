@@ -7,6 +7,7 @@ on:
       - .github/workflows/continuous_integration_and_delivery.yml
       - scripts/build-and-test.ps1
       - scripts/docker-build.ps1
+      - scripts/docker-build-and-push.ps1
       - src/**
 
 jobs:
