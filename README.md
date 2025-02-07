@@ -1,13 +1,13 @@
-# RKTimeTrack <img src="assets/RKTimeTrack.svg" width="32" height="32" />
+# RolandK TimeTrack <img src="assets/RolandKTimeTrack.svg" width="32" height="32" />
 ## Description
 A time tracking tool based on Vue.js / ASP.NET Core. It is meant for my personal use as
 a freelance software architect and for some technology focused demos.
 
 ## Screenshot
-![RKTimeTrack](assets/screenshot_01.png)
+![RolandK TimeTrack](assets/screenshot_01.png)
 
 ## Project is based on ...
-RKTimeTrack is based on ASP.NET Core and Vue.js.
+RolandK TimeTrack is based on ASP.NET Core and Vue.js.
 Furthermore, the project is based on following technologies / projects:
  - [Bootstrap](https://getbootstrap.com/): Powerful, extensible, and feature-packed frontend toolkit
  - [FluentValidation](https://github.com/FluentValidation/FluentValidation): A popular .NET validation library for building strongly-typed validation rules

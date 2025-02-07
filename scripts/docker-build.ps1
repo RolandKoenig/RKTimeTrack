@@ -1,1 +1,1 @@
-docker build -f ../src/RKTimeTrack.Service/Dockerfile -t rk-time-track-service ../
+docker build -f ../src/RolandK.TimeTrack.Service/Dockerfile -t rk-time-track-service ../

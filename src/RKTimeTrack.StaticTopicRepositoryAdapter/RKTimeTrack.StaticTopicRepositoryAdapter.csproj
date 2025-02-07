@@ -1,7 +1,0 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-    
-    <ItemGroup>
-      <ProjectReference Include="..\RKTimeTrack.Application\RKTimeTrack.Application.csproj" />
-    </ItemGroup>
-
-</Project>

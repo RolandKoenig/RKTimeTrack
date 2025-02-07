@@ -1,0 +1,7 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    
+    <ItemGroup>
+      <ProjectReference Include="..\RolandK.TimeTrack.Application\RolandK.TimeTrack.Application.csproj" />
+    </ItemGroup>
+
+</Project>

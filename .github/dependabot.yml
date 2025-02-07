@@ -19,7 +19,7 @@ updates:
 
   # NPM (Vue.js Client app)
   - package-ecosystem: "npm"
-    directory: "/src/RKTimeTrack.Service/ClientApp"
+    directory: "/src/RolandK.TimeTrack.Service/ClientApp"
     schedule:
       interval: "weekly"
       day: "wednesday"
