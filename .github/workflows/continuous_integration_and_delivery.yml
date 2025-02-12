@@ -9,6 +9,8 @@ on:
       - scripts/docker-build.ps1
       - scripts/docker-build-and-push.ps1
       - src/**
+      - Directory.Build.props
+      - global.json
 
 jobs:
   
