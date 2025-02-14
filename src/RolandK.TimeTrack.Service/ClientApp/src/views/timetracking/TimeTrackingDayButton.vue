@@ -57,6 +57,7 @@
       case TimeTrackingDayType.OwnEducation: return "info";
       case TimeTrackingDayType.PublicHoliday: return "help";
       case TimeTrackingDayType.Training: return "info";
+      case TimeTrackingDayType.TrainingPreparation: return "info";
       case TimeTrackingDayType.Weekend: return "warn";
       case TimeTrackingDayType.WorkingDay: return "secondary";
       default: return "secondary";
@@ -73,6 +74,7 @@
       case TimeTrackingDayType.OwnEducation: return "BT";
       case TimeTrackingDayType.PublicHoliday: return "FT";
       case TimeTrackingDayType.Training: return "ST";
+      case TimeTrackingDayType.TrainingPreparation: return "SV";
       case TimeTrackingDayType.Weekend: return "WE";
       case TimeTrackingDayType.WorkingDay: return "";
       default: return "";
