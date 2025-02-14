@@ -31,6 +31,11 @@ public enum TimeTrackingDayType
     Training,
     
     /// <summary>
+    /// Preparation for training (I give training for others)
+    /// </summary>
+    TrainingPreparation,
+    
+    /// <summary>
     /// Holiday
     /// </summary>
     Holiday,

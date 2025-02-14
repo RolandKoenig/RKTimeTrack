@@ -29,6 +29,7 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
         TimeTrackingDayType.OwnEducation,
         TimeTrackingDayType.PublicHoliday,
         TimeTrackingDayType.Training,
+        TimeTrackingDayType.TrainingPreparation,
         TimeTrackingDayType.Weekend,
         TimeTrackingDayType.WorkingDay
     ]);

@@ -68,6 +68,7 @@ public class DayApiTests
     [InlineData(TimeTrackingDayType.CompensatoryTimeOff)]
     [InlineData(TimeTrackingDayType.Ill)]
     [InlineData(TimeTrackingDayType.Training)]
+    [InlineData(TimeTrackingDayType.TrainingPreparation)]
     [InlineData(TimeTrackingDayType.OwnEducation)]
     [InlineData(TimeTrackingDayType.PublicHoliday)]
     public async Task UpdateDay_Property_DayType(TimeTrackingDayType dayType)

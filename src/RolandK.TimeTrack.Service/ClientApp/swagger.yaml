@@ -1,6 +1,6 @@
 ﻿openapi: 3.0.1
 info:
-  title: RKTimeTrack.Service
+  title: RolandK.TimeTrack.Service
   version: '1.0'
 paths:
   /api/ui/day:
@@ -224,6 +224,7 @@ components:
         - PublicHoliday
         - Ill
         - Training
+        - TrainingPreparation
         - Holiday
         - CompensatoryTimeOff
         - Weekend
