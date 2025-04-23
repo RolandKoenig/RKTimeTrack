@@ -1,6 +1,5 @@
 # noinspection ComposeUnknownKeys
 name: "rolandk-time-track-compose"
-version: "3.0"
 
 services:
   rk-time-track:
