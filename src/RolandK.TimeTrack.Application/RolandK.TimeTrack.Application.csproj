@@ -2,7 +2,7 @@
     
     <ItemGroup>
       <PackageReference Include="FluentValidation" Version="12.0.0" />
-      <PackageReference Include="Light.GuardClauses" Version="13.0.0" />
+      <PackageReference Include="Light.GuardClauses" Version="13.1.0" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.7" />
       <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.0.7" />
       <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.7" />
