@@ -109,8 +109,11 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
         if(!day.entries){ return false; }
         
         for(let loop=0; loop<day.entries.length; loop++){
-            if(day.entries[loop].effortInHours < 0){ return false; }
-            if(day.entries[loop].effortBilled < 0){ return false; }
+            var entry = day.entries[loop];
+            if(!entry){ continue; }
+
+            if(entry.effortInHours < 0){ return false; }
+            if(entry.effortBilled < 0){ return false; }
         }
         
         return true;
@@ -343,9 +346,9 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
         selectedDay.value.entries.splice(index, 1);
         
         if(selectedDay.value.entries.length > index){
-            selectedEntry.value = selectedDay.value.entries[index];
+            selectedEntry.value = selectedDay.value.entries[index] ?? null;
         } else if(selectedDay.value.entries.length > 0){
-            selectedEntry.value = selectedDay.value.entries[index -1];
+            selectedEntry.value = selectedDay.value.entries[index -1] ?? null;
         } else {
             selectedEntry.value = null;
         }

@@ -7,5 +7,5 @@ export function getCurrentDateAsString(): string{
     return new Date(currentDate.getTime() - (offset*60*1000))
         .toISOString()
         .split('T')
-        [0];
+        [0] ?? "";
 }
