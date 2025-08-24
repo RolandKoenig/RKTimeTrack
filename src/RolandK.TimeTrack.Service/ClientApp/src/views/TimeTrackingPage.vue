@@ -11,14 +11,14 @@
     if (!dateString){ return ""; }
     
     const parts = dateString.split('-');
-    const year = parseInt(parts[0]);
-    const month = parseInt(parts[1]) - 1; // JavaScript months are zero-based
-    const day = parseInt(parts[2]);
+    const year = parseInt(parts[0] ?? "2025");
+    const month = parseInt(parts[1] ?? "1") - 1; // JavaScript months are zero-based
+    const day = parseInt(parts[2] ?? "1");
     const date = new Date(year, month, day);
     
     const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     
-    return weekdays[date.getDay()];
+    return weekdays[date.getDay()] ?? "Sunday";
   }
   
   const currentWeekDay = computed(
