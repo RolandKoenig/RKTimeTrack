@@ -3,9 +3,9 @@
     <ItemGroup>
       <PackageReference Include="FluentValidation" Version="12.0.0" />
       <PackageReference Include="Light.GuardClauses" Version="13.1.0" />
-      <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.9" />
-      <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.0.9" />
-      <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.9" />
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.10" />
+      <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.0.10" />
+      <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.10" />
       <PackageReference Include="OneOf" Version="3.0.271" />
     </ItemGroup>
 
