@@ -2,6 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 using DotNet.Testcontainers.Builders;
 using DotNet.Testcontainers.Containers;
 using DotNet.Testcontainers.Images;
+using Xunit.Abstractions;
 
 namespace RolandK.TimeTrack.Service.ContainerTests.Util;
 
@@ -14,8 +15,8 @@ public class TestEnvironmentFixture : IAsyncDisposable
     private string? _appBaseUrl;
     
     public string AppBaseUrl => _appBaseUrl ?? string.Empty;
-    
-    public async Task EnsureContainersLoadedAsync()
+
+    public async Task EnsureContainersLoadedAsync(ITestOutputHelper outputHelper)
     {
         if (_containers != null) { return; }
         
@@ -24,6 +25,7 @@ public class TestEnvironmentFixture : IAsyncDisposable
             .WithDockerfileDirectory(solutionDirectory)
             .WithDockerfile("src/RolandK.TimeTrack.Service/Dockerfile")
             .WithBuildArgument("RESOURCE_REAPER_SESSION_ID", ResourceReaper.DefaultSessionId.ToString("D"))
+            .WithLogger(new TestLogger(outputHelper))
             .Build();
         await appImage.CreateAsync();
         _builtImages = [appImage];
