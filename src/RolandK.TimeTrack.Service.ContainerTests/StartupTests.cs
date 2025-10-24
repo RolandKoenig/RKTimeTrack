@@ -12,7 +12,7 @@ public class StartupTests(TestEnvironmentFixture fixture, ITestOutputHelper outp
     {
         try
         {
-            await fixture.EnsureContainersLoadedAsync();
+            await fixture.EnsureContainersLoadedAsync(output);
 
             // Act
             var httpClient = new HttpClient();
