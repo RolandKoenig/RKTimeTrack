@@ -14,14 +14,14 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
-    "@primevue/themes": "^4.4.1",
+    "@primevue/themes": "^4.5.0",
     "@types/uuid": "^10.0.0",
     "@vuelidate/core": "^2.0.3",
     "@vuelidate/validators": "^2.0.4",
     "@vueuse/core": "^13.9.0",
     "bootstrap": "^5.3.8",
     "pinia": "^3.0.4",
-    "primevue": "^4.4.1",
+    "primevue": "^4.5.0",
     "uuid": "^11.1.0",
     "vue": "^3.5.25",
     "vue-router": "^4.6.3"
@@ -41,9 +41,9 @@
     "jsdom": "^26.1.0",
     "npm-run-all2": "^8.0.4",
     "nswag": "^14.6.3",
-    "prettier": "^3.6.2",
+    "prettier": "^3.7.3",
     "typescript": "~5.9.3",
-    "vite": "^7.2.4",
+    "vite": "^7.2.6",
     "vitest": "^3.2.4",
     "vue-tsc": "^3.1.5"
   }
