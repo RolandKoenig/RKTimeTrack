@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
     
     <ItemGroup>
-      <PackageReference Include="FluentValidation" Version="12.1.0" />
+      <PackageReference Include="FluentValidation" Version="12.1.1" />
       <PackageReference Include="Light.GuardClauses" Version="13.1.0" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.11" />
       <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.0.11" />
