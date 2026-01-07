@@ -30,8 +30,7 @@ public class TestEnvironmentFixture : IAsyncDisposable
         await appImage.CreateAsync();
         _builtImages = [appImage];
 
-        var appContainer = new ContainerBuilder()
-            .WithImage(appImage)
+        var appContainer = new ContainerBuilder(appImage)
             .WithPortBinding(80, assignRandomHostPort: true)
             .WithEnvironment("Kestrel__Endpoints__Http__Url", "http://+:80")
             .WithEnvironment("ASPNETCORE_ENVIRONMENT", "IntegrationTests")
