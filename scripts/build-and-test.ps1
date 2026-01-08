@@ -1,6 +1,6 @@
 # Common cleanup
-dotnet clean "../RolandK.TimeTrack.sln"
+dotnet clean "../RolandK.TimeTrack.slnx"
 
 # Build and test
-dotnet build -c Debug "../RolandK.TimeTrack.sln"
-dotnet test -c Debug "../RolandK.TimeTrack.sln"
+dotnet build -c Debug "../RolandK.TimeTrack.slnx"
+dotnet test -c Debug "../RolandK.TimeTrack.slnx"

@@ -1,0 +1,21 @@
+<Solution>
+  <Folder Name="/Config/">
+    <File Path=".dockerignore" />
+    <File Path=".gitignore" />
+    <File Path="Directory.Build.props" />
+    <File Path="global.json" />
+  </Folder>
+  <Folder Name="/IncomingAdapter/">
+    <Project Path="src/RolandK.TimeTrack.Service.ContainerTests/RolandK.TimeTrack.Service.ContainerTests.csproj" />
+    <Project Path="src/RolandK.TimeTrack.Service.Tests/RolandK.TimeTrack.Service.Tests.csproj" />
+    <Project Path="src/RolandK.TimeTrack.Service/RolandK.TimeTrack.Service.csproj" />
+  </Folder>
+  <Folder Name="/OutgoingAdapter/">
+    <Project Path="src/RolandK.TimeTrack.FileBasedTimeTrackingRepositoryAdapter.Tests/RolandK.TimeTrack.FileBasedTimeTrackingRepositoryAdapter.Tests.csproj" />
+    <Project Path="src/RolandK.TimeTrack.FileBasedTimeTrackingRepositoryAdapter/RolandK.TimeTrack.FileBasedTimeTrackingRepositoryAdapter.csproj" />
+    <Project Path="src/RolandK.TimeTrack.StaticTopicRepositoryAdapter/RolandK.TimeTrack.StaticTopicRepositoryAdapter.csproj" />
+    <Project Path="src/RolandK.TimeTrack.StaticTopicRepositoryAdapterTests/RolandK.TimeTrack.StaticTopicRepositoryAdapterTests.csproj" />
+  </Folder>
+  <Project Path="src/RolandK.TimeTrack.Application.Tests/RolandK.TimeTrack.Application.Tests.csproj" />
+  <Project Path="src/RolandK.TimeTrack.Application/RolandK.TimeTrack.Application.csproj" />
+</Solution>

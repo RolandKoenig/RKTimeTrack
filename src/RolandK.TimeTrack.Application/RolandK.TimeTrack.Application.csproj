@@ -2,10 +2,10 @@
     
     <ItemGroup>
       <PackageReference Include="FluentValidation" Version="12.1.1" />
-      <PackageReference Include="Light.GuardClauses" Version="13.1.0" />
-      <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.11" />
-      <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.0.11" />
-      <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.11" />
+      <PackageReference Include="Light.GuardClauses" Version="14.0.0" />
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.1" />
+      <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="10.0.1" />
+      <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.1" />
       <PackageReference Include="OneOf" Version="3.0.271" />
     </ItemGroup>
 

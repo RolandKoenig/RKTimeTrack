@@ -2,7 +2,7 @@ namespace RolandK.TimeTrack.Service.ContainerTests.Util;
 
 internal static class TestUtil
 {
-    private const string SOLUTION_FILE_NAME = "RolandK.TimeTrack.sln";
+    private const string SOLUTION_FILE_NAME = "RolandK.TimeTrack.slnx";
     
     public static string GetSolutionDirectory()
     {

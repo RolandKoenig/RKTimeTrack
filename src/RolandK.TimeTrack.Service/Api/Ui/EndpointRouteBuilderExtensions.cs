@@ -7,31 +7,25 @@ public static class EndpointRouteBuilderExtensions
     {
         // Year Api
         endpointBuilder.MapGet("/api/ui/year/{year}/metadata", YearApi.GetYearMetadataAsync)
-            .WithName(RemoveAsyncFromMethodName(nameof(YearApi.GetYearMetadataAsync)))
-            .WithOpenApi();
+            .WithName(RemoveAsyncFromMethodName(nameof(YearApi.GetYearMetadataAsync)));
         
         // Week Api
         endpointBuilder.MapGet("/api/ui/week", WeekApi.GetCurrentWeekAsync)
-            .WithName(RemoveAsyncFromMethodName(nameof(WeekApi.GetCurrentWeekAsync)))
-            .WithOpenApi();
+            .WithName(RemoveAsyncFromMethodName(nameof(WeekApi.GetCurrentWeekAsync)));
         endpointBuilder.MapGet("/api/ui/week/{year}/{weekNumber}", WeekApi.GetWeekAsync)
-            .WithName(RemoveAsyncFromMethodName(nameof(WeekApi.GetWeekAsync)))
-            .WithOpenApi();
+            .WithName(RemoveAsyncFromMethodName(nameof(WeekApi.GetWeekAsync)));
         
         // Day Api
         endpointBuilder.MapPost("/api/ui/day", DayApi.UpdateDayAsync)
-            .WithName(RemoveAsyncFromMethodName(nameof(DayApi.UpdateDayAsync)))
-            .WithOpenApi();
+            .WithName(RemoveAsyncFromMethodName(nameof(DayApi.UpdateDayAsync)));
         
         // Entry Api
         endpointBuilder.MapPost("/api/ui/entries", EntryApi.SearchEntriesAsync)
-            .WithName(RemoveAsyncFromMethodName(nameof(EntryApi.SearchEntriesAsync)))
-            .WithOpenApi();
+            .WithName(RemoveAsyncFromMethodName(nameof(EntryApi.SearchEntriesAsync)));
         
         // Topic Api
         endpointBuilder.MapGet("/api/ui/topics", TopicApi.GetAllTopicsAsync)
-            .WithName(RemoveAsyncFromMethodName(nameof(TopicApi.GetAllTopicsAsync)))
-            .WithOpenApi();
+            .WithName(RemoveAsyncFromMethodName(nameof(TopicApi.GetAllTopicsAsync)));
         
         return endpointBuilder;
     }
