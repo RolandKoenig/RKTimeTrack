@@ -32,9 +32,6 @@ static class WeekApi
         [FromRoute] int weekNumber,
         CancellationToken cancellationToken)
     {
-        // Blub
-        
-        
         // Map request
         var request = new GetWeek_Request(year, weekNumber);
         
