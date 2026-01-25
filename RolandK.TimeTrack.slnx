@@ -1,6 +1,6 @@
 <Solution>
   <Folder Name="/Common/">
-    <Project Path="RolandK.RemoteFileStorage\RolandK.RemoteFileStorage.csproj" />
+    <Project Path="src/RolandK.RemoteFileStorage\RolandK.RemoteFileStorage.csproj" />
   </Folder>
   <Folder Name="/Config/">
     <File Path=".dockerignore" />

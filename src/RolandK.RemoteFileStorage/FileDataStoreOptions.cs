@@ -1,5 +1,6 @@
 namespace RolandK.RemoteFileStorage;
 
+// ReSharper disable once ClassNeverInstantiated.Global
 public class FileDataStoreOptions
 {
     public string? ServiceUrl { get; set; }

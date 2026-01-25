@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     
     <ItemGroup>
+      <ProjectReference Include="..\RolandK.RemoteFileStorage\RolandK.RemoteFileStorage.csproj" />
       <ProjectReference Include="..\RolandK.TimeTrack.Application\RolandK.TimeTrack.Application.csproj" />
     </ItemGroup>
 

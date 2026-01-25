@@ -1,5 +1,6 @@
 using System.Text.Json;
 using Microsoft.Extensions.Logging;
+using RolandK.RemoteFileStorage;
 using RolandK.TimeTrack.Application.Models;
 using RolandK.TimeTrack.Application.Ports;
 using RolandK.TimeTrack.StaticTopicRepositoryAdapter.Util;
@@ -25,31 +26,24 @@ class StaticTopicRepository : ITopicRepository
     {
         if (_options.GenerateTestData) { return TestDataGenerator.CreateTestData(); }
         
-        if (!string.IsNullOrEmpty(_options.SourceFilePath))
+        if ((!string.IsNullOrEmpty(_options.SourceFilePath) &&
+            (_options.FileDataStore != null)))
         {
-            try
-            {
-                var jsonOptions = new JsonSerializerOptions(JsonSerializerDefaults.Web);
+            var jsonOptions = new JsonSerializerOptions(JsonSerializerDefaults.Web);
 
-                await using var inStream = File.OpenRead(_options.SourceFilePath);
-
-                var result = await JsonSerializer
-                    .DeserializeAsync<IReadOnlyList<TimeTrackingTopic>>(inStream, jsonOptions);
-                if (result == null)
-                {
-                    _logger.LogError(
-                        $"Unable to read from json file {_options.SourceFilePath}: Serializer returned null!");
-                    result = [];
-                }
-
-                return result;
-            }
-            catch (Exception ex)
+            var s3FileDataStore = FileDataStoreFactory.FromOptions(_options.FileDataStore);
+            await using var inStream = await s3FileDataStore.DownloadFileAsync(_options.SourceFilePath, CancellationToken.None);
+            
+            var result = await JsonSerializer
+                .DeserializeAsync<IReadOnlyList<TimeTrackingTopic>>(inStream, jsonOptions);
+            if (result == null)
             {
                 _logger.LogError(
-                    ex,
-                    $"Unable to read from json file {_options.SourceFilePath}");
+                    $"Unable to read from json file {_options.SourceFilePath}: Serializer returned null!");
+                result = [];
             }
+
+            return result;
         }
 
         _logger.LogWarning($"{nameof(_options.SourceFilePath)} option not specified!");

@@ -1,7 +1,8 @@
+using Amazon.S3;
 using Amazon.S3.Transfer;
 using RolandK.RemoteFileStorage.Util;
 
-namespace RolandK.RemoteFileStorage;
+namespace RolandK.RemoteFileStorage.Implementations;
 
 internal class S3FileDataStore : IFileDataStore
 {
@@ -14,10 +15,16 @@ internal class S3FileDataStore : IFileDataStore
 
     public async Task<Stream> DownloadFileAsync(string filePath, CancellationToken cancellationToken)
     {
+        var s3Config = new AmazonS3Config();
+        s3Config.ServiceURL = _options.ServiceUrl;
+        
+        // Needed for integration testing with S3Mock, see https://github.com/adobe/S3Mock/blob/main/README.md#s3mock
+        s3Config.ForcePathStyle = true;
+        
         var s3Client = new Amazon.S3.AmazonS3Client(
             _options.AccessKey, 
             _options.SecretKey,
-            _options.ServiceUrl);
+            s3Config);
 
         TransferUtility? transferUtility = null;
         Stream? resultStream = null;
