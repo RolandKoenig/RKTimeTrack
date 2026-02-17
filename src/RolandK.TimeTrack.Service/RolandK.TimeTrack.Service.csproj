@@ -6,6 +6,7 @@
         <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules/**</DefaultItemExcludes>
         <SpaProxyServerUrl>http://localhost:5001</SpaProxyServerUrl>
         <SpaProxyLaunchCommand>npm run dev</SpaProxyLaunchCommand>
+        <UserSecretsId>436c15c5-9410-4267-acbd-4585fa28882c</UserSecretsId>
     </PropertyGroup>
     
     <!-- Package dependencies -->
