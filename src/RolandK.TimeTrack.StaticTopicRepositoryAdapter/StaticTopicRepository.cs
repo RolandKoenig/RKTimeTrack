@@ -31,8 +31,8 @@ class StaticTopicRepository : ITopicRepository
         {
             var jsonOptions = new JsonSerializerOptions(JsonSerializerDefaults.Web);
 
-            var s3FileDataStore = FileDataStoreFactory.FromOptions(_options.FileDataStore);
-            await using var inStream = await s3FileDataStore.DownloadFileAsync(_options.SourceFilePath, CancellationToken.None);
+            var fileDataStore = FileDataStoreFactory.FromOptions(_options.FileDataStore);
+            await using var inStream = await fileDataStore.DownloadFileAsync(_options.SourceFilePath, CancellationToken.None);
             
             var result = await JsonSerializer
                 .DeserializeAsync<IReadOnlyList<TimeTrackingTopic>>(inStream, jsonOptions);

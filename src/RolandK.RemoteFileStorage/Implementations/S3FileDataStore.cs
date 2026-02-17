@@ -16,14 +16,14 @@ internal class S3FileDataStore : IFileDataStore
     public async Task<Stream> DownloadFileAsync(string filePath, CancellationToken cancellationToken)
     {
         var s3Config = new AmazonS3Config();
-        s3Config.ServiceURL = _options.ServiceUrl;
+        s3Config.ServiceURL = _options.S3ServiceUrl;
         
         // Needed for integration testing with S3Mock, see https://github.com/adobe/S3Mock/blob/main/README.md#s3mock
         s3Config.ForcePathStyle = true;
         
         var s3Client = new Amazon.S3.AmazonS3Client(
-            _options.AccessKey, 
-            _options.SecretKey,
+            _options.S3AccessKey, 
+            _options.S3SecretKey,
             s3Config);
 
         TransferUtility? transferUtility = null;
@@ -31,7 +31,7 @@ internal class S3FileDataStore : IFileDataStore
         try
         {
             transferUtility = new TransferUtility(s3Client);
-            resultStream = await transferUtility.OpenStreamAsync(_options.BucketName, filePath, cancellationToken);
+            resultStream = await transferUtility.OpenStreamAsync(_options.S3BucketName, filePath, cancellationToken);
 
             return new StreamWithDisposables(
                 resultStream,
