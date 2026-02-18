@@ -25,5 +25,4 @@
 
 # Custom
 **/.gitkeep
-**/appsettings.Development.json
 **/appsettings.IntegrationTests.json

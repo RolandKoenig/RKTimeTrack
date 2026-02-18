@@ -33,7 +33,7 @@ class TimeTrackingPersistenceService(
                 filePath, cancellationToken);
             if (fileExists)
             {
-                var inStream = await persistenceFileStore.DownloadFileAsync(
+                await using var inStream = await persistenceFileStore.DownloadFileAsync(
                     filePath, cancellationToken);
                 
                 var restoredDocument = await TimeTrackingDocument.LoadFromStreamAsync(inStream, cancellationToken);

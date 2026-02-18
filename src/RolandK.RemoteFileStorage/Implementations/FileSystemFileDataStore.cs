@@ -11,7 +11,10 @@ internal class FileSystemFileDataStore : IFileDataStore
 
     public Task<bool> FileExistsAsync(string filePath, CancellationToken cancellationToken)
     {
-        return Task.FromResult(File.Exists(filePath));
+        var fullPath = !string.IsNullOrEmpty(_options.FileSystemRootPath)
+            ? Path.Combine(_options.FileSystemRootPath, filePath)
+            : filePath;
+        return Task.FromResult(File.Exists(fullPath));
     }
 
     public Task<Stream> DownloadFileAsync(string filePath, CancellationToken cancellationToken)
@@ -36,6 +39,6 @@ internal class FileSystemFileDataStore : IFileDataStore
         }
         
         return Task.FromResult(
-            (IUploadUtility)new FakeUploadUtility(File.OpenWrite(fullPath)));
+            (IUploadUtility)new FakeUploadUtility(File.Create(fullPath)));
     }
 }
