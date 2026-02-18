@@ -12,7 +12,7 @@ public static class ServiceCollectionExtensions
         var options = new StaticTopicRepositoryOptions();
         configure(options);
 
-        services.AddSingleton<StaticTopicRepositoryOptions>(options);
+        services.AddSingleton(options);
         services.AddSingleton<ITopicRepository, StaticTopicRepository>();
 
         return services;

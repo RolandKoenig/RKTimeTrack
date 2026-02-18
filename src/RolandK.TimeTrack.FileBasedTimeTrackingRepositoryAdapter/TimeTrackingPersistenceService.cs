@@ -1,7 +1,7 @@
-﻿using System.Reflection;
-using Microsoft.Extensions.Hosting;
+﻿using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using RolandK.RemoteFileStorage;
 using RolandK.TimeTrack.FileBasedTimeTrackingRepositoryAdapter.Data;
 
 namespace RolandK.TimeTrack.FileBasedTimeTrackingRepositoryAdapter;
@@ -19,15 +19,26 @@ class TimeTrackingPersistenceService(
     
     public async Task StartAsync(CancellationToken cancellationToken)
     {
-        // Restore previous data
-        var targetFilepath = GetTargetFilePath();
-        if (File.Exists(targetFilepath) &&
-            (!options.Value.DisablePersistence))
+        // Restore last data
+        // In case of any errors: We throw the exception up to cancel the starting process
+        // of this service.
+        if ((!options.Value.DisablePersistence) &&
+            (options.Value.PersistenceFileDataStore != null))
         {
-            await using var inStream = File.OpenRead(targetFilepath);
-            var restoredDocument = await TimeTrackingDocument.LoadFromStreamAsync(inStream, cancellationToken);
+            var persistenceFileStore = FileDataStoreFactory.FromOptions(
+                options.Value.PersistenceFileDataStore);
 
-            repository.RestoreFromDocument(restoredDocument);
+            var filePath = GetTargetFilePath();
+            var fileExists = await persistenceFileStore.FileExistsAsync(
+                filePath, cancellationToken);
+            if (fileExists)
+            {
+                await using var inStream = await persistenceFileStore.DownloadFileAsync(
+                    filePath, cancellationToken);
+                
+                var restoredDocument = await TimeTrackingDocument.LoadFromStreamAsync(inStream, cancellationToken);
+                repository.RestoreFromDocument(restoredDocument);
+            }
         }
         
         // Start persistence loop
@@ -48,13 +59,21 @@ class TimeTrackingPersistenceService(
 
     private async Task RunPersistenceLoopAsync()
     {
+        IFileDataStore? persistenceFileStore = null;
+        if ((!options.Value.DisablePersistence) &&
+            (options.Value.PersistenceFileDataStore != null))
+        {
+            persistenceFileStore = FileDataStoreFactory.FromOptions(
+                options.Value.PersistenceFileDataStore);
+        }
+        
         var lastPersist = DateTimeOffset.MinValue;
         while (!_persistenceLoopCancellationTokenSource.Token.IsCancellationRequested)
         {
             try { await Task.Delay(1000, _persistenceLoopCancellationTokenSource.Token); }
-            catch (TaskCanceledException) { break; }
+            catch (OperationCanceledException) { break; }
 
-            if (options.Value.DisablePersistence)
+            if (persistenceFileStore == null)
             {
                 continue;
             }
@@ -70,7 +89,7 @@ class TimeTrackingPersistenceService(
             {
                 var timestampStartPersistence = DateTimeOffset.UtcNow;
                     
-                await PersistDataAsync(CancellationToken.None);
+                await PersistDataAsync(persistenceFileStore, CancellationToken.None);
 
                 lastPersist = timestampStartPersistence;
                 _logger.LogInformation("Successfully persisted current data store");
@@ -82,25 +101,32 @@ class TimeTrackingPersistenceService(
         }
         
         // Run last persistence to ensure that all data is persisted
-        await PersistDataAsync(CancellationToken.None);
+        if ((lastPersist >= repository.LastChangeTimestamp) &&
+            (persistenceFileStore != null))
+        {
+            await PersistDataAsync(persistenceFileStore, CancellationToken.None);
+        }
     }
 
-     private async Task PersistDataAsync(CancellationToken cancellationToken)
+     private async Task PersistDataAsync(
+         IFileDataStore persistenceFileStore,
+         CancellationToken cancellationToken)
      {
-         var targetFile = GetTargetFilePath();
-
          var documentToWrite = repository.StoreToDocument();
          
-         await using var outStream = File.Create(targetFile);
-         await documentToWrite.WriteToStreamAsync(outStream, options.Value.WriteIndentedJson, cancellationToken);
-    }
+         var targetFile = GetTargetFilePath();
+         
+         await using var uploadUtil = await persistenceFileStore.UploadFileAsync(
+             targetFile, cancellationToken);
+         await documentToWrite.WriteToStreamAsync(
+             uploadUtil.OutStream, 
+             options.Value.WriteIndentedJson, 
+             cancellationToken);
+         await uploadUtil.CompleteUploadAsync(cancellationToken);
+     }
 
     private string GetTargetFilePath()
     {
-        var outDirectory = !string.IsNullOrEmpty(options.Value.PersistenceDirectory)
-            ? options.Value.PersistenceDirectory
-            : Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
-        var outFile = Path.Combine(outDirectory, "TimeTracking.json");
-        return outFile;
+        return "TimeTracking.json";
     }
 }

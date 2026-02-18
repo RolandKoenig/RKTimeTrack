@@ -6,18 +6,21 @@ services:
     container_name: rk-time-track
     image: rk-time-track-service
     build:
-      context: ../src
-      dockerfile: ../src/RKTimeTrack.Service/Dockerfile
+      context: ../
+      dockerfile: ./src/RolandK.TimeTrack.Service/Dockerfile
     ports: 
       - "5200:80"
     environment:
-      FileBasedTimeTrackingRepository__PersistenceDirectory: "/var/opt/rk-time-track/store"
+      FileBasedTimeTrackingRepository__PersistenceFileDataStore__Type: "FileSystem"
+      FileBasedTimeTrackingRepository__PersistenceFileDataStore__FileSystemRootPath: "/var/opt/rk-time-track/store"
       FileBasedTimeTrackingRepository__WriteIndentedJson: "true"
-      StaticTopicRepository__SourceFilePath: "/var/opt/rk-time-track/testdata/topics.json"
+      StaticTopicRepository__SourceFilePath: "topics.json"
+      StaticTopicRepository__FileDataStore__Type: "FileSystem"
+      StaticTopicRepository__FileDataStore__FileSystemRootPath: "/var/opt/rk-time-track/testdata/"
     volumes:
       - type: bind
-        source: ./ignoreforgit/store
+        source: ../testdata/runtimedata
         target: /var/opt/rk-time-track/store
       - type: bind
-        source: ./testdata
+        source: ../testdata/masterdata
         target: /var/opt/rk-time-track/testdata

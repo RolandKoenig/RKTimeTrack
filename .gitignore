@@ -211,6 +211,5 @@ BundleArtifacts/
 *.db-wal
 
 # Custom rules
-ignoreforgit/
 logs/
 .DS_Store

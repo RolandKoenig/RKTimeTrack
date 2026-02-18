@@ -1,4 +1,5 @@
-﻿using RolandK.TimeTrack.Application.Models;
+﻿using RolandK.RemoteFileStorage;
+using RolandK.TimeTrack.Application.Models;
 using RolandK.TimeTrack.StaticTopicRepositoryAdapter;
 
 namespace RolandK.TimeTrack.StaticTopicRepositoryAdapterTests;
@@ -31,7 +32,11 @@ public class StaticTopicRepositoryTests
             var options = new StaticTopicRepositoryOptions()
             {
                 GenerateTestData = false,
-                SourceFilePath = fileName
+                SourceFilePath = fileName,
+                FileDataStore = new FileDataStoreOptions()
+                {
+                    Type = FileDataStoreType.FileSystem
+                }
             };
         
             // Act
