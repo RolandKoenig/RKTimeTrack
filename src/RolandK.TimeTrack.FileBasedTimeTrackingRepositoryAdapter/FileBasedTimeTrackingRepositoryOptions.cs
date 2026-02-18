@@ -1,4 +1,6 @@
-﻿namespace RolandK.TimeTrack.FileBasedTimeTrackingRepositoryAdapter;
+﻿using RolandK.RemoteFileStorage;
+
+namespace RolandK.TimeTrack.FileBasedTimeTrackingRepositoryAdapter;
 
 public class FileBasedTimeTrackingRepositoryOptions
 {
@@ -8,5 +10,9 @@ public class FileBasedTimeTrackingRepositoryOptions
     
     public bool WriteIndentedJson { get; set; } = false;
     
-    public string? PersistenceDirectory { get; set; } = null;
+    public FileDataStoreOptions? PersistenceFileDataStore { get; set; }
+    
+    public string? ExportFilePath { get; set; }
+    
+    public FileDataStoreOptions? ExportFileDataStore { get; set; }
 }
