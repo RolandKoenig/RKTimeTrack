@@ -1,14 +1,12 @@
 namespace RolandK.RemoteFileStorage.Util;
 
-class StreamWithDisposables : Stream
+class NonDisposableOrClosableStreamWrapper : Stream
 {
     private readonly Stream _wrappedStream;
-    private readonly IEnumerable<IDisposable> _disposables;
     
-    public StreamWithDisposables(Stream wrappedStream, params IEnumerable<IDisposable> disposables)
+    public NonDisposableOrClosableStreamWrapper(Stream wrappedStream)
     {
         _wrappedStream = wrappedStream;
-        _disposables = disposables;
     }
 
     public override void Flush()
@@ -71,11 +69,6 @@ class StreamWithDisposables : Stream
         return _wrappedStream.BeginWrite(buffer, offset, count, callback, state);
     }
 
-    public override void Close()
-    {
-        _wrappedStream.Close();
-    }
-
     public override void CopyTo(Stream destination, int bufferSize)
     {
         _wrappedStream.CopyTo(destination, bufferSize);
@@ -114,33 +107,6 @@ class StreamWithDisposables : Stream
     public override void WriteByte(byte value)
     {
         _wrappedStream.WriteByte(value);
-    }
-
-    protected override void Dispose(bool disposing)
-    {
-        if (disposing)
-        {
-            _wrappedStream.Dispose();
-            foreach (var actDisposable in _disposables)
-            {
-                actDisposable.Dispose();
-            }
-        }
-        
-        base.Dispose(disposing);
-    }
-
-    public override async ValueTask DisposeAsync()
-    {
-        await base.DisposeAsync();
-        
-        foreach (var actDisposable in _disposables)
-        {
-            if (actDisposable is IAsyncDisposable asyncDisposable)
-            {
-                await asyncDisposable.DisposeAsync();
-            }
-        }
     }
 
     public override bool CanRead => _wrappedStream.CanRead;

@@ -11,8 +11,4 @@ public class FileBasedTimeTrackingRepositoryOptions
     public bool WriteIndentedJson { get; set; } = false;
     
     public FileDataStoreOptions? PersistenceFileDataStore { get; set; }
-    
-    public string? ExportFilePath { get; set; }
-    
-    public FileDataStoreOptions? ExportFileDataStore { get; set; }
 }

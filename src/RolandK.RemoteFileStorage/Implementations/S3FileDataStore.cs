@@ -78,7 +78,7 @@ class S3FileDataStore : IFileDataStore
                 transferUtility = new TransferUtility(s3Client);
    
                 await transferUtility.UploadAsync(
-                    streamToUpload,
+                    new NonDisposableOrClosableStreamWrapper(streamToUpload),
                     _options.S3BucketName,
                     filePath,
                     innerCancellationToken);

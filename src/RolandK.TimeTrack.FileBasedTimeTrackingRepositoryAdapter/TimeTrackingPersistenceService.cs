@@ -130,6 +130,14 @@ class TimeTrackingPersistenceService(
          _logger.LogInformation($"Successfully persisted time tracking data to [{persistenceFileStore.ShortDescription}]");
      }
 
+     private async Task ExportDataAsync(
+         IFileDataStore exportFileStore,
+         CancellationToken cancellationToken)
+     {
+
+         await Task.CompletedTask;
+     }
+
     private string GetTargetFilePath()
     {
         return "TimeTracking.json";

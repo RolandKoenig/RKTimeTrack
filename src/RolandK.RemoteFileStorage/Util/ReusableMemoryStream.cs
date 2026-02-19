@@ -2,7 +2,7 @@ using System.Collections.Concurrent;
 
 namespace RolandK.RemoteFileStorage.Util;
 
-class ReusableMemoryStreams
+internal class ReusableMemoryStreams
 {
     private readonly ConcurrentStack<MemoryStream> _memoryStreams = new();
 

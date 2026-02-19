@@ -21,7 +21,7 @@ public static class ServiceCollectionExtensions
             .AddSingleton<FileBasedTimeTrackingRepository>()
             .AddSingleton<ITimeTrackingRepository, FileBasedTimeTrackingRepository>(x =>
                 x.GetRequiredService<FileBasedTimeTrackingRepository>());
-        
+
         return services
             .AddSingleton<TimeTrackingStore>()
             .AddHostedService<TimeTrackingPersistenceService>();
