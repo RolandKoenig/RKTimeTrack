@@ -35,9 +35,11 @@ class TimeTrackingPersistenceService(
             {
                 await using var inStream = await persistenceFileStore.DownloadFileAsync(
                     filePath, cancellationToken);
+                _logger.LogInformation($"Downloaded previous time tracking data from [{persistenceFileStore.ShortDescription}]");
                 
                 var restoredDocument = await TimeTrackingDocument.LoadFromStreamAsync(inStream, cancellationToken);
                 repository.RestoreFromDocument(restoredDocument);
+                _logger.LogInformation($"Processed previous time tracking data from [{persistenceFileStore.ShortDescription}]");
             }
         }
         
@@ -92,7 +94,6 @@ class TimeTrackingPersistenceService(
                 await PersistDataAsync(persistenceFileStore, CancellationToken.None);
 
                 lastPersist = timestampStartPersistence;
-                _logger.LogInformation("Successfully persisted current data store");
             }
             catch (Exception ex)
             {
@@ -112,6 +113,8 @@ class TimeTrackingPersistenceService(
          IFileDataStore persistenceFileStore,
          CancellationToken cancellationToken)
      {
+         _logger.LogInformation($"Persisting data to [{persistenceFileStore.ShortDescription}]...");
+         
          var documentToWrite = repository.StoreToDocument();
          
          var targetFile = GetTargetFilePath();
@@ -123,6 +126,8 @@ class TimeTrackingPersistenceService(
              options.Value.WriteIndentedJson, 
              cancellationToken);
          await uploadUtil.CompleteUploadAsync(cancellationToken);
+         
+         _logger.LogInformation($"Successfully persisted time tracking data to [{persistenceFileStore.ShortDescription}]");
      }
 
     private string GetTargetFilePath()

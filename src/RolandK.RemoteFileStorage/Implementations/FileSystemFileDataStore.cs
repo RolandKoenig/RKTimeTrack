@@ -4,11 +4,13 @@ internal class FileSystemFileDataStore : IFileDataStore
 {
     private readonly FileDataStoreOptions _options;
     
+    public string ShortDescription => $"FileSystem, FileSystemRootPath: {_options.FileSystemRootPath}";
+    
     public FileSystemFileDataStore(FileDataStoreOptions options)
     {
         _options = options;
     }
-
+    
     public Task<bool> FileExistsAsync(string filePath, CancellationToken cancellationToken)
     {
         var fullPath = !string.IsNullOrEmpty(_options.FileSystemRootPath)

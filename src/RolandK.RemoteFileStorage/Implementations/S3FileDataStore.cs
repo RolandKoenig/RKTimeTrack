@@ -10,6 +10,8 @@ class S3FileDataStore : IFileDataStore
 {
     private readonly FileDataStoreOptions _options;
     
+    public string ShortDescription => $"S3, Server: {_options.S3ServiceUrl}, Bucket: {_options.S3BucketName}";
+    
     public S3FileDataStore(FileDataStoreOptions options)
     {
         _options = options;

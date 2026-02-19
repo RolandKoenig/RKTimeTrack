@@ -33,14 +33,19 @@ class StaticTopicRepository : ITopicRepository
 
             var fileDataStore = FileDataStoreFactory.FromOptions(_options.FileDataStore);
             await using var inStream = await fileDataStore.DownloadFileAsync(_options.SourceFilePath, CancellationToken.None);
+            _logger.LogInformation($"Downloaded topic information from [{fileDataStore.ShortDescription}]");
             
             var result = await JsonSerializer
                 .DeserializeAsync<IReadOnlyList<TimeTrackingTopic>>(inStream, jsonOptions);
             if (result == null)
             {
                 _logger.LogError(
-                    $"Unable to read from json file {_options.SourceFilePath}: Serializer returned null!");
+                    $"Unable to read topic information from {_options.SourceFilePath}: Serializer returned null!");
                 result = [];
+            }
+            else
+            {
+                _logger.LogInformation($"Processed topic information from [{fileDataStore.ShortDescription}]");
             }
 
             return result;

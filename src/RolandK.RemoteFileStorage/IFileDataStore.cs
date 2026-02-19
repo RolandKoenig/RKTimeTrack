@@ -2,6 +2,8 @@ namespace RolandK.RemoteFileStorage;
 
 public interface IFileDataStore
 {
+    public string ShortDescription { get; }
+    
     public Task<bool> FileExistsAsync(string filePath, CancellationToken cancellationToken);
     
     public Task<Stream> DownloadFileAsync(string filePath, CancellationToken cancellationToken);
