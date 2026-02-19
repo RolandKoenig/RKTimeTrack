@@ -1,5 +1,6 @@
 <Solution>
   <Folder Name="/Common/">
+    <Project Path="src/RolandK.RemoteFileStorage.Tests/RolandK.RemoteFileStorage.Tests.csproj" />
     <Project Path="src/RolandK.RemoteFileStorage\RolandK.RemoteFileStorage.csproj" />
   </Folder>
   <Folder Name="/Config/">
@@ -18,6 +19,7 @@
     <Project Path="src/RolandK.TimeTrack.FileBasedTimeTrackingRepositoryAdapter/RolandK.TimeTrack.FileBasedTimeTrackingRepositoryAdapter.csproj" />
     <Project Path="src/RolandK.TimeTrack.StaticTopicRepositoryAdapter/RolandK.TimeTrack.StaticTopicRepositoryAdapter.csproj" />
     <Project Path="src/RolandK.TimeTrack.StaticTopicRepositoryAdapterTests/RolandK.TimeTrack.StaticTopicRepositoryAdapterTests.csproj" />
+    <Project Path="src\RolandK.TimeTrack.ExportAdapter\RolandK.TimeTrack.ExportAdapter.csproj" />
   </Folder>
   <Project Path="src/RolandK.TimeTrack.Application.Tests/RolandK.TimeTrack.Application.Tests.csproj" />
   <Project Path="src/RolandK.TimeTrack.Application/RolandK.TimeTrack.Application.csproj" />
