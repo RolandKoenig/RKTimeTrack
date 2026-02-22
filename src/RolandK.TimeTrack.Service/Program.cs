@@ -1,6 +1,8 @@
 using RolandK.TimeTrack.Application;
+using RolandK.TimeTrack.ExportAdapter;
 using RolandK.TimeTrack.FileBasedTimeTrackingRepositoryAdapter;
 using RolandK.TimeTrack.Service.Api.Ui;
+using RolandK.TimeTrack.Service.BackgroundServices;
 using RolandK.TimeTrack.StaticTopicRepositoryAdapter;
 using RolandK.TimeTrack.Service.Mappings;
 using Serilog;
@@ -43,14 +45,18 @@ public static class Program
         builder.Services.AddFileBasedTimeTrackingRepository(builder.Configuration);
         builder.Services.AddStaticTopicRepositoryAdapter(
             options => builder.Configuration.Bind("StaticTopicRepository", options));
+        builder.Services.AddTimeTrackingExportAdapter(builder.Configuration);
 
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen(SwaggerGenConfiguration.Configure);
 
+        // Add Background services
+        builder.Services.AddHostedService<ExportTriggerBackgroundService>();
+        
         // Allow customization from IntegrationTests project
         customizeWebApplicationBuilder?.Invoke(builder);
-
+        
         // #########################################
         // Configure the HTTP request pipeline.
         

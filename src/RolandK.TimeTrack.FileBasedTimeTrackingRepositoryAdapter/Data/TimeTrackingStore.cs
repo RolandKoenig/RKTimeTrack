@@ -15,11 +15,7 @@ class TimeTrackingStore
     public ImmutableList<TimeTrackingDay> Store
     {
         get => _store;
-        private set 
-        {
-            _store = value;
-            _lastChangeTimestamp = _timeProvider.GetUtcNow();
-        }
+        private set => _store = value;
     }
     
     public DateTimeOffset LastChangeTimestamp => _lastChangeTimestamp;
@@ -97,10 +93,12 @@ class TimeTrackingStore
         if (existingRowIndex > -1)
         {
             this.Store = this.Store.SetItem(existingRowIndex, day);
+            _lastChangeTimestamp = _timeProvider.GetUtcNow();
             return day;
         }
 
         this.Store = this.Store.Insert(~existingRowIndex, day);
+        _lastChangeTimestamp = _timeProvider.GetUtcNow();
         return day;
     }
 
@@ -124,6 +122,7 @@ class TimeTrackingStore
             type: dayType,
             entries: Array.Empty<TimeTrackingEntry>());
         this.Store = this.Store.Insert(~existingRowIndex, newDay);
+        _lastChangeTimestamp = _timeProvider.GetUtcNow();
         return newDay;
     }
     

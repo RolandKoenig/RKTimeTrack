@@ -22,6 +22,7 @@
     <!-- Project dependencies -->
     <ItemGroup>
       <ProjectReference Include="..\RolandK.TimeTrack.Application\RolandK.TimeTrack.Application.csproj" />
+      <ProjectReference Include="..\RolandK.TimeTrack.ExportAdapter\RolandK.TimeTrack.ExportAdapter.csproj" />
       <ProjectReference Include="..\RolandK.TimeTrack.FileBasedTimeTrackingRepositoryAdapter\RolandK.TimeTrack.FileBasedTimeTrackingRepositoryAdapter.csproj" />
       <ProjectReference Include="..\RolandK.TimeTrack.StaticTopicRepositoryAdapter\RolandK.TimeTrack.StaticTopicRepositoryAdapter.csproj" />
     </ItemGroup>

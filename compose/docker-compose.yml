@@ -17,6 +17,8 @@ services:
       StaticTopicRepository__SourceFilePath: "topics.json"
       StaticTopicRepository__FileDataStore__Type: "FileSystem"
       StaticTopicRepository__FileDataStore__FileSystemRootPath: "/var/opt/rk-time-track/testdata/"
+      ExportAdapter__ExportFileDataStore__Type: "FileSystem"
+      ExportAdapter__ExportFileDataStore__FileSystemRootPath: "/var/opt/rk-time-track/export/"
     volumes:
       - type: bind
         source: ../testdata/runtimedata
@@ -24,3 +26,6 @@ services:
       - type: bind
         source: ../testdata/masterdata
         target: /var/opt/rk-time-track/testdata
+      - type: bind
+        source: ../testdata/export
+        target: /var/opt/rk-time-track/export
