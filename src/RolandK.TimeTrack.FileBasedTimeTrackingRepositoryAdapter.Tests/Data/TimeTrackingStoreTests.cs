@@ -36,6 +36,7 @@ public class TimeTrackingStoreTests
         Assert.Equal(TimeTrackingDayType.Weekend, sut.Store[1].Type);
         Assert.Equal(new DateOnly(2022, 1, 3), sut.Store[2].Date);
         Assert.Equal(TimeTrackingDayType.WorkingDay, sut.Store[2].Type);
+        Assert.Equal(startTimestamp, sut.LastChangeTimestamp);
     }
     
     [Fact]
@@ -68,6 +69,7 @@ public class TimeTrackingStoreTests
         Assert.Equal(TimeTrackingDayType.Weekend, sut.Store[1].Type);
         Assert.Equal(new DateOnly(2022, 1, 3), sut.Store[2].Date);
         Assert.Equal(TimeTrackingDayType.WorkingDay, sut.Store[2].Type);
+        Assert.Equal(startTimestamp, sut.LastChangeTimestamp);
     }
 
     [Fact]
@@ -106,6 +108,7 @@ public class TimeTrackingStoreTests
         Assert.Same(sut.Store[6], week.Sunday);
         Assert.Equal(new DateOnly(2024, 6, 23), week.Sunday.Date);
         Assert.Equal(TimeTrackingDayType.Weekend, week.Sunday.Type);
+        Assert.Equal(startTimestamp, sut.LastChangeTimestamp);
     }
     
     [Fact]
@@ -159,6 +162,7 @@ public class TimeTrackingStoreTests
         Assert.Same(createdSunday, week.Sunday);
         Assert.Equal(new DateOnly(2024, 6, 23), week.Sunday.Date);
         Assert.Equal(TimeTrackingDayType.Weekend, week.Sunday.Type);
+        Assert.Equal(startTimestamp, sut.LastChangeTimestamp);
     }
     
     [Fact]
@@ -183,5 +187,55 @@ public class TimeTrackingStoreTests
             TimeTrackingDayType.Weekend,
             Array.Empty<TimeTrackingEntry>()));
         Assert.Equal(newTimestamp, sut.LastChangeTimestamp);
+    }
+    
+    [Fact]
+    public void Reset_also_resets_LastChangeTimestamp()
+    {
+        // Arrange
+        var startTimestamp = new DateTimeOffset(2024, 1, 1, 8, 0, 0, TimeSpan.Zero);
+        var timeProvider = new FakeTimeProvider(startTimestamp);
+        var sut = new TimeTrackingStore(timeProvider);
+        
+        // Act + Assert
+        sut.AddOrUpdateDay(new TimeTrackingDay(
+            new DateOnly(2022, 1, 1), 
+            TimeTrackingDayType.Weekend,
+            Array.Empty<TimeTrackingEntry>()));
+        Assert.Equal(startTimestamp, sut.LastChangeTimestamp);
+        
+        sut.Reset();
+        Assert.Equal(DateTimeOffset.MinValue, sut.LastChangeTimestamp);
+    }
+    
+    [Fact]
+    public void Restore_to_document_also_resets_LastChangeTimestamp()
+    {
+        // Arrange
+        var startTimestamp = new DateTimeOffset(2024, 1, 1, 8, 0, 0, TimeSpan.Zero);
+        var timeProvider = new FakeTimeProvider(startTimestamp);
+        var sut = new TimeTrackingStore(timeProvider);
+        
+        // Act + Assert
+        sut.AddOrUpdateDay(new TimeTrackingDay(
+            new DateOnly(2022, 1, 1), 
+            TimeTrackingDayType.Weekend,
+            Array.Empty<TimeTrackingEntry>()));
+        Assert.Equal(startTimestamp, sut.LastChangeTimestamp);
+        
+        sut.RestoreFromDocument(new TimeTrackingDocument("1.2.3", []));
+        Assert.Equal(DateTimeOffset.MinValue, sut.LastChangeTimestamp);
+    }
+
+    [Fact]
+    public void Initial_store_has_no_LastChangeTimestamp()
+    {
+        // Arrange
+        var startTimestamp = new DateTimeOffset(2024, 1, 1, 8, 0, 0, TimeSpan.Zero);
+        var timeProvider = new FakeTimeProvider(startTimestamp);
+        var sut = new TimeTrackingStore(timeProvider);
+        
+        // Assert
+        Assert.Equal(DateTimeOffset.MinValue, sut.LastChangeTimestamp);
     }
 }

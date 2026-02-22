@@ -6,6 +6,7 @@
         <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules/**</DefaultItemExcludes>
         <SpaProxyServerUrl>http://localhost:5001</SpaProxyServerUrl>
         <SpaProxyLaunchCommand>npm run dev</SpaProxyLaunchCommand>
+        <UserSecretsId>98cb8950-598a-4edf-9cf7-bf78fb117c48</UserSecretsId>
     </PropertyGroup>
     
     <!-- Package dependencies -->
@@ -21,6 +22,7 @@
     <!-- Project dependencies -->
     <ItemGroup>
       <ProjectReference Include="..\RolandK.TimeTrack.Application\RolandK.TimeTrack.Application.csproj" />
+      <ProjectReference Include="..\RolandK.TimeTrack.ExportAdapter\RolandK.TimeTrack.ExportAdapter.csproj" />
       <ProjectReference Include="..\RolandK.TimeTrack.FileBasedTimeTrackingRepositoryAdapter\RolandK.TimeTrack.FileBasedTimeTrackingRepositoryAdapter.csproj" />
       <ProjectReference Include="..\RolandK.TimeTrack.StaticTopicRepositoryAdapter\RolandK.TimeTrack.StaticTopicRepositoryAdapter.csproj" />
     </ItemGroup>

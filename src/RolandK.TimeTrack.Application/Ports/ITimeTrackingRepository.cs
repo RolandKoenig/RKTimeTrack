@@ -4,6 +4,8 @@ namespace RolandK.TimeTrack.Application.Ports;
 
 public interface ITimeTrackingRepository
 {
+    DateTimeOffset LastChangeTimestamp { get; }
+    
     Task<IReadOnlyList<TimeTrackingDay>> GetAllDaysInAscendingOrderAsync(CancellationToken cancellationToken);
     
     Task<TimeTrackingWeek> GetWeekAsync(int year, int weekNumber, CancellationToken cancellationToken);

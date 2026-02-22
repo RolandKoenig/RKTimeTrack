@@ -12,15 +12,7 @@ class TimeTrackingStore
     private DateTimeOffset _lastChangeTimestamp = DateTimeOffset.MinValue;
     private ImmutableList<TimeTrackingDay> _store = ImmutableList<TimeTrackingDay>.Empty;
 
-    public ImmutableList<TimeTrackingDay> Store
-    {
-        get => _store;
-        private set 
-        {
-            _store = value;
-            _lastChangeTimestamp = _timeProvider.GetUtcNow();
-        }
-    }
+    public ImmutableList<TimeTrackingDay> Store => _store;
     
     public DateTimeOffset LastChangeTimestamp => _lastChangeTimestamp;
 
@@ -31,7 +23,9 @@ class TimeTrackingStore
     
     public void Reset()
     {
-        this.Store = ImmutableList<TimeTrackingDay>.Empty;
+        this.SetCurrentStore(
+            ImmutableList<TimeTrackingDay>.Empty,
+            DateTimeOffset.MinValue);
     }
     
     public TimeTrackingDocument StoreToDocument()
@@ -43,7 +37,9 @@ class TimeTrackingStore
     
     public void RestoreFromDocument(TimeTrackingDocument document)
     {
-        this.Store = document.Days.ToImmutableList();
+        this.SetCurrentStore(
+            document.Days.ToImmutableList(),
+            DateTimeOffset.MinValue);
     }
 
     public IReadOnlyList<TimeTrackingDay> GetAllDaysInAscendingOrderAsync() => this.Store;
@@ -96,11 +92,13 @@ class TimeTrackingStore
         var existingRowIndex = SearchForDayIndex(day.Date);
         if (existingRowIndex > -1)
         {
-            this.Store = this.Store.SetItem(existingRowIndex, day);
+            this.SetCurrentStore(this.Store.SetItem(existingRowIndex, day));
+            _lastChangeTimestamp = _timeProvider.GetUtcNow();
             return day;
         }
 
-        this.Store = this.Store.Insert(~existingRowIndex, day);
+        this.SetCurrentStore(this.Store.Insert(~existingRowIndex, day));
+        _lastChangeTimestamp = _timeProvider.GetUtcNow();
         return day;
     }
 
@@ -123,7 +121,8 @@ class TimeTrackingStore
             date: date,
             type: dayType,
             entries: Array.Empty<TimeTrackingEntry>());
-        this.Store = this.Store.Insert(~existingRowIndex, newDay);
+        this.SetCurrentStore(this.Store.Insert(~existingRowIndex, newDay));
+        _lastChangeTimestamp = _timeProvider.GetUtcNow();
         return newDay;
     }
     
@@ -171,5 +170,18 @@ class TimeTrackingStore
             }
         }
         return ~left;
+    }
+    
+    private void SetCurrentStore(ImmutableList<TimeTrackingDay> store)
+    {
+        this.SetCurrentStore(store, _timeProvider.GetLocalNow());
+    }
+    
+    private void SetCurrentStore(
+        ImmutableList<TimeTrackingDay> store,
+        DateTimeOffset lastChangeTimestamp)
+    {
+        _store = store;
+        _lastChangeTimestamp = lastChangeTimestamp;
     }
 }
