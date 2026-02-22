@@ -4,7 +4,7 @@ namespace RolandK.TimeTrack.Service.BackgroundServices;
 
 public class ExportTriggerBackgroundService : BackgroundService
 {
-    private static readonly TimeSpan CYCLE_WAIT_TIME = TimeSpan.FromSeconds(5.0);
+    private static readonly TimeSpan CYCLE_WAIT_TIME = TimeSpan.FromSeconds(30.0);
     
     private readonly ILogger _logger;
     private readonly IServiceProvider _serviceProvider;
