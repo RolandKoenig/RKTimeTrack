@@ -15,6 +15,7 @@
     <Project Path="src/RolandK.TimeTrack.Service/RolandK.TimeTrack.Service.csproj" />
   </Folder>
   <Folder Name="/OutgoingAdapter/">
+    <Project Path="src/RolandK.TimeTrack.ExportAdapter.Tests/RolandK.TimeTrack.ExportAdapter.Tests.csproj" />
     <Project Path="src/RolandK.TimeTrack.FileBasedTimeTrackingRepositoryAdapter.Tests/RolandK.TimeTrack.FileBasedTimeTrackingRepositoryAdapter.Tests.csproj" />
     <Project Path="src/RolandK.TimeTrack.FileBasedTimeTrackingRepositoryAdapter/RolandK.TimeTrack.FileBasedTimeTrackingRepositoryAdapter.csproj" />
     <Project Path="src/RolandK.TimeTrack.StaticTopicRepositoryAdapter/RolandK.TimeTrack.StaticTopicRepositoryAdapter.csproj" />
