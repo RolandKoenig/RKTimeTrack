@@ -5,12 +5,17 @@ namespace RolandK.TimeTrack.ExportAdapter;
 
 internal static class TimeTrackingDataMapper
 {
-    public static IReadOnlyList<ExportDataRow> MapData(IReadOnlyList<TimeTrackingDay> days, int expectedRowCount)
+    public static IReadOnlyList<ExportDataRow> MapData(
+        IReadOnlyList<TimeTrackingDay> days, 
+        DateOnly today,
+        int expectedRowCount)
     {
         var result = new List<ExportDataRow>(expectedRowCount);
 
         foreach (var actDay in days)
         {
+            if (actDay.Date > today){ continue; }
+            
             if (actDay.Entries.Count == 0)
             {
                 result.Add(new ExportDataRow(

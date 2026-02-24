@@ -12,13 +12,16 @@ public class TimeTrackingExporter : ITimeTrackingExporter
 {
     private readonly ILogger _logger;
     private readonly IOptions<ExportAdapterOptions> _options;
+    private readonly TimeProvider _timeProvider;
     
     public TimeTrackingExporter(
         ILogger<TimeTrackingExporter> logger,
-        IOptions<ExportAdapterOptions> options)
+        IOptions<ExportAdapterOptions> options,
+        TimeProvider timeProvider)
     {
         _logger = logger;
         _options = options;
+        _timeProvider = timeProvider;
     }
     
     public async Task ExportAsync(
@@ -30,9 +33,11 @@ public class TimeTrackingExporter : ITimeTrackingExporter
             _logger.LogError("Unable to export time tracking data: Invalid FileStorage configuration!");
             return;
         }
+
+        var today = DateOnly.FromDateTime(_timeProvider.GetUtcNow().DateTime);
         
-        var expectedRowCount = CalculateExportRowCount(days);
-        var exportRows = TimeTrackingDataMapper.MapData(days, expectedRowCount);
+        var expectedRowCount = CalculateExportRowCount(days, today);
+        var exportRows = TimeTrackingDataMapper.MapData(days, today, expectedRowCount);
         _logger.LogInformation("Start exporting {RowCount} rows time tracking data", exportRows.Count);
 
         await ExportRowsAsync(
@@ -63,11 +68,13 @@ public class TimeTrackingExporter : ITimeTrackingExporter
         return false;
     }
 
-    private int CalculateExportRowCount(IReadOnlyList<TimeTrackingDay> days)
+    private int CalculateExportRowCount(IReadOnlyList<TimeTrackingDay> days, DateOnly today)
     {
         var rowCount = 0;
         foreach (var actDay in days)
         {
+            if (actDay.Date > today){ continue; }
+            
             foreach (var actEntry in actDay.Entries)
             {
                 rowCount++;

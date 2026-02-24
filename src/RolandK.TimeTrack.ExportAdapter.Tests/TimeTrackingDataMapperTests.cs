@@ -9,8 +9,9 @@ public class TimeTrackingDataMapperTests
     public void Create_default_row()
     {
         // Arrange
+        var date = new DateOnly(2026, 02, 23);
         var timeTrackingDay = new TimeTrackingDay(
-            new DateOnly(2026, 02, 23),
+            date,
             TimeTrackingDayType.WorkingDay,
             [new TimeTrackingEntry(
                 new TimeTrackingTopicReference("TestCategory", "TestName"),
@@ -21,7 +22,7 @@ public class TimeTrackingDataMapperTests
         
         // Act
         var exportedRow = TimeTrackingDataMapper.MapData(
-            [timeTrackingDay], 1);
+            [timeTrackingDay], date, 1);
         
         // Assert
         Assert.NotNull(exportedRow);
@@ -39,14 +40,15 @@ public class TimeTrackingDataMapperTests
     public void Create_rows_for_empty_days()
     {
         // Arrange
+        var date = new DateOnly(2026, 02, 23);
         var timeTrackingDay = new TimeTrackingDay(
-            new DateOnly(2026, 02, 23),
+            date,
             TimeTrackingDayType.Holiday,
             []);
         
         // Act
         var exportedRow = TimeTrackingDataMapper.MapData(
-            [timeTrackingDay], 1);
+            [timeTrackingDay], date, 1);
         
         // Assert
         Assert.NotNull(exportedRow);
@@ -54,5 +56,24 @@ public class TimeTrackingDataMapperTests
         Assert.Equal("UT", exportedRow[0].TagTyp);
         Assert.Equal(0, exportedRow[0].Zeitaufwand);
         Assert.Equal(0, exportedRow[0].Abgerechnet);
+    }
+
+    [Fact]
+    public void Do_not_export_future_days()
+    {
+        // Arrange
+        var today = new DateOnly(2026, 02, 23);
+        var timeTrackingDay = new TimeTrackingDay(
+            today.AddDays(1),
+            TimeTrackingDayType.Holiday,
+            []);
+        
+        // Act
+        var exportedRow = TimeTrackingDataMapper.MapData(
+            [timeTrackingDay], today, 1);
+        
+        // Assert
+        Assert.NotNull(exportedRow);
+        Assert.Empty(exportedRow);
     }
 }
