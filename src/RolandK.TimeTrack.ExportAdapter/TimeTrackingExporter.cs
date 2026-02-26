@@ -40,10 +40,15 @@ public class TimeTrackingExporter : ITimeTrackingExporter
         var exportRows = TimeTrackingDataMapper.MapData(days, today, expectedRowCount);
         _logger.LogInformation("Start exporting {RowCount} rows time tracking data", exportRows.Count);
 
+        var exportData = new ExportData(
+            "2.0.0.0",
+            DateTimeOffset.UtcNow,
+            exportRows);
+        
         await ExportRowsAsync(
             exportFileName,
             exportDataStore,
-            exportRows,
+            exportData,
             cancellationToken);
         
         _logger.LogInformation("Export of {RowCount} rows time tracking data completed successfully", exportRows.Count);
@@ -86,7 +91,7 @@ public class TimeTrackingExporter : ITimeTrackingExporter
     private async Task ExportRowsAsync(
         string exportFileName,
         IFileDataStore exportFileStorage,
-        IReadOnlyList<ExportDataRow> rows,
+        ExportData exportData,
         CancellationToken cancellationToken)
     {
         var serializerOptions = new JsonSerializerOptions(JsonSerializerDefaults.Web);
@@ -96,7 +101,7 @@ public class TimeTrackingExporter : ITimeTrackingExporter
             exportFileName, cancellationToken);
         await JsonSerializer.SerializeAsync(
             uploadUtil.OutStream, 
-            rows,
+            exportData,
             serializerOptions, 
             cancellationToken);
         await uploadUtil.CompleteUploadAsync(cancellationToken);
