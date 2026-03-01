@@ -12,6 +12,7 @@ public static class ServiceCollectionExtensions
         services
             .AddScoped<ExportTimeTrackingData_UseCase>()
             .AddScoped<GetAllTopics_UseCase>()
+            .AddScoped<GetApplicationState_UseCase>()
             .AddScoped<GetWeek_UseCases>()
             .AddScoped<GetYearMetadata_UseCase>()
             .AddScoped<SearchEntriesByText_UseCase>()
