@@ -24,7 +24,7 @@ public static class EndpointRouteBuilderExtensions
             .WithName(RemoveAsyncFromMethodName(nameof(EntryApi.SearchEntriesAsync)));
 
         // State Api
-        endpointBuilder.MapGet("/api/state", StateApi.GetStateAsync)
+        endpointBuilder.MapGet("/api/ui/state", StateApi.GetStateAsync)
             .WithName(RemoveAsyncFromMethodName(nameof(StateApi.GetStateAsync)));
         
         // Topic Api

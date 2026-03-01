@@ -11,6 +11,7 @@ using NSubstitute;
 using NSubstitute.ClearExtensions;
 using RolandK.TimeTrack.FileBasedTimeTrackingRepositoryAdapter;
 using RolandK.TimeTrack.Application.Ports;
+using RolandK.TimeTrack.Application.State;
 using RolandK.TimeTrack.FileBasedTimeTrackingRepositoryAdapter.Testing;
 using Serilog;
 using Xunit.Abstractions;
@@ -42,6 +43,8 @@ public class WebHostServerFixture : IDisposable
     
     public ITopicRepository TopicRepositoryMock { get; } = Substitute.For<ITopicRepository>();
 
+    public TimeTrackApplicationState ApplicationState { get; } = new TimeTrackApplicationState();
+    
     public ResettableFakeTimeProvider TimeProviderMock { get; } = new(_mockedStartTimestamp);
     
     public IServiceProvider Services => _host?.Services ?? throw new InvalidOperationException("Host seems not to be initialized!");
@@ -148,6 +151,7 @@ public class WebHostServerFixture : IDisposable
 
                 services.Replace(ServiceDescriptor.Singleton(TopicRepositoryMock));
                 services.Replace(ServiceDescriptor.Singleton<TimeProvider>(TimeProviderMock));
+                services.Replace(ServiceDescriptor.Singleton(ApplicationState));
             },
             loggerConfig =>
             {
