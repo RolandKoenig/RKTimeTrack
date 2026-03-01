@@ -10,7 +10,7 @@ public class GetApplicationState_UseCase(TimeTrackApplicationState state)
     public Task<HandlerResult> GetStateAsync(CancellationToken cancellationToken)
     {
         return Task.FromResult(new TimeTrackApplicationStatePublic(
-            state.ServiceStartupTimestamp != DateTimeOffset.MinValue ? state.ServiceStartupTimestamp : null,
+            state.ServiceStartupTimestamp,
             state.LastSuccessfulExport != DateTimeOffset.MinValue ? state.LastSuccessfulExport : null));
     }   
 }

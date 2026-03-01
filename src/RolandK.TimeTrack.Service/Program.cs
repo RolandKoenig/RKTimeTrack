@@ -1,3 +1,4 @@
+using Microsoft.OpenApi;
 using RolandK.TimeTrack.Application;
 using RolandK.TimeTrack.ExportAdapter;
 using RolandK.TimeTrack.FileBasedTimeTrackingRepositoryAdapter;
@@ -66,7 +67,7 @@ public static class Program
         
         if (app.Environment.IsDevelopment())
         {
-            app.UseSwagger();
+            app.UseSwagger(options => options.OpenApiVersion = OpenApiSpecVersion.OpenApi3_0);
             app.UseSwaggerUI();
         }
         

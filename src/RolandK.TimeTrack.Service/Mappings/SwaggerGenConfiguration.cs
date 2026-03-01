@@ -8,12 +8,24 @@ public static class SwaggerGenConfiguration
 {
     public static void Configure(SwaggerGenOptions options)
     {
+        // Map types
         options.MapType<TimeTrackingHours>(() => new OpenApiSchema(){ Type = JsonSchemaType.Number });
         options.MapType<TimeTrackingBudget>(() => new OpenApiSchema(){ Type = JsonSchemaType.Number });
         options.MapType<DateOnly>(() => new OpenApiSchema()
         {
             Type = JsonSchemaType.String,
             Description = "Date in format 'yyyy-mm-dd'"
+        });
+        
+        // Map names
+        options.CustomSchemaIds(type =>
+        {
+            if (type == typeof(TimeTrackApplicationStatePublic))
+            {
+                return "TimeTrackApplicationState";
+            }
+
+            return type.Name;
         });
     }
 }
