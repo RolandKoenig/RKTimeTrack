@@ -10,7 +10,7 @@ import {useTopicStore} from "@/stores/topic-store";
 import {UiTimeTrackingWeek} from "@/stores/models/ui-time-tracking-week";
 import {UiTimeTrackingDay} from "@/stores/models/ui-time-tracking-day";
 import {UiTimeTrackingEntry} from "@/stores/models/ui-time-tracking-entry";
-import { useToast } from 'primevue/usetoast';
+import {useToast} from 'primevue/usetoast';
 
 export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
     const timeTrackClient = inject<TimeTrackClient>("TimeTrackClient")!;

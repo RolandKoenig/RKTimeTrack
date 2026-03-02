@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import {ref} from "vue";
+  import StatusComponent from "@/views/StatusComponent.vue";
   
   const menuItems = ref([{
       label: 'TimeTracking',
@@ -32,6 +33,11 @@
   <RouterView />
   
   <Toast />
+
+  <div class="container">
+    <StatusComponent />
+  </div>
+
 </template>
 
 <style scoped>
