@@ -27,9 +27,10 @@
 </script>
 
 <template>
-  <div v-tooltip.bottom="{ value: tooltipText, showDelay: 500 }">
+  <div v-tooltip.bottom="{ value: tooltipText, showDelay: 500 }"
+       :class="{ 'text-danger': statusStore.applicationStateError }">
     <span v-if="statusStore.applicationStateError"
-          class="text-danger m-3">
+          class="m-3">
       Nicht verbunden
     </span>
     <span v-if="!statusStore.applicationStateError"
