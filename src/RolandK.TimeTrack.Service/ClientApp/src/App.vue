@@ -28,15 +28,16 @@
         </a>
       </router-link>
     </template>
+    <template #end>
+      <div class="d-flex">
+        <StatusComponent />
+      </div>
+    </template>
   </Menubar>
   
   <RouterView />
   
   <Toast />
-
-  <div class="container">
-    <StatusComponent />
-  </div>
 
 </template>
 
