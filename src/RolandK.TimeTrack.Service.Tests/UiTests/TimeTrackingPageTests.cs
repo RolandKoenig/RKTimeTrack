@@ -87,4 +87,19 @@ public class TimeTrackingPageTests
             .Expect(playwrightSession.Page.GetByText("Not connected"))
             .ToBeVisibleAsync();
     }
+    
+    [Fact]
+    public async Task Initial_connection_state_tooltip_to_be_displayed()
+    {
+        // Arrange
+        await using var playwrightSession = await _server.StartPlaywrightSessionOnRootPageAsync();
+
+        // Act
+        await playwrightSession.Page.GetByText("Connected").HoverAsync();
+        
+        // Assert
+        await playwrightSession
+            .Expect(playwrightSession.Page.GetByText("Startup timestamp:"))
+            .ToBeVisibleAsync();
+    }
 }
