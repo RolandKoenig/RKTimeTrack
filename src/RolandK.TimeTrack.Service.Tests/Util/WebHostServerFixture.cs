@@ -70,7 +70,7 @@ public class WebHostServerFixture : IDisposable
         
         var browserContext = await _browser.NewContextAsync();
         var page = await browserContext.NewPageAsync();
-        
+ 
         // Set browser clock to backend clock
         await page.Clock.SetFixedTimeAsync(this.MockedStartTimestamp.UtcDateTime);
         await page.GotoAsync(this.RootUri.AbsoluteUri);

@@ -31,11 +31,11 @@
        :class="{ 'text-danger': statusStore.applicationStateError }">
     <span v-if="statusStore.applicationStateError"
           class="m-3">
-      Nicht verbunden
+      Not connected
     </span>
     <span v-if="!statusStore.applicationStateError"
           class="m-3">
-      Verbunden
+      Connected
     </span>
     <span >
       <IconServer size="small" />
