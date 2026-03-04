@@ -1,4 +1,4 @@
-﻿openapi: 3.0.1
+﻿openapi: 3.0.4
 info:
   title: RolandK.TimeTrack.Service
   version: '1.0'
@@ -53,6 +53,30 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/TimeTrackingEntry'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+  /api/ui/state:
+    get:
+      tags:
+        - StateApi
+      operationId: GetState
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TimeTrackApplicationState'
         '400':
           description: Bad Request
           content:
@@ -148,6 +172,7 @@ paths:
       parameters:
         - name: year
           in: path
+          required: true
           schema:
             type: integer
             format: int32
@@ -202,6 +227,17 @@ components:
         maxSearchResults:
           type: integer
           format: int32
+      additionalProperties: false
+    TimeTrackApplicationState:
+      type: object
+      properties:
+        serviceStartupTimestamp:
+          type: string
+          format: date-time
+        lastSuccessfulExport:
+          type: string
+          format: date-time
+          nullable: true
       additionalProperties: false
     TimeTrackingDay:
       type: object
@@ -328,3 +364,10 @@ components:
             $ref: '#/components/schemas/TimeTrackingEntry'
           nullable: true
       additionalProperties: false
+tags:
+  - name: DayApi
+  - name: EntryApi
+  - name: StateApi
+  - name: TopicApi
+  - name: WeekApi
+  - name: YearApi
