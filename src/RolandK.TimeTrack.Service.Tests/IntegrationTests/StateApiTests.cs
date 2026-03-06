@@ -2,7 +2,6 @@ using System.Net.Http.Json;
 using RolandK.TimeTrack.Application.Models;
 using RolandK.TimeTrack.Service.Tests.Util;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace RolandK.TimeTrack.Service.Tests.IntegrationTests;
 
@@ -34,7 +33,9 @@ public class StateApiTests
         _server.ApplicationState.LastSuccessfulExport = DateTimeOffset.MinValue;
         
         // Act
-        var state = await httpClient.GetFromJsonAsync<TimeTrackApplicationStatePublic>("api/ui/state");
+        var state = await httpClient.GetFromJsonAsync<TimeTrackApplicationStatePublic>(
+            "api/ui/state",
+            TestContext.Current.CancellationToken);
         
         // Assert
         Assert.NotNull(state);
@@ -55,7 +56,9 @@ public class StateApiTests
         _server.ApplicationState.LastSuccessfulExport = fakeExportTimestamp;
 
         // Act
-        var state = await httpClient.GetFromJsonAsync<TimeTrackApplicationStatePublic>("api/ui/state");
+        var state = await httpClient.GetFromJsonAsync<TimeTrackApplicationStatePublic>(
+            "api/ui/state",
+            TestContext.Current.CancellationToken);
         
         // Assert
         Assert.NotNull(state);

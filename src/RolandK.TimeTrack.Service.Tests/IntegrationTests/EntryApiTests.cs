@@ -3,7 +3,6 @@ using RolandK.TimeTrack.Application.Models;
 using RolandK.TimeTrack.Application.UseCases;
 using RolandK.TimeTrack.Service.Tests.Util;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace RolandK.TimeTrack.Service.Tests.IntegrationTests;
 
@@ -42,7 +41,8 @@ public class EntryApiTests
                         2f,
                         TimeTrackingEntryType.Default,
                         "#1023 My dummy description")
-                ]));
+                ]),
+            TestContext.Current.CancellationToken);
         await httpClient.PostAsJsonAsync(
             "api/ui/day",
             new UpdateDay_Request(
@@ -55,13 +55,16 @@ public class EntryApiTests
                         1f,
                         TimeTrackingEntryType.Default,
                         "#4210 My dummy description 2")
-                ]));
+                ]),
+            TestContext.Current.CancellationToken);
         
         // Act
         var responseMessage = await httpClient.PostAsJsonAsync(
             "api/ui/entries",
-            new SearchEntriesByText_Request("#4210"));
-        var response = await responseMessage.Content.ReadFromJsonAsync<IReadOnlyList<TimeTrackingEntry>>();
+            new SearchEntriesByText_Request("#4210"),
+            TestContext.Current.CancellationToken);
+        var response = await responseMessage.Content.ReadFromJsonAsync<IReadOnlyList<TimeTrackingEntry>>(
+            TestContext.Current.CancellationToken);
 
         // Assert
         Assert.NotNull(response);
@@ -88,7 +91,8 @@ public class EntryApiTests
                         2f,
                         TimeTrackingEntryType.Default,
                         "#1023 My dummy description")
-                ]));
+                ]),
+            TestContext.Current.CancellationToken);
         await httpClient.PostAsJsonAsync(
             "api/ui/day",
             new UpdateDay_Request(
@@ -101,13 +105,16 @@ public class EntryApiTests
                         1f,
                         TimeTrackingEntryType.Default,
                         "#4210 My dummy description 2")
-                ]));
+                ]),
+            TestContext.Current.CancellationToken);
         
         // Act
         var responseMessage = await httpClient.PostAsJsonAsync(
             "api/ui/entries",
-            new SearchEntriesByText_Request("#9999"));
-        var response = await responseMessage.Content.ReadFromJsonAsync<IReadOnlyList<TimeTrackingEntry>>();
+            new SearchEntriesByText_Request("#9999"),
+            TestContext.Current.CancellationToken);
+        var response = await responseMessage.Content.ReadFromJsonAsync<IReadOnlyList<TimeTrackingEntry>>(
+            TestContext.Current.CancellationToken);
 
         // Assert
         Assert.NotNull(response);
@@ -133,7 +140,8 @@ public class EntryApiTests
                         2f,
                         TimeTrackingEntryType.Default,
                         "#1023 My dummy description")
-                ]));
+                ]),
+            TestContext.Current.CancellationToken);
         await httpClient.PostAsJsonAsync(
             "api/ui/day",
             new UpdateDay_Request(
@@ -146,13 +154,16 @@ public class EntryApiTests
                         1f,
                         TimeTrackingEntryType.Default,
                         "#4210 My dummy description 2")
-                ]));
+                ]),
+            TestContext.Current.CancellationToken);
         
         // Act
         var responseMessage = await httpClient.PostAsJsonAsync(
             "api/ui/entries",
-            new SearchEntriesByText_Request("dummy"));
-        var response = await responseMessage.Content.ReadFromJsonAsync<IReadOnlyList<TimeTrackingEntry>>();
+            new SearchEntriesByText_Request("dummy"),
+            TestContext.Current.CancellationToken);
+        var response = await responseMessage.Content.ReadFromJsonAsync<IReadOnlyList<TimeTrackingEntry>>(
+            TestContext.Current.CancellationToken);
 
         // Assert
         Assert.NotNull(response);
@@ -180,7 +191,8 @@ public class EntryApiTests
                         2f,
                         TimeTrackingEntryType.Default,
                         "#1023 My dummy description")
-                ]));
+                ]),
+            TestContext.Current.CancellationToken);
         await httpClient.PostAsJsonAsync(
             "api/ui/day",
             new UpdateDay_Request(
@@ -193,13 +205,16 @@ public class EntryApiTests
                         1f,
                         TimeTrackingEntryType.Default,
                         "#4210 My dummy description 2")
-                ]));
+                ]),
+            TestContext.Current.CancellationToken);
         
         // Act
         var responseMessage = await httpClient.PostAsJsonAsync(
             "api/ui/entries",
-            new SearchEntriesByText_Request("DUMMY"));
-        var response = await responseMessage.Content.ReadFromJsonAsync<IReadOnlyList<TimeTrackingEntry>>();
+            new SearchEntriesByText_Request("DUMMY"),
+            TestContext.Current.CancellationToken);
+        var response = await responseMessage.Content.ReadFromJsonAsync<IReadOnlyList<TimeTrackingEntry>>(
+            TestContext.Current.CancellationToken);
 
         // Assert
         Assert.NotNull(response);
@@ -227,7 +242,8 @@ public class EntryApiTests
                         2f,
                         TimeTrackingEntryType.Default,
                         "#1023 My dummy description")
-                ]));
+                ]),
+            TestContext.Current.CancellationToken);
         await httpClient.PostAsJsonAsync(
             "api/ui/day",
             new UpdateDay_Request(
@@ -240,13 +256,16 @@ public class EntryApiTests
                         1f,
                         TimeTrackingEntryType.Default,
                         "#4210 My dummy description 2")
-                ]));
+                ]),
+            TestContext.Current.CancellationToken);
         
         // Act
         var responseMessage = await httpClient.PostAsJsonAsync(
             "api/ui/entries",
-            new SearchEntriesByText_Request("dummy", 1));
-        var response = await responseMessage.Content.ReadFromJsonAsync<IReadOnlyList<TimeTrackingEntry>>();
+            new SearchEntriesByText_Request("dummy", 1),
+            TestContext.Current.CancellationToken);
+        var response = await responseMessage.Content.ReadFromJsonAsync<IReadOnlyList<TimeTrackingEntry>>(
+            TestContext.Current.CancellationToken);
 
         // Assert
         Assert.NotNull(response);

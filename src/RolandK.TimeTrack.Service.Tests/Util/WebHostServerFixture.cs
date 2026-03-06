@@ -14,7 +14,7 @@ using RolandK.TimeTrack.Application.Ports;
 using RolandK.TimeTrack.Application.State;
 using RolandK.TimeTrack.FileBasedTimeTrackingRepositoryAdapter.Testing;
 using Serilog;
-using Xunit.Abstractions;
+using Xunit;
 
 namespace RolandK.TimeTrack.Service.Tests.Util;
 

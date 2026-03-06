@@ -1,5 +1,4 @@
 using Microsoft.Extensions.Logging;
-using Xunit.Abstractions;
 
 namespace RolandK.TimeTrack.Service.ContainerTests.Util;
 

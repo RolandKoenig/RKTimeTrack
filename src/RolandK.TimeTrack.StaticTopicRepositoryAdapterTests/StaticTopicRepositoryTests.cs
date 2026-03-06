@@ -25,8 +25,8 @@ public class StaticTopicRepositoryTests
                     "budget": 40
                 }
             ]
-            """
-            );
+            """,
+            TestContext.Current.CancellationToken);
         try
         {
             var options = new StaticTopicRepositoryOptions()

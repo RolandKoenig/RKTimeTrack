@@ -3,7 +3,6 @@ using NSubstitute;
 using RolandK.TimeTrack.Application.Models;
 using RolandK.TimeTrack.Service.Tests.Util;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace RolandK.TimeTrack.Service.Tests.UiTests;
 

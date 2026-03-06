@@ -2,7 +2,6 @@ using System.Diagnostics.CodeAnalysis;
 using DotNet.Testcontainers.Builders;
 using DotNet.Testcontainers.Containers;
 using DotNet.Testcontainers.Images;
-using Xunit.Abstractions;
 
 namespace RolandK.TimeTrack.Service.ContainerTests.Util;
 
