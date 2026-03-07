@@ -1,5 +1,4 @@
 ﻿using RolandK.TimeTrack.Service.ContainerTests.Util;
-using Xunit.Abstractions;
 
 namespace RolandK.TimeTrack.Service.ContainerTests;
 
@@ -16,12 +15,13 @@ public class StartupTests(TestEnvironmentFixture fixture, ITestOutputHelper outp
 
             // Act
             var httpClient = new HttpClient();
-            var response = await httpClient.GetAsync(fixture.AppBaseUrl);
+            var response = await httpClient.GetAsync(
+                fixture.AppBaseUrl, TestContext.Current.CancellationToken);
 
             // Assert
             Assert.True(response.IsSuccessStatusCode);
 
-            var responseContent = await response.Content.ReadAsStringAsync();
+            var responseContent = await response.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
             Assert.Contains("<html", responseContent);
         }
         finally

@@ -2,7 +2,6 @@ using System.Diagnostics.CodeAnalysis;
 using DotNet.Testcontainers.Builders;
 using DotNet.Testcontainers.Containers;
 using DotNet.Testcontainers.Images;
-using Xunit.Abstractions;
 
 namespace RolandK.TimeTrack.Service.ContainerTests.Util;
 
@@ -78,7 +77,8 @@ public class TestEnvironmentFixture : IAsyncDisposable
         {
             foreach (var actContainer in _containers)
             {
-                await actContainer.DisposeAsync();
+                try { await actContainer.DisposeAsync(); }
+                catch { /* Nothing we can do here */ }
             }
             _containers = null;
         }
@@ -87,8 +87,11 @@ public class TestEnvironmentFixture : IAsyncDisposable
         {
             foreach (var actImage in _builtImages)
             {
-                await actImage.DeleteAsync();
-                await actImage.DisposeAsync();
+                try { await actImage.DeleteAsync(); }
+                catch { /* Nothing we can do here */ }
+                
+                try { await actImage.DisposeAsync(); }
+                catch { /* Nothing we can do here */ }
             }
             _builtImages = null;
         }

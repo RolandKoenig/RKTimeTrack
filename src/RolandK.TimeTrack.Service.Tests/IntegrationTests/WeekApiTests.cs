@@ -2,7 +2,6 @@ using System.Net.Http.Json;
 using RolandK.TimeTrack.Application.Models;
 using RolandK.TimeTrack.Service.Tests.Util;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace RolandK.TimeTrack.Service.Tests.IntegrationTests;
 
@@ -38,7 +37,9 @@ public class WeekApiTests
         httpClient.BaseAddress = _server.RootUri;
         
         // Act
-        var week = await httpClient.GetFromJsonAsync<TimeTrackingWeek>("api/ui/week");
+        var week = await httpClient.GetFromJsonAsync<TimeTrackingWeek>(
+            "api/ui/week",
+            TestContext.Current.CancellationToken);
         
         // Assert
         Assert.NotNull(week);
@@ -53,7 +54,9 @@ public class WeekApiTests
         httpClient.BaseAddress = _server.RootUri;
         
         // Act
-        var week = await httpClient.GetFromJsonAsync<TimeTrackingWeek>("api/ui/week/2024/51");
+        var week = await httpClient.GetFromJsonAsync<TimeTrackingWeek>(
+            "api/ui/week/2024/51",
+            TestContext.Current.CancellationToken);
         
         // Assert
         Assert.NotNull(week);

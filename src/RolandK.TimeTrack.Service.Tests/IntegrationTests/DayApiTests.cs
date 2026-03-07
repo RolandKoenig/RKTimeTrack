@@ -3,7 +3,6 @@ using RolandK.TimeTrack.Application.Models;
 using RolandK.TimeTrack.Application.UseCases;
 using RolandK.TimeTrack.Service.Tests.Util;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace RolandK.TimeTrack.Service.Tests.IntegrationTests;
 
@@ -43,10 +42,13 @@ public class DayApiTests
                         2f,
                         TimeTrackingEntryType.Default,
                         "My dummy description")
-                ]));
+                ]),
+            TestContext.Current.CancellationToken);
         
         // Assert
-        var week = await httpClient.GetFromJsonAsync<TimeTrackingWeek>("api/ui/week/2024/51");
+        var week = await httpClient.GetFromJsonAsync<TimeTrackingWeek>(
+            "api/ui/week/2024/51",
+            TestContext.Current.CancellationToken);
         Assert.NotNull(week);
 
         Assert.NotNull(week!.Tuesday);
@@ -87,10 +89,13 @@ public class DayApiTests
                     new TimeTrackingEntry(
                         new TimeTrackingTopicReference("Category1", "Name1"),
                         2f)
-                ]));
+                ]),
+            TestContext.Current.CancellationToken);
         
         // Assert
-        var week = await httpClient.GetFromJsonAsync<TimeTrackingWeek>("api/ui/week/2024/51");
+        var week = await httpClient.GetFromJsonAsync<TimeTrackingWeek>(
+            "api/ui/week/2024/51",
+            TestContext.Current.CancellationToken);
         Assert.NotNull(week);
 
         Assert.NotNull(week!.Tuesday);
@@ -117,10 +122,13 @@ public class DayApiTests
                     new TimeTrackingEntry(
                         new TimeTrackingTopicReference(topicCategory, topicName),
                         2f)
-                ]));
+                ]),
+            TestContext.Current.CancellationToken);
         
         // Assert
-        var week = await httpClient.GetFromJsonAsync<TimeTrackingWeek>("api/ui/week/2024/51");
+        var week = await httpClient.GetFromJsonAsync<TimeTrackingWeek>(
+            "api/ui/week/2024/51",
+            TestContext.Current.CancellationToken);
         Assert.NotNull(week);
 
         Assert.NotNull(week!.Tuesday);
@@ -150,10 +158,13 @@ public class DayApiTests
                     new TimeTrackingEntry(
                         new TimeTrackingTopicReference("Category1", "Name1"),
                         effortInHours)
-                ]));
+                ]),
+            TestContext.Current.CancellationToken);
         
         // Assert
-        var week = await httpClient.GetFromJsonAsync<TimeTrackingWeek>("api/ui/week/2024/51");
+        var week = await httpClient.GetFromJsonAsync<TimeTrackingWeek>(
+            "api/ui/week/2024/51",
+            TestContext.Current.CancellationToken);
         Assert.NotNull(week);
 
         Assert.NotNull(week!.Tuesday);
@@ -183,10 +194,13 @@ public class DayApiTests
                         new TimeTrackingTopicReference("Category1", "Name1"),
                         effortBilled,
                         effortBilled)
-                ]));
+                ]),
+            TestContext.Current.CancellationToken);
         
         // Assert
-        var week = await httpClient.GetFromJsonAsync<TimeTrackingWeek>("api/ui/week/2024/51");
+        var week = await httpClient.GetFromJsonAsync<TimeTrackingWeek>(
+            "api/ui/week/2024/51",
+            TestContext.Current.CancellationToken);
         Assert.NotNull(week);
 
         Assert.NotNull(week!.Tuesday);
@@ -214,10 +228,13 @@ public class DayApiTests
                         new TimeTrackingTopicReference("Category1", "Name1"),
                         0f,
                         type: entryType)
-                ]));
+                ]),
+            TestContext.Current.CancellationToken);
         
         // Assert
-        var week = await httpClient.GetFromJsonAsync<TimeTrackingWeek>("api/ui/week/2024/51");
+        var week = await httpClient.GetFromJsonAsync<TimeTrackingWeek>(
+            "api/ui/week/2024/51",
+            TestContext.Current.CancellationToken);
         Assert.NotNull(week);
 
         Assert.NotNull(week!.Tuesday);
@@ -244,10 +261,13 @@ public class DayApiTests
                         new TimeTrackingTopicReference("Category1", "Name1"),
                         0f,
                         description: description)
-                ]));
+                ]),
+            TestContext.Current.CancellationToken);
         
         // Assert
-        var week = await httpClient.GetFromJsonAsync<TimeTrackingWeek>("api/ui/week/2024/51");
+        var week = await httpClient.GetFromJsonAsync<TimeTrackingWeek>(
+            "api/ui/week/2024/51",
+            TestContext.Current.CancellationToken);
         Assert.NotNull(week);
 
         Assert.NotNull(week!.Tuesday);

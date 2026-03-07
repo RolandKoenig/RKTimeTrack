@@ -2,7 +2,6 @@ using System.Net.Http.Json;
 using RolandK.TimeTrack.Application.Models;
 using RolandK.TimeTrack.Service.Tests.Util;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace RolandK.TimeTrack.Service.Tests.IntegrationTests;
 
@@ -37,7 +36,9 @@ public class YearApiTests
         httpClient.BaseAddress = _server.RootUri;
 
         // Act
-        var yearMetadata = await httpClient.GetFromJsonAsync<TimeTrackingYearMetadata>($"api/ui/year/{year}/metadata");
+        var yearMetadata = await httpClient.GetFromJsonAsync<TimeTrackingYearMetadata>(
+            $"api/ui/year/{year}/metadata",
+            TestContext.Current.CancellationToken);
         
         // Assert
         Assert.NotNull(yearMetadata);
