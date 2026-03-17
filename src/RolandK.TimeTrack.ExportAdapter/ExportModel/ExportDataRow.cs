@@ -8,4 +8,5 @@ public record ExportDataRow(
     string ZeilenTyp,
     double Zeitaufwand, // In hours
     double Abgerechnet, // In hours
+    double BillingMultiplier,
     string Kommentar);

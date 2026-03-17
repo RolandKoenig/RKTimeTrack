@@ -12,6 +12,8 @@ public class TimeTrackingEntry(
     public TimeTrackingHours EffortInHours { get; } = effortInHours;
 
     public TimeTrackingHours EffortBilled { get; } = effortBilled;
+    
+    public TimeTrackingBillingMultiplier BillingMultiplier { get; } = 1.0;
 
     public TimeTrackingEntryType Type { get; } = type;
 

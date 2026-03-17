@@ -8,10 +8,10 @@ namespace RolandK.TimeTrack.Application.Models;
 /// Time spend for some work.
 /// Value must be positive and be rounded to quarter hours.
 /// </summary>
-[JsonConverter(typeof(TimeTrackingHoursJsonConverter))]
-public readonly struct TimeTrackingHours(double hours)
+[JsonConverter(typeof(TimeTrackingBillingMultiplierJsonConverter))]
+public readonly struct TimeTrackingBillingMultiplier(double multiplier)
 {
-    public double Hours { get; } = RoundHoursToQuarterHours(hours);
+    public double Multiplier { get; } = RoundHoursToQuarterHours(multiplier);
 
     private static double RoundHoursToQuarterHours(double hours)
     {
@@ -20,5 +20,5 @@ public readonly struct TimeTrackingHours(double hours)
         return Math.Round(hours * 4) / 4;
     }
     
-    public static implicit operator TimeTrackingHours(double hours) => new (hours);
+    public static implicit operator TimeTrackingBillingMultiplier(double multiplier) => new (multiplier);
 }
