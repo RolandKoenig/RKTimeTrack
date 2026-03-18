@@ -4,6 +4,7 @@ public class TimeTrackingEntry(
     TimeTrackingTopicReference topic, 
     TimeTrackingHours effortInHours, 
     TimeTrackingHours effortBilled = default,
+    TimeTrackingBillingMultiplier billingMultiplier = default,
     TimeTrackingEntryType type = default,
     string description = "")
 {
@@ -13,7 +14,7 @@ public class TimeTrackingEntry(
 
     public TimeTrackingHours EffortBilled { get; } = effortBilled;
     
-    public TimeTrackingBillingMultiplier BillingMultiplier { get; } = 1.0;
+    public TimeTrackingBillingMultiplier BillingMultiplier { get; } = billingMultiplier;
 
     public TimeTrackingEntryType Type { get; } = type;
 

@@ -17,6 +17,7 @@ public class TimeTrackingDataMapperTests
                 new TimeTrackingTopicReference("TestCategory", "TestName"),
                 2.0,
                 1.0,
+                TimeTrackingBillingMultiplier.Default,
                 TimeTrackingEntryType.Default,
                 "Some dummy work")]);
         

@@ -10,6 +10,7 @@ export class UiTimeTrackingEntry{
         public topicName: string,
         public effortInHours: number,
         public effortBilled: number,
+        public billingMultiplier: number,
         public type: UiTimeTrackingEntryType,
         public description: string
     ){
@@ -23,6 +24,7 @@ export class UiTimeTrackingEntry{
             backendModel.topic?.name ?? "",
             backendModel.effortInHours,
             backendModel.effortBilled,
+            backendModel.billingMultiplier,
             backendModel.type,
             backendModel.description ?? ""
         )
@@ -36,6 +38,7 @@ export class UiTimeTrackingEntry{
             }),
             effortInHours: this.effortInHours,
             effortBilled: this.effortBilled,
+            billingMultiplier: this.billingMultiplier,
             type: this.type,
             description: this.description
         })

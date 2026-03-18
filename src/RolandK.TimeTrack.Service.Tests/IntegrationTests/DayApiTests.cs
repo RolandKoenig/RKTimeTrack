@@ -40,6 +40,7 @@ public class DayApiTests
                         new TimeTrackingTopicReference("Category1", "Name6 (With Budget)"),
                         4f,
                         2f,
+                        1f,
                         TimeTrackingEntryType.Default,
                         "My dummy description")
                 ]),

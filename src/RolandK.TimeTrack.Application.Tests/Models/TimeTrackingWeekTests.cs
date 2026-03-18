@@ -35,8 +35,8 @@ public class TimeTrackingWeekTests
                                   },
                                   "effortInHours": 4,
                                   "effortBilled": 3,
+                                  "billingMultiplier": 1,
                                   "type": "Default",
-                                  "billingMultiplier": 1.0,
                                   "description": "DummyDescription"
                                 }
                               ]

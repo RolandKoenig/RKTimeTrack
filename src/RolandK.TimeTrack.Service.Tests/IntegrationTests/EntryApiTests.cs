@@ -39,6 +39,7 @@ public class EntryApiTests
                         new TimeTrackingTopicReference("Category1", "Name6 (With Budget)"),
                         4f,
                         2f,
+                        TimeTrackingBillingMultiplier.Default,
                         TimeTrackingEntryType.Default,
                         "#1023 My dummy description")
                 ]),
@@ -53,6 +54,7 @@ public class EntryApiTests
                         new TimeTrackingTopicReference("Category1", "Name6 (With Budget)"),
                         1f,
                         1f,
+                        TimeTrackingBillingMultiplier.Default,
                         TimeTrackingEntryType.Default,
                         "#4210 My dummy description 2")
                 ]),
@@ -89,6 +91,7 @@ public class EntryApiTests
                         new TimeTrackingTopicReference("Category1", "Name6 (With Budget)"),
                         4f,
                         2f,
+                        TimeTrackingBillingMultiplier.Default,
                         TimeTrackingEntryType.Default,
                         "#1023 My dummy description")
                 ]),
@@ -103,6 +106,7 @@ public class EntryApiTests
                         new TimeTrackingTopicReference("Category1", "Name6 (With Budget)"),
                         1f,
                         1f,
+                        TimeTrackingBillingMultiplier.Default,
                         TimeTrackingEntryType.Default,
                         "#4210 My dummy description 2")
                 ]),
@@ -138,6 +142,7 @@ public class EntryApiTests
                         new TimeTrackingTopicReference("Category1", "Name6 (With Budget)"),
                         4f,
                         2f,
+                        TimeTrackingBillingMultiplier.Default,
                         TimeTrackingEntryType.Default,
                         "#1023 My dummy description")
                 ]),
@@ -152,6 +157,7 @@ public class EntryApiTests
                         new TimeTrackingTopicReference("Category1", "Name6 (With Budget)"),
                         1f,
                         1f,
+                        TimeTrackingBillingMultiplier.Default,
                         TimeTrackingEntryType.Default,
                         "#4210 My dummy description 2")
                 ]),
@@ -189,6 +195,7 @@ public class EntryApiTests
                         new TimeTrackingTopicReference("Category1", "Name6 (With Budget)"),
                         4f,
                         2f,
+                        TimeTrackingBillingMultiplier.Default,
                         TimeTrackingEntryType.Default,
                         "#1023 My dummy description")
                 ]),
@@ -203,6 +210,7 @@ public class EntryApiTests
                         new TimeTrackingTopicReference("Category1", "Name6 (With Budget)"),
                         1f,
                         1f,
+                        TimeTrackingBillingMultiplier.Default,
                         TimeTrackingEntryType.Default,
                         "#4210 My dummy description 2")
                 ]),
@@ -240,6 +248,7 @@ public class EntryApiTests
                         new TimeTrackingTopicReference("Category1", "Name6 (With Budget)"),
                         4f,
                         2f,
+                        TimeTrackingBillingMultiplier.Default,
                         TimeTrackingEntryType.Default,
                         "#1023 My dummy description")
                 ]),
@@ -254,6 +263,7 @@ public class EntryApiTests
                         new TimeTrackingTopicReference("Category1", "Name6 (With Budget)"),
                         1f,
                         1f,
+                        TimeTrackingBillingMultiplier.Default,
                         TimeTrackingEntryType.Default,
                         "#4210 My dummy description 2")
                 ]),

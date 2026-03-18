@@ -11,6 +11,8 @@ namespace RolandK.TimeTrack.Application.Models;
 [JsonConverter(typeof(TimeTrackingBillingMultiplierJsonConverter))]
 public readonly struct TimeTrackingBillingMultiplier(double multiplier)
 {
+    public static readonly TimeTrackingBillingMultiplier Default = new(1.0);
+    
     public double Multiplier { get; } = RoundHoursToQuarterHours(multiplier);
 
     private static double RoundHoursToQuarterHours(double hours)

@@ -29,6 +29,17 @@
       }
     }
   })
+
+  const wrappedBillingMultiplier = computed({
+    get() {
+      return timeTrackingStore.selectedEntry?.billingMultiplier ?? 1;
+    },
+    set(newValue) {
+      if(timeTrackingStore.selectedEntry){
+        timeTrackingStore.selectedEntry.billingMultiplier = Math.round(newValue * 4) / 4;
+      }
+    }
+  })
   
   // Configure validation
   const validationRules = {
@@ -39,6 +50,7 @@
       },
       effortInHours: { required, minValue: minValue(0) },
       effortBilled: { required, minValue: minValue(0) },
+      billingMultiplier: { required, minValue: minValue(0) },
       type: { required },
       description: { }
     }
@@ -104,7 +116,7 @@
           </div>
         </div>
       </div>
-      <div class="col-6 mb-3">
+      <div class="col-3 mb-3">
         <label for="current-row-billed" class="form-label">Billed (h)</label>
         <InputNumber id="current-row-billed"
                      v-model.lazy="wrappedEffortBilled"
@@ -112,6 +124,20 @@
                      :maxFractionDigits="2"
                      :invalid="v$.selectedEntry.effortBilled.$invalid"
                      showButtons 
+                     :step="0.25"
+                     :disabled="!timeTrackingStore.canCurrentTopicBeInvoiced" />
+        <div v-for="error of v$.selectedEntry.effortBilled.$silentErrors" :key="error.$uid">
+          <div class="error-msg">{{ error.$message }}</div>
+        </div>
+      </div>
+      <div class="col-3 mb-3">
+        <label for="current-row-billing-multiplier" class="form-label">Billing Multiplier</label>
+        <InputNumber id="current-row-billing-multiplier"
+                     v-model.lazy="wrappedBillingMultiplier"
+                     :minFractionDigits="0"
+                     :maxFractionDigits="2"
+                     :invalid="v$.selectedEntry.billingMultiplier.$invalid"
+                     showButtons
                      :step="0.25"
                      :disabled="!timeTrackingStore.canCurrentTopicBeInvoiced" />
         <div v-for="error of v$.selectedEntry.effortBilled.$silentErrors" :key="error.$uid">
