@@ -2,6 +2,7 @@ using RolandK.TimeTrack.StaticTopicRepositoryAdapter.Util;
 
 namespace RolandK.TimeTrack.StaticTopicRepositoryAdapterTests.Util;
 
+[Trait("Category", "NoDependencies")]
 public class StaticTopicRepositoryUtilTests
 {
     [Fact]

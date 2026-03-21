@@ -4,6 +4,7 @@ using Xunit;
 namespace RolandK.TimeTrack.Service.Tests.UiTests;
 
 [Collection(nameof(TestEnvironmentCollection))]
+[Trait("Category", "NoDependencies")]
 public class StartupTests
 {
     private readonly WebHostServerFixture _server;

@@ -1,4 +1,5 @@
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using RolandK.RemoteFileStorage;
@@ -8,8 +9,16 @@ using RolandK.TimeTrack.ExportAdapter.ExportModel;
 
 namespace RolandK.TimeTrack.ExportAdapter;
 
+
+
 public class TimeTrackingExporter : ITimeTrackingExporter
 {
+    // Export versions
+    //  1.0.0 -> Initial
+    //  2.0.0 -> Added export datetime + metadata in an surrounding object
+    //  2.1.0 -> Added BillingModifier
+    private const string EXPORT_VERSION = "2.1.0.0";
+    
     private readonly ILogger _logger;
     private readonly IOptions<ExportAdapterOptions> _options;
     private readonly TimeProvider _timeProvider;
@@ -41,7 +50,7 @@ public class TimeTrackingExporter : ITimeTrackingExporter
         _logger.LogInformation("Start exporting {RowCount} rows time tracking data", exportRows.Count);
 
         var exportData = new ExportData(
-            "2.0.0.0",
+            EXPORT_VERSION,
             DateTimeOffset.UtcNow,
             exportRows);
         
@@ -96,6 +105,7 @@ public class TimeTrackingExporter : ITimeTrackingExporter
     {
         var serializerOptions = new JsonSerializerOptions(JsonSerializerDefaults.Web);
         serializerOptions.WriteIndented = _options.Value.WriteIndentedJson;
+        serializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWriting;
         
         await using var uploadUtil = await exportFileStorage.UploadFileAsync(
             exportFileName, cancellationToken);

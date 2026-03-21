@@ -6,6 +6,7 @@ using Xunit;
 namespace RolandK.TimeTrack.Service.Tests.IntegrationTests;
 
 [Collection(nameof(TestEnvironmentCollection))]
+[Trait("Category", "NoDependencies")]
 public class StateApiTests
 {
     private readonly WebHostServerFixture _server;
