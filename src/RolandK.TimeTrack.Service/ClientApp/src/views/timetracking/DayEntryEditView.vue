@@ -50,7 +50,7 @@
       },
       effortInHours: { required, minValue: minValue(0) },
       effortBilled: { required, minValue: minValue(0) },
-      billingMultiplier: { required, minValue: minValue(0) },
+      billingMultiplier: { required, minValue: minValue(0.25) },
       type: { required },
       description: { }
     }
