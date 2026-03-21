@@ -43,7 +43,7 @@ Backend tests are located in various `.Tests` projects within the `src` director
    }
    ```
 
-### Frontend Tests (Vitest)
+### Frontend Tests (ASP.NET Core + xUnit + Playwright)
 Frontend unit tests are done using Playwright together with ASP.NET Core and xUnit in the project src/RolandK.TimeTrack.Service.Tests.
 All frontend tests are located in `src/RolandK.TimeTrack.Service.Tests/UiTests`.
 
