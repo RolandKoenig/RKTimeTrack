@@ -147,7 +147,7 @@
       </div>
     </div>
     
-    <div clas="row">
+    <div class="row">
       <div class="col-6 mb-3">
         <label for="current-row-entrytype" class="form-label">Entry Type</label>
         <Select id="selected-entry-entrytype"
@@ -157,6 +157,15 @@
                 :invalid="v$.selectedEntry.type.$invalid"/>
         <div v-for="error of v$.selectedEntry.type.$silentErrors" :key="error.$uid">
           <div class="error-msg">{{ error.$message }}</div>
+        </div>
+      </div>
+      <div class="col-6 mb-3 d-flex align-items-end">
+        <div class="flex align-items-center mb-2">
+          <Checkbox id="current-row-billed-flag"
+                    v-model="timeTrackingStore.selectedEntry.billed"
+                    :disabled="!timeTrackingStore.canCurrentTopicBeInvoiced"
+                    binary />
+          <label for="current-row-billed-flag" class="ms-2">Billed</label>
         </div>
       </div>
     </div>

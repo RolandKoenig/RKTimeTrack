@@ -11,6 +11,7 @@ export class UiTimeTrackingEntry{
         public effortInHours: number,
         public effortBilled: number,
         public billingMultiplier: number,
+        public billed: boolean,
         public type: UiTimeTrackingEntryType,
         public description: string
     ){
@@ -25,8 +26,9 @@ export class UiTimeTrackingEntry{
             backendModel.effortInHours,
             backendModel.effortBilled,
             backendModel.billingMultiplier,
+            backendModel.billed ?? false,
             backendModel.type,
-            backendModel.description ?? ""
+            backendModel.description ?? "",
         )
     }
     
@@ -39,8 +41,9 @@ export class UiTimeTrackingEntry{
             effortInHours: this.effortInHours,
             effortBilled: this.effortBilled,
             billingMultiplier: this.billingMultiplier,
+            billed: this.billed,
             type: this.type,
-            description: this.description
+            description: this.description,
         })
     }
 }

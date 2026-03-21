@@ -82,6 +82,8 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
             if(!selectedEntry.value){ return; }
             if(!newValue){
                 selectedEntry.value.effortBilled = 0;
+                selectedEntry.value.billed = false;
+                selectedEntry.value.billingMultiplier = 1;
             }
         });
     
@@ -305,6 +307,7 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
             0,
             0,
             1,
+            false,
             TimeTrackingEntryType.Default,
             "",
         );
@@ -333,6 +336,7 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
             selectedEntry.value.effortInHours,
             selectedEntry.value.effortBilled,
             selectedEntry.value.billingMultiplier,
+            selectedEntry.value.billed,
             selectedEntry.value.type,
             selectedEntry.value.description,
         );

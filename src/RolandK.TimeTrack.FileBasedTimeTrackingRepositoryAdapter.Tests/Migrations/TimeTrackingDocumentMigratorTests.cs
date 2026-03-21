@@ -26,6 +26,7 @@ public class TimeTrackingDocumentMigratorTests
                             2.0,
                             2.0,
                             0,
+                            false,
                             entryType,
                             "Some dummy work")
                     ])
@@ -44,6 +45,7 @@ public class TimeTrackingDocumentMigratorTests
         var migratedDay = migratedData.Days.First();
         var migratedEntry = migratedDay.Entries.First();
         Assert.Equal(expectedBillingMultiplier, migratedEntry.BillingMultiplier);
+        Assert.True(migratedEntry.Billed);
         
         Assert.Equal(previousDay.Date, migratedDay.Date);
         Assert.Equal(previousDay.Type, migratedDay.Type);

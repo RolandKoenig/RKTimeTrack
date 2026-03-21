@@ -5,6 +5,7 @@ public class TimeTrackingEntry(
     TimeTrackingHours effortInHours, 
     TimeTrackingHours effortBilled = default,
     TimeTrackingBillingMultiplier billingMultiplier = default,
+    bool billed = false,
     TimeTrackingEntryType type = default,
     string description = "")
 {
@@ -16,6 +17,8 @@ public class TimeTrackingEntry(
     
     public TimeTrackingBillingMultiplier BillingMultiplier { get; } = billingMultiplier;
 
+    public bool Billed { get; } = billed;
+    
     public TimeTrackingEntryType Type { get; } = type;
 
     public string Description { get; } = description;

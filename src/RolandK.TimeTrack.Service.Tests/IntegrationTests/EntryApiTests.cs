@@ -41,6 +41,7 @@ public class EntryApiTests
                         4f,
                         2f,
                         TimeTrackingBillingMultiplier.Default,
+                        true,
                         TimeTrackingEntryType.Default,
                         "#1023 My dummy description")
                 ]),
@@ -56,6 +57,7 @@ public class EntryApiTests
                         1f,
                         1f,
                         TimeTrackingBillingMultiplier.Default,
+                        true,
                         TimeTrackingEntryType.Default,
                         "#4210 My dummy description 2")
                 ]),
@@ -93,6 +95,7 @@ public class EntryApiTests
                         4f,
                         2f,
                         TimeTrackingBillingMultiplier.Default,
+                        true,
                         TimeTrackingEntryType.Default,
                         "#1023 My dummy description")
                 ]),
@@ -108,6 +111,7 @@ public class EntryApiTests
                         1f,
                         1f,
                         TimeTrackingBillingMultiplier.Default,
+                        true,
                         TimeTrackingEntryType.Default,
                         "#4210 My dummy description 2")
                 ]),
@@ -144,6 +148,7 @@ public class EntryApiTests
                         4f,
                         2f,
                         TimeTrackingBillingMultiplier.Default,
+                        true,
                         TimeTrackingEntryType.Default,
                         "#1023 My dummy description")
                 ]),
@@ -159,6 +164,7 @@ public class EntryApiTests
                         1f,
                         1f,
                         TimeTrackingBillingMultiplier.Default,
+                        true,
                         TimeTrackingEntryType.Default,
                         "#4210 My dummy description 2")
                 ]),
@@ -197,6 +203,7 @@ public class EntryApiTests
                         4f,
                         2f,
                         TimeTrackingBillingMultiplier.Default,
+                        true,
                         TimeTrackingEntryType.Default,
                         "#1023 My dummy description")
                 ]),
@@ -212,6 +219,7 @@ public class EntryApiTests
                         1f,
                         1f,
                         TimeTrackingBillingMultiplier.Default,
+                        true,
                         TimeTrackingEntryType.Default,
                         "#4210 My dummy description 2")
                 ]),
@@ -250,6 +258,7 @@ public class EntryApiTests
                         4f,
                         2f,
                         TimeTrackingBillingMultiplier.Default,
+                        true,
                         TimeTrackingEntryType.Default,
                         "#1023 My dummy description")
                 ]),
@@ -265,6 +274,7 @@ public class EntryApiTests
                         1f,
                         1f,
                         TimeTrackingBillingMultiplier.Default,
+                        true,
                         TimeTrackingEntryType.Default,
                         "#4210 My dummy description 2")
                 ]),

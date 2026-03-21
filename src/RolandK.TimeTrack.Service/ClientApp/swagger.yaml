@@ -276,6 +276,8 @@ components:
           type: number
         billingMultiplier:
           type: number
+        billed:
+          type: boolean
         type:
           $ref: '#/components/schemas/TimeTrackingEntryType'
         description:
