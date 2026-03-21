@@ -42,6 +42,7 @@ public class DayApiTests
                         4f,
                         2f,
                         1f,
+                        true,
                         TimeTrackingEntryType.Default,
                         "My dummy description")
                 ]),
@@ -61,6 +62,7 @@ public class DayApiTests
         Assert.Equal("Name6 (With Budget)", week.Tuesday.Entries[0].Topic.Name);
         Assert.Equal(4, week.Tuesday.Entries[0].EffortInHours.Hours);
         Assert.Equal(2, week.Tuesday.Entries[0].EffortBilled.Hours);
+        Assert.True(week.Tuesday.Entries[0].Billed);
         Assert.Equal(TimeTrackingEntryType.Default, week.Tuesday.Entries[0].Type);
         Assert.Equal("My dummy description", week.Tuesday.Entries[0].Description);
     }
@@ -278,6 +280,39 @@ public class DayApiTests
 
         Assert.NotNull(week!.Tuesday);
         Assert.Equal(entryType, week.Tuesday.Entries[0].Type);
+    }
+
+    [Theory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public async Task UpdateDay_Property_Billed(bool billed)
+    {
+        // Arrange
+        var httpClient = new HttpClient();
+        httpClient.BaseAddress = _server.RootUri;
+
+        // Act
+        await httpClient.PostAsJsonAsync(
+            "api/ui/day",
+            new UpdateDay_Request(
+                new DateOnly(2024, 12, 17),
+                TimeTrackingDayType.WorkingDay,
+                [
+                    new TimeTrackingEntry(
+                        new TimeTrackingTopicReference("Category1", "Name1"),
+                        0f,
+                        billed: billed)
+                ]),
+            TestContext.Current.CancellationToken);
+
+        // Assert
+        var week = await httpClient.GetFromJsonAsync<TimeTrackingWeek>(
+            "api/ui/week/2024/51",
+            TestContext.Current.CancellationToken);
+        Assert.NotNull(week);
+
+        Assert.NotNull(week!.Tuesday);
+        Assert.Equal(billed, week.Tuesday.Entries[0].Billed);
     }
     
     [Theory]

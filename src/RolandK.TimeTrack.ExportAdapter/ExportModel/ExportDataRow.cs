@@ -1,5 +1,3 @@
-using System.ComponentModel;
-
 namespace RolandK.TimeTrack.ExportAdapter.ExportModel;
 
 public record ExportDataRow(

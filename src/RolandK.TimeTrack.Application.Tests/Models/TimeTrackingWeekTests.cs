@@ -37,6 +37,7 @@ public class TimeTrackingWeekTests
                                   "effortInHours": 4,
                                   "effortBilled": 3,
                                   "billingMultiplier": 1,
+                                  "billed": false,
                                   "type": "Default",
                                   "description": "DummyDescription"
                                 }
@@ -78,6 +79,7 @@ public class TimeTrackingWeekTests
                     topic, 
                     effortInHours:random.Next(4,5), 
                     effortBilled:random.Next(3,4),
+                    billed: false,
                     billingMultiplier: TimeTrackingBillingMultiplier.Default,
                     description: "DummyDescription")
             });

@@ -635,6 +635,7 @@ export class TimeTrackingEntry implements ITimeTrackingEntry {
     effortInHours!: number;
     effortBilled!: number;
     billingMultiplier!: number;
+    billed!: boolean;
     type!: TimeTrackingEntryType;
     description!: string | undefined;
 
@@ -653,6 +654,7 @@ export class TimeTrackingEntry implements ITimeTrackingEntry {
             this.effortInHours = _data["effortInHours"];
             this.effortBilled = _data["effortBilled"];
             this.billingMultiplier = _data["billingMultiplier"];
+            this.billed = _data["billed"];
             this.type = _data["type"];
             this.description = _data["description"];
         }
@@ -671,6 +673,7 @@ export class TimeTrackingEntry implements ITimeTrackingEntry {
         data["effortInHours"] = this.effortInHours;
         data["effortBilled"] = this.effortBilled;
         data["billingMultiplier"] = this.billingMultiplier;
+        data["billed"] = this.billed;
         data["type"] = this.type;
         data["description"] = this.description;
         return data;
@@ -689,6 +692,7 @@ export interface ITimeTrackingEntry {
     effortInHours: number;
     effortBilled: number;
     billingMultiplier: number;
+    billed: boolean;
     type: TimeTrackingEntryType;
     description: string | undefined;
 }

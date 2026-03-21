@@ -19,6 +19,7 @@ public class TimeTrackingDataMapperTests
                 2.0,
                 1.0,
                 TimeTrackingBillingMultiplier.Default,
+                false,
                 TimeTrackingEntryType.Default,
                 "Some dummy work")]);
         
@@ -52,6 +53,7 @@ public class TimeTrackingDataMapperTests
                 2.0,
                 1.0,
                 1.5,
+                false,
                 TimeTrackingEntryType.Training,
                 "Some dummy work")]);
         

@@ -15,6 +15,8 @@ public readonly struct TimeTrackingBillingMultiplier(double multiplier)
     
     public double Multiplier { get; } = RoundHoursToQuarterHours(multiplier);
 
+    public override string ToString() => $"{Multiplier:N2}x";
+    
     private static double RoundHoursToQuarterHours(double hours)
     {
         return Math.Round(hours * 4) / 4;
