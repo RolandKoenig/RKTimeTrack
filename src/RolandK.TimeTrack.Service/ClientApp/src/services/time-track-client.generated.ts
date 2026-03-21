@@ -465,6 +465,8 @@ export interface IProblemDetails {
 
 export class SearchEntriesByText_Request implements ISearchEntriesByText_Request {
     searchText!: string | undefined;
+    billed!: boolean | undefined;
+    canBeInvoiced!: boolean | undefined;
     maxSearchResults!: number;
 
     constructor(data?: ISearchEntriesByText_Request) {
@@ -479,6 +481,8 @@ export class SearchEntriesByText_Request implements ISearchEntriesByText_Request
     init(_data?: any) {
         if (_data) {
             this.searchText = _data["searchText"];
+            this.billed = _data["billed"];
+            this.canBeInvoiced = _data["canBeInvoiced"];
             this.maxSearchResults = _data["maxSearchResults"];
         }
     }
@@ -493,6 +497,8 @@ export class SearchEntriesByText_Request implements ISearchEntriesByText_Request
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["searchText"] = this.searchText;
+        data["billed"] = this.billed;
+        data["canBeInvoiced"] = this.canBeInvoiced;
         data["maxSearchResults"] = this.maxSearchResults;
         return data;
     }
@@ -507,6 +513,8 @@ export class SearchEntriesByText_Request implements ISearchEntriesByText_Request
 
 export interface ISearchEntriesByText_Request {
     searchText: string | undefined;
+    billed: boolean | undefined;
+    canBeInvoiced: boolean | undefined;
     maxSearchResults: number;
 }
 
