@@ -16,6 +16,8 @@ export const useSearchOldEntriesStore = defineStore('searchOldEntriesStore', () 
         () => {
             const request = new SearchEntriesByText_Request({
                 searchText: searchString.value,
+                billed: undefined,
+                canBeInvoiced: undefined,
                 maxSearchResults: 10});
             timeTrackClient.searchEntries(request)
                 .then(result =>{

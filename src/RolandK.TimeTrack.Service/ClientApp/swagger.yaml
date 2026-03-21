@@ -224,6 +224,12 @@ components:
         searchText:
           type: string
           nullable: true
+        billed:
+          type: boolean
+          nullable: true
+        canBeInvoiced:
+          type: boolean
+          nullable: true
         maxSearchResults:
           type: integer
           format: int32
