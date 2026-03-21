@@ -274,6 +274,8 @@ components:
           type: number
         effortBilled:
           type: number
+        billingMultiplier:
+          type: number
         type:
           $ref: '#/components/schemas/TimeTrackingEntryType'
         description:

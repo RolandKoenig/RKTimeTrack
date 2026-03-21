@@ -3,6 +3,7 @@ using Xunit;
 
 namespace RolandK.RemoteFileStorage.Tests.Util;
 
+[Trait("Category", "NoDependencies")]
 public class ReusableMemoryStreamTests
 {
     [Fact]

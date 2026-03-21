@@ -299,6 +299,7 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
             "",
             0,
             0,
+            1,
             TimeTrackingEntryType.Default,
             "",
         );
@@ -326,6 +327,7 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
             selectedEntry.value.topicName,
             selectedEntry.value.effortInHours,
             selectedEntry.value.effortBilled,
+            selectedEntry.value.billingMultiplier,
             selectedEntry.value.type,
             selectedEntry.value.description,
         );

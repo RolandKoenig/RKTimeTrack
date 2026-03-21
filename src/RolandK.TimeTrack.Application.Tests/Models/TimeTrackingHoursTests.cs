@@ -2,6 +2,7 @@
 
 namespace RolandK.TimeTrack.Application.Tests.Models;
 
+[Trait("Category", "NoDependencies")]
 public class TimeTrackingHoursTests
 {
     [Theory]

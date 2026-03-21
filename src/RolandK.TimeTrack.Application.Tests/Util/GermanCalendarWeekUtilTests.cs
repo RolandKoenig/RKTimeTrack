@@ -2,6 +2,7 @@
 
 namespace RolandK.TimeTrack.Application.Tests.Util;
 
+[Trait("Category", "NoDependencies")]
 public class GermanCalendarWeekUtilTests
 {
     [Theory]

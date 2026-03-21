@@ -11,6 +11,7 @@ public static class SwaggerGenConfiguration
         // Map types
         options.MapType<TimeTrackingHours>(() => new OpenApiSchema(){ Type = JsonSchemaType.Number });
         options.MapType<TimeTrackingBudget>(() => new OpenApiSchema(){ Type = JsonSchemaType.Number });
+        options.MapType<TimeTrackingBillingMultiplier>(() => new OpenApiSchema(){ Type = JsonSchemaType.Number });
         options.MapType<DateOnly>(() => new OpenApiSchema()
         {
             Type = JsonSchemaType.String,

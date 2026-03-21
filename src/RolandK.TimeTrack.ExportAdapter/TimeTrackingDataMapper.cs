@@ -26,6 +26,7 @@ internal static class TimeTrackingDataMapper
                     "",
                     0,
                     0,
+                    1,
                     "-"));
                 continue;
             }
@@ -40,6 +41,7 @@ internal static class TimeTrackingDataMapper
                     MapEntryType(actEntry.Type),
                     actEntry.EffortInHours.Hours,
                     actEntry.EffortBilled.Hours,
+                    actEntry.BillingMultiplier.Multiplier,
                     actEntry.Description));
             }
         }

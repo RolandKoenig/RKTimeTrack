@@ -7,6 +7,7 @@ using Xunit;
 namespace RolandK.TimeTrack.Service.Tests.IntegrationTests;
 
 [Collection(nameof(TestEnvironmentCollection))]
+[Trait("Category", "NoDependencies")]
 public class DayApiTests
 {
     private readonly WebHostServerFixture _server;
@@ -40,6 +41,7 @@ public class DayApiTests
                         new TimeTrackingTopicReference("Category1", "Name6 (With Budget)"),
                         4f,
                         2f,
+                        1f,
                         TimeTrackingEntryType.Default,
                         "My dummy description")
                 ]),
@@ -169,6 +171,43 @@ public class DayApiTests
 
         Assert.NotNull(week!.Tuesday);
         Assert.Equal(effortInHours, week.Tuesday.Entries[0].EffortInHours.Hours);
+    }
+    
+    [Theory]
+    [InlineData(0.0)]
+    [InlineData(0.25)]
+    [InlineData(0.5)]
+    [InlineData(0.75)]
+    [InlineData(2.0)]
+    public async Task UpdateDay_Property_BillingModifier(double billingModifier)
+    {
+        // Arrange
+        var httpClient = new HttpClient();
+        httpClient.BaseAddress = _server.RootUri;
+        
+        // Act
+        await httpClient.PostAsJsonAsync(
+            "api/ui/day",
+            new UpdateDay_Request(
+                new DateOnly(2024, 12, 17),
+                TimeTrackingDayType.WorkingDay,
+                [
+                    new TimeTrackingEntry(
+                        new TimeTrackingTopicReference("Category1", "Name1"),
+                        1.0,
+                        effortBilled: 1.0,
+                        billingMultiplier: billingModifier)
+                ]),
+            TestContext.Current.CancellationToken);
+        
+        // Assert
+        var week = await httpClient.GetFromJsonAsync<TimeTrackingWeek>(
+            "api/ui/week/2024/51",
+            TestContext.Current.CancellationToken);
+        Assert.NotNull(week);
+
+        Assert.NotNull(week!.Tuesday);
+        Assert.Equal(billingModifier, week.Tuesday.Entries[0].BillingMultiplier.Multiplier);
     }
     
     [Theory]

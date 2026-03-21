@@ -4,6 +4,7 @@ using RolandK.TimeTrack.Application.Models;
 
 namespace RolandK.TimeTrack.Application.Tests.Models;
 
+[Trait("Category", "NoDependencies")]
 public class TimeTrackingWeekTests
 {
 
@@ -35,6 +36,7 @@ public class TimeTrackingWeekTests
                                   },
                                   "effortInHours": 4,
                                   "effortBilled": 3,
+                                  "billingMultiplier": 1,
                                   "type": "Default",
                                   "description": "DummyDescription"
                                 }
@@ -75,7 +77,8 @@ public class TimeTrackingWeekTests
                 new TimeTrackingEntry(
                     topic, 
                     effortInHours:random.Next(4,5), 
-                    effortBilled:random.Next(3,4), 
+                    effortBilled:random.Next(3,4),
+                    billingMultiplier: TimeTrackingBillingMultiplier.Default,
                     description: "DummyDescription")
             });
 

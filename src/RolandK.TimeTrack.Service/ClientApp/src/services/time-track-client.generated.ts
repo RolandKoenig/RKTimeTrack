@@ -634,6 +634,7 @@ export class TimeTrackingEntry implements ITimeTrackingEntry {
     topic!: TimeTrackingTopicReference;
     effortInHours!: number;
     effortBilled!: number;
+    billingMultiplier!: number;
     type!: TimeTrackingEntryType;
     description!: string | undefined;
 
@@ -651,6 +652,7 @@ export class TimeTrackingEntry implements ITimeTrackingEntry {
             this.topic = _data["topic"] ? TimeTrackingTopicReference.fromJS(_data["topic"]) : undefined as any;
             this.effortInHours = _data["effortInHours"];
             this.effortBilled = _data["effortBilled"];
+            this.billingMultiplier = _data["billingMultiplier"];
             this.type = _data["type"];
             this.description = _data["description"];
         }
@@ -668,6 +670,7 @@ export class TimeTrackingEntry implements ITimeTrackingEntry {
         data["topic"] = this.topic ? this.topic.toJSON() : undefined as any;
         data["effortInHours"] = this.effortInHours;
         data["effortBilled"] = this.effortBilled;
+        data["billingMultiplier"] = this.billingMultiplier;
         data["type"] = this.type;
         data["description"] = this.description;
         return data;
@@ -685,6 +688,7 @@ export interface ITimeTrackingEntry {
     topic: TimeTrackingTopicReference;
     effortInHours: number;
     effortBilled: number;
+    billingMultiplier: number;
     type: TimeTrackingEntryType;
     description: string | undefined;
 }

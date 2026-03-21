@@ -10,6 +10,7 @@ using Xunit;
 namespace RolandK.TimeTrack.Service.Tests.UiTests;
 
 [Collection(nameof(TestEnvironmentCollection))]
+[Trait("Category", "NoDependencies")]
 public class DayEntryEditView_FullEditTests
 {
     private readonly WebHostServerFixture _server;
@@ -70,6 +71,120 @@ public class DayEntryEditView_FullEditTests
                 Assert.Equal("TestCategory1", dayToCheck.Entries[0].Topic.Category);
                 Assert.Equal("Topic1", dayToCheck.Entries[0].Topic.Name);
                 Assert.Equal(0.25, dayToCheck.Entries[0].EffortInHours.Hours);
+                Assert.Equal("Test-Description", dayToCheck.Entries[0].Description);
+            }, 
+            times: 200,
+            delay: TimeSpan.FromMilliseconds(10));
+    }
+    
+    [Fact]
+    public async Task FullEdit_Invoiced_Entry_With_Billing_Modifier()
+    {
+        // ##### Arrange
+        _server.TopicRepositoryMock.GetAllTopicsAsync(Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult<IReadOnlyList<TimeTrackingTopic>>([
+                new TimeTrackingTopic("TestCategory1", "Topic1", canBeInvoiced: true)
+            ]));
+        
+        // ###### Act
+        await using var playwright = await _server.StartPlaywrightSessionOnRootPageAsync();
+        var page = playwright.Page;
+        
+        await page.GetByText("New Entry").ClickAsync();
+        
+        // Topic category
+        await page.Locator("#selected-entry-topic-category").GetByRole(AriaRole.Combobox).ClickAsync();
+        await page.GetByLabel("TestCategory1").ClickAsync();
+        
+        // Topic name
+        await page.Locator("#selected-entry-topic-name").GetByRole(AriaRole.Combobox).ClickAsync();
+        await page.GetByLabel("Topic1").ClickAsync();
+
+        // Effort (SpinButton)
+        await page.Locator("#current-row-effort button").First.ClickAsync();
+        await page.Locator("#current-row-effort button").First.ClickAsync();
+        
+        // Billed (SpinButton)
+        await page.Locator("#current-row-billed button").First.ClickAsync();
+        await page.Locator("#current-row-billed button").First.ClickAsync();
+        
+        // Billing modifier (SpinButton)
+        await page.Locator("#current-row-billing-multiplier button").Nth(1).ClickAsync();
+        
+        // Description
+        await page.GetByLabel("Description").FillAsync("Test-Description");
+        
+        // ##### Assert
+        await TestUtil.TryXTimesAsync(
+            async () =>
+            {
+                var storedWeekData = await GetCurrentWeekFromRepositoryAsync(
+                    _server.MockedStartTimestamp, CancellationToken.None);
+                var dayToCheck = storedWeekData
+                    .GetAllDays()
+                    .First(x => x.Date == DateOnly.FromDateTime(_server.MockedStartTimestamp.DateTime));
+            
+                Assert.Single(dayToCheck.Entries);
+                Assert.Equal("TestCategory1", dayToCheck.Entries[0].Topic.Category);
+                Assert.Equal("Topic1", dayToCheck.Entries[0].Topic.Name);
+                Assert.Equal(0.5, dayToCheck.Entries[0].EffortInHours.Hours);
+                Assert.Equal(0.5, dayToCheck.Entries[0].EffortBilled.Hours);
+                Assert.Equal(0.75, dayToCheck.Entries[0].BillingMultiplier.Multiplier);
+                Assert.Equal("Test-Description", dayToCheck.Entries[0].Description);
+            }, 
+            times: 200,
+            delay: TimeSpan.FromMilliseconds(10));
+    }
+    
+    [Fact]
+    public async Task FullEdit_Invoiced_Entry_Copy_Effort_To_Billed()
+    {
+        // ##### Arrange
+        _server.TopicRepositoryMock.GetAllTopicsAsync(Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult<IReadOnlyList<TimeTrackingTopic>>([
+                new TimeTrackingTopic("TestCategory1", "Topic1", canBeInvoiced: true)
+            ]));
+        
+        // ###### Act
+        await using var playwright = await _server.StartPlaywrightSessionOnRootPageAsync();
+        var page = playwright.Page;
+        
+        await page.GetByText("New Entry").ClickAsync();
+        
+        // Topic category
+        await page.Locator("#selected-entry-topic-category").GetByRole(AriaRole.Combobox).ClickAsync();
+        await page.GetByLabel("TestCategory1").ClickAsync();
+        
+        // Topic name
+        await page.Locator("#selected-entry-topic-name").GetByRole(AriaRole.Combobox).ClickAsync();
+        await page.GetByLabel("Topic1").ClickAsync();
+
+        // Effort (SpinButton)
+        await page.Locator("#current-row-effort button").First.ClickAsync();
+        await page.Locator("#current-row-effort button").First.ClickAsync();
+        
+        // Copy effort to billed
+        await page.Locator("#current-row-copy-effort-to-billed").First.ClickAsync();
+        
+        // Description
+        await page.GetByLabel("Description").FillAsync("Test-Description");
+        
+        // ##### Assert
+        await TestUtil.TryXTimesAsync(
+            async () =>
+            {
+                var storedWeekData = await GetCurrentWeekFromRepositoryAsync(
+                    _server.MockedStartTimestamp, CancellationToken.None);
+                var dayToCheck = storedWeekData
+                    .GetAllDays()
+                    .First(x => x.Date == DateOnly.FromDateTime(_server.MockedStartTimestamp.DateTime));
+            
+                Assert.Single(dayToCheck.Entries);
+                Assert.Equal("TestCategory1", dayToCheck.Entries[0].Topic.Category);
+                Assert.Equal("Topic1", dayToCheck.Entries[0].Topic.Name);
+                Assert.Equal(0.5, dayToCheck.Entries[0].EffortInHours.Hours);
+                Assert.Equal(0.5, dayToCheck.Entries[0].EffortBilled.Hours);
+                Assert.Equal(1, dayToCheck.Entries[0].BillingMultiplier.Multiplier);
                 Assert.Equal("Test-Description", dayToCheck.Entries[0].Description);
             }, 
             times: 200,

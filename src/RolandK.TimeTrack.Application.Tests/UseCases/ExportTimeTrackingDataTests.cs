@@ -7,6 +7,7 @@ using RolandK.TimeTrack.Application.UseCases;
 
 namespace RolandK.TimeTrack.Application.Tests.UseCases;
 
+[Trait("Category", "NoDependencies")]
 public class ExportTimeTrackingDataTests
 {
     [Fact]

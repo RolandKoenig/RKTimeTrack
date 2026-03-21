@@ -4,6 +4,7 @@ using RolandK.TimeTrack.FileBasedTimeTrackingRepositoryAdapter.Data;
 
 namespace RolandK.TimeTrack.FileBasedTimeTrackingRepositoryAdapter.Tests.Data;
 
+[Trait("Category", "NoDependencies")]
 public class TimeTrackingStoreTests
 {
     [Fact]
