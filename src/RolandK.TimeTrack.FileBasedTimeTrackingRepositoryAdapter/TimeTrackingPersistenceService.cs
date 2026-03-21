@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using RolandK.RemoteFileStorage;
 using RolandK.TimeTrack.FileBasedTimeTrackingRepositoryAdapter.Data;
+using RolandK.TimeTrack.FileBasedTimeTrackingRepositoryAdapter.Migrations;
 
 namespace RolandK.TimeTrack.FileBasedTimeTrackingRepositoryAdapter;
 
@@ -37,8 +38,18 @@ class TimeTrackingPersistenceService(
                     filePath, cancellationToken);
                 _logger.LogInformation($"Downloaded previous time tracking data from [{persistenceFileStore.ShortDescription}]");
                 
+                // Load previous data
                 var restoredDocument = await TimeTrackingDocument.LoadFromStreamAsync(inStream, cancellationToken);
-                repository.RestoreFromDocument(restoredDocument);
+                
+                // Migrate data
+                var migratedDocument = TimeTrackingDocumentMigrator.Migrate(restoredDocument);
+                if (migratedDocument.Version != restoredDocument.Version)
+                {
+                    _logger.LogInformation($"Time tracking data migrated from version '{restoredDocument.Version}' to '{migratedDocument.Version}'");
+                }
+                
+                // Load data into the repository
+                repository.RestoreFromDocument(migratedDocument);
                 _logger.LogInformation($"Processed previous time tracking data from [{persistenceFileStore.ShortDescription}]");
             }
         }

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Immutable;
-using System.Reflection;
 using RolandK.TimeTrack.Application.Models;
 using RolandK.TimeTrack.Application.Util;
+using RolandK.TimeTrack.FileBasedTimeTrackingRepositoryAdapter.Migrations;
 
 namespace RolandK.TimeTrack.FileBasedTimeTrackingRepositoryAdapter.Data;
 
@@ -31,7 +31,7 @@ class TimeTrackingStore
     public TimeTrackingDocument StoreToDocument()
     {
         return new TimeTrackingDocument(
-            Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? string.Empty,
+            TimeTrackingDocumentMigrator.CURRENT_VERSION.ToString(),
             this.Store);
     }
     
