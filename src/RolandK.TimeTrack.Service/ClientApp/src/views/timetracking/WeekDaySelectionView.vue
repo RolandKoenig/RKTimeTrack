@@ -11,6 +11,7 @@
   <div v-if="timeTrackingStore.currentWeek"
        class="navigation-container">
     <Button text
+            id="go_one_week_back"
             @click="timeTrackingStore.fetchWeekBeforeThisWeek">
       <IconMoveLeft />
     </Button>
@@ -38,6 +39,7 @@
                            @click="timeTrackingStore.selectSunday" />
 
     <Button text
+            id="go_one_week_forward"
             @click="timeTrackingStore.fetchWeekAfterThisWeek">
       <IconMoveRight />
     </Button>

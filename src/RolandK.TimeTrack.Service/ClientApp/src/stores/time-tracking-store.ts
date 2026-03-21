@@ -40,8 +40,11 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
     ])
     
     const availableTopicCategories = computed(() =>{
-        const now = new Date();
-        return topicStore.getTopicsVisibleAt(now)
+        if(!selectedDay.value){ return []; }
+
+        var selectedDayDate = new Date(selectedDay.value.date);
+        
+        return topicStore.getTopicsVisibleAt(selectedDayDate)
            .map(x => x.category)
            .filter(onlyUnique);
     });
@@ -49,10 +52,12 @@ export const useTimeTrackingStore = defineStore('timeTrackingStore', () =>{
     const availableTopicNames = computed(() =>{
         if(!selectedEntry.value){ return []; }
         if(!selectedEntry.value.topicCategory){ return []; }
+        if(!selectedDay.value){ return []; }
+        
+        var selectedDayDate = new Date(selectedDay.value.date);
         
         const filterCategory = selectedEntry.value.topicCategory;
-        const now = new Date();
-        return topicStore.getTopicsVisibleAt(now)
+        return topicStore.getTopicsVisibleAt(selectedDayDate)
             .filter(x => x.category === filterCategory)
             .map(x => x.name)
             .filter(onlyUnique);

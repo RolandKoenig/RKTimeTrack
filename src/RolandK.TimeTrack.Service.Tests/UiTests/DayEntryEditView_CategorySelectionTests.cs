@@ -131,6 +131,57 @@ public class DayEntryEditView_CategorySelectionTests
         Assert.Equal("TestCategory1", possibleOptions[0]);
     }
 
+    [Fact] 
+    public async Task PossibleTopicCategories_category_not_filtered_last_week_because_current_day_is_before()
+    {
+        // Arrange
+        _server.TopicRepositoryMock.GetAllTopicsAsync(Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult<IReadOnlyList<TimeTrackingTopic>>([
+                new TimeTrackingTopic("TestCategory1", "Topic1"),
+                new TimeTrackingTopic(
+                    "TestCategory2", "Topic2", 
+                    endDate: DateOnly.FromDateTime(_server.MockedStartTimestamp.DateTime).AddDays(-1))
+            ]));
+        
+        // Act
+        await using var playwrightSession = await _server.StartPlaywrightSessionOnRootPageAsync();
+        var page = playwrightSession.Page;
+        
+        await page.Locator("#go_one_week_back").ClickAsync();
+        
+        var possibleOptions = await GetShownTopicCategoriesAsync(page);
+        
+        // Assert
+        Assert.Equal(2, possibleOptions.Count);
+        Assert.Equal("TestCategory1", possibleOptions[0]);
+        Assert.Equal("TestCategory2", possibleOptions[1]);
+    }
+
+    [Fact] 
+    public async Task PossibleTopicCategories_category_filtered_last_week_because_of_start_date()
+    {
+        // Arrange
+        _server.TopicRepositoryMock.GetAllTopicsAsync(Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult<IReadOnlyList<TimeTrackingTopic>>([
+                new TimeTrackingTopic("TestCategory1", "Topic1"),
+                new TimeTrackingTopic(
+                    "TestCategory2", "Topic2", 
+                    startDate: DateOnly.FromDateTime(_server.MockedStartTimestamp.DateTime).AddDays(-1))
+            ]));
+        
+        // Act
+        await using var playwrightSession = await _server.StartPlaywrightSessionOnRootPageAsync();
+        var page = playwrightSession.Page;
+        
+        await page.Locator("#go_one_week_back").ClickAsync();
+        
+        var possibleOptions = await GetShownTopicCategoriesAsync(page);
+        
+        // Assert
+        Assert.Single(possibleOptions);
+        Assert.Equal("TestCategory1", possibleOptions[0]);
+    }
+    
     [Fact]
     public async Task PossibleTopicCategories_with_filtered_category_because_of_StartDate()
     {
