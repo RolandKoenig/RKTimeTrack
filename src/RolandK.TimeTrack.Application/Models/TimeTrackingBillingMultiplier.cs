@@ -17,8 +17,6 @@ public readonly struct TimeTrackingBillingMultiplier(double multiplier)
 
     private static double RoundHoursToQuarterHours(double hours)
     {
-        hours.MustBeGreaterThanOrEqualTo(0);
-        
         return Math.Round(hours * 4) / 4;
     }
     

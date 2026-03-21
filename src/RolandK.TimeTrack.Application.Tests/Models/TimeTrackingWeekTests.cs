@@ -76,7 +76,8 @@ public class TimeTrackingWeekTests
                 new TimeTrackingEntry(
                     topic, 
                     effortInHours:random.Next(4,5), 
-                    effortBilled:random.Next(3,4), 
+                    effortBilled:random.Next(3,4),
+                    billingMultiplier: TimeTrackingBillingMultiplier.Default,
                     description: "DummyDescription")
             });
 
