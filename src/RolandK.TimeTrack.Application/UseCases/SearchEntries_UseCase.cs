@@ -7,13 +7,13 @@ using HandlerResult = OneOf.OneOf<
     IReadOnlyList<TimeTrackingEntry>,
     CommonErrors.ValidationError>;
 
-public class SearchEntriesByText_UseCase(
+public class SearchEntries_UseCase(
     ITimeTrackingRepository timeTrackingRepository,
     ITopicRepository topicRepository)
 {
-    public async Task<HandlerResult> SearchEntriesByTextAsync(SearchEntriesByText_Request request, CancellationToken cancellationToken)
+    public async Task<HandlerResult> SearchEntriesAsync(SearchEntries_Request request, CancellationToken cancellationToken)
     {
-        var validator = new SearchEntriesByText_Request.Validator();
+        var validator = new SearchEntries_Request.Validator();
         var validationResult = await validator.ValidateAsync(request, cancellationToken);
         if (!validationResult.IsValid) { return new CommonErrors.ValidationError(validationResult.Errors); }
 

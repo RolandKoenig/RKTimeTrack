@@ -42,7 +42,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SearchEntriesByText_Request'
+              $ref: '#/components/schemas/SearchEntries_Request'
         required: true
       responses:
         '200':
@@ -218,7 +218,7 @@ components:
           type: string
           nullable: true
       additionalProperties: { }
-    SearchEntriesByText_Request:
+    SearchEntries_Request:
       type: object
       properties:
         searchText:

@@ -6,23 +6,23 @@ using RolandK.TimeTrack.Application.UseCases;
 namespace RolandK.TimeTrack.Application.Tests.UseCases;
 
 [Trait("Category", "NoDependencies")]
-public class SearchEntriesByText_UseCaseTests
+public class SearchEntriesUseCaseTests
 {
     private readonly ITimeTrackingRepository _timeTrackingRepository = Substitute.For<ITimeTrackingRepository>();
     private readonly ITopicRepository _topicRepository = Substitute.For<ITopicRepository>();
-    private readonly SearchEntriesByText_UseCase _useCase;
+    private readonly SearchEntries_UseCase _useCase;
 
-    public SearchEntriesByText_UseCaseTests()
+    public SearchEntriesUseCaseTests()
     {
-        _useCase = new SearchEntriesByText_UseCase(_timeTrackingRepository, _topicRepository);
+        _useCase = new SearchEntries_UseCase(_timeTrackingRepository, _topicRepository);
     }
 
     [Fact]
     public async Task Search_with_no_filters_returns_empty()
     {
         // Act
-        var result = await _useCase.SearchEntriesByTextAsync(
-            new SearchEntriesByText_Request(""),
+        var result = await _useCase.SearchEntriesAsync(
+            new SearchEntries_Request(""),
             CancellationToken.None);
 
         // Assert
@@ -65,8 +65,8 @@ public class SearchEntriesByText_UseCaseTests
             .Returns(new List<TimeTrackingDay> { day });
 
         // Act
-        var result = await _useCase.SearchEntriesByTextAsync(
-            new SearchEntriesByText_Request("", Billed: false, CanBeInvoiced: true),
+        var result = await _useCase.SearchEntriesAsync(
+            new SearchEntries_Request("", Billed: false, CanBeInvoiced: true),
             CancellationToken.None);
 
         // Assert
@@ -96,8 +96,8 @@ public class SearchEntriesByText_UseCaseTests
             .Returns(new List<TimeTrackingDay> { day });
 
         // Act
-        var result = await _useCase.SearchEntriesByTextAsync(
-            new SearchEntriesByText_Request("Match"),
+        var result = await _useCase.SearchEntriesAsync(
+            new SearchEntries_Request("Match"),
             CancellationToken.None);
 
         // Assert
