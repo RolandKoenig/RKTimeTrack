@@ -5,12 +5,12 @@ This document provides essential information for developers working on the RKTim
 ## Build and Configuration
 
 ### Prerequisites
-- **.NET 10 SDK**
+- **.NET SDK**
 - **Node.js** (v20 or newer recommended)
 - **npm** (v10 or newer recommended)
 
 ### Backend (.NET)
-The backend is a .NET 10 solution. 
+The backend is a .NET solution. 
 - To restore dependencies: `dotnet restore`
 - To build the solution: `dotnet build`
 - To run the service: `dotnet run --project src\RolandK.TimeTrack.Service\RolandK.TimeTrack.Service.csproj`
@@ -49,11 +49,15 @@ All frontend tests are located in `src/RolandK.TimeTrack.Service.Tests/UiTests`.
 
 ## Development Information
 
+### Client generation
+- **Frontend**: The client is generated using [NSwag](https://github.com/RicoSuter/NSwag).
+
 ### Code Style
 - **C#**: The project uses C# 14. `Directory.Build.props` enforces `TreatWarningsAsErrors`. Implicit usings and nullable reference types are enabled.
 - **Frontend**: ESLint and Prettier are used for linting and formatting. Run `npm run lint` or `npm run format` in the `ClientApp` directory.
 
 ### Project Structure
-- `src/`: Contains all source code and tests.
-- `testdata/`: Contains data used for integration and manual testing.
 - `docs/`: Contains project documentation and decision records.
+- `src/`: Contains all source code and tests.
+- `scripts/`: Contains scripts for various tasks like building, testing, and deployment.
+- `testdata/`: Contains data used for integration and manual testing.
