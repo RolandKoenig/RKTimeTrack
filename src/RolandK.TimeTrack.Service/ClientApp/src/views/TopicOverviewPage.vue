@@ -6,7 +6,7 @@
 
 <template>
   <div class="container">
-    <div class="row pt-5 text-center">
+    <div class="row pt-5 mb-3">
       <h2>Topics</h2>
     </div>
     <div class="row">
