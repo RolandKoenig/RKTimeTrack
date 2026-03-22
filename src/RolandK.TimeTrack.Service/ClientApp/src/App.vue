@@ -10,6 +10,10 @@
       label: 'Topics',
       icon: 'pi pi-home',
       route: '/topics'
+    },{
+      label: 'Not Billed',
+      icon: 'pi pi-home',
+      route: '/not-billed'
     }]);
 </script>
 
