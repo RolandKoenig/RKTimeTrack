@@ -15,7 +15,7 @@ public static class ServiceCollectionExtensions
             .AddScoped<GetApplicationState_UseCase>()
             .AddScoped<GetWeek_UseCases>()
             .AddScoped<GetYearMetadata_UseCase>()
-            .AddScoped<SearchEntriesByText_UseCase>()
+            .AddScoped<SearchEntries_UseCase>()
             .AddScoped<UpdateDay_UseCase>();
         
         // State

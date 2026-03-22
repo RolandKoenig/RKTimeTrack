@@ -75,7 +75,7 @@ export class TimeTrackClient {
     /**
      * @return OK
      */
-    searchEntries(body: SearchEntriesByText_Request): Promise<TimeTrackingEntry[]> {
+    searchEntries(body: SearchEntries_Request): Promise<TimeTrackingEntry[]> {
         let url_ = this.baseUrl + "/api/ui/entries";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -463,13 +463,13 @@ export interface IProblemDetails {
     [key: string]: any;
 }
 
-export class SearchEntriesByText_Request implements ISearchEntriesByText_Request {
+export class SearchEntries_Request implements ISearchEntries_Request {
     searchText!: string | undefined;
     billed!: boolean | undefined;
     canBeInvoiced!: boolean | undefined;
     maxSearchResults!: number;
 
-    constructor(data?: ISearchEntriesByText_Request) {
+    constructor(data?: ISearchEntries_Request) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -487,9 +487,9 @@ export class SearchEntriesByText_Request implements ISearchEntriesByText_Request
         }
     }
 
-    static fromJS(data: any): SearchEntriesByText_Request {
+    static fromJS(data: any): SearchEntries_Request {
         data = typeof data === 'object' ? data : {};
-        let result = new SearchEntriesByText_Request();
+        let result = new SearchEntries_Request();
         result.init(data);
         return result;
     }
@@ -503,15 +503,15 @@ export class SearchEntriesByText_Request implements ISearchEntriesByText_Request
         return data;
     }
 
-    clone(): SearchEntriesByText_Request {
+    clone(): SearchEntries_Request {
         const json = this.toJSON();
-        let result = new SearchEntriesByText_Request();
+        let result = new SearchEntries_Request();
         result.init(json);
         return result;
     }
 }
 
-export interface ISearchEntriesByText_Request {
+export interface ISearchEntries_Request {
     searchText: string | undefined;
     billed: boolean | undefined;
     canBeInvoiced: boolean | undefined;

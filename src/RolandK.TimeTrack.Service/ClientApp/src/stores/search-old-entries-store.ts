@@ -1,6 +1,6 @@
 import {defineStore} from "pinia";
-import {inject, ref, watch} from "vue";
-import {SearchEntriesByText_Request, TimeTrackClient} from "@/services/time-track-client.generated";
+import {inject, ref} from "vue";
+import {SearchEntries_Request, TimeTrackClient} from "@/services/time-track-client.generated";
 import {UiTimeTrackingEntry} from "@/stores/models/ui-time-tracking-entry";
 import {watchThrottled} from '@vueuse/core'
 
@@ -14,7 +14,7 @@ export const useSearchOldEntriesStore = defineStore('searchOldEntriesStore', () 
     watchThrottled(
         searchString,
         () => {
-            const request = new SearchEntriesByText_Request({
+            const request = new SearchEntries_Request({
                 searchText: searchString.value,
                 billed: undefined,
                 canBeInvoiced: undefined,

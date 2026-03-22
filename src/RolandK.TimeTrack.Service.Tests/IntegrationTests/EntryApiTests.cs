@@ -67,7 +67,7 @@ public class EntryApiTests
         // Act
         var responseMessage = await httpClient.PostAsJsonAsync(
             "api/ui/entries",
-            new SearchEntriesByText_Request("", Billed: true),
+            new SearchEntries_Request("", Billed: true),
             TestContext.Current.CancellationToken);
         var response = await responseMessage.Content.ReadFromJsonAsync<IReadOnlyList<TimeTrackingEntry>>(
             TestContext.Current.CancellationToken);
@@ -126,7 +126,7 @@ public class EntryApiTests
         // Act
         var responseMessage = await httpClient.PostAsJsonAsync(
             "api/ui/entries",
-            new SearchEntriesByText_Request("", Billed: false, CanBeInvoiced: true),
+            new SearchEntries_Request("", Billed: false, CanBeInvoiced: true),
             TestContext.Current.CancellationToken);
         var response = await responseMessage.Content.ReadFromJsonAsync<IReadOnlyList<TimeTrackingEntry>>(
             TestContext.Current.CancellationToken);
@@ -180,7 +180,7 @@ public class EntryApiTests
         // Act
         var responseMessage = await httpClient.PostAsJsonAsync(
             "api/ui/entries",
-            new SearchEntriesByText_Request("#4210"),
+            new SearchEntries_Request("#4210"),
             TestContext.Current.CancellationToken);
         var response = await responseMessage.Content.ReadFromJsonAsync<IReadOnlyList<TimeTrackingEntry>>(
             TestContext.Current.CancellationToken);
@@ -234,7 +234,7 @@ public class EntryApiTests
         // Act
         var responseMessage = await httpClient.PostAsJsonAsync(
             "api/ui/entries",
-            new SearchEntriesByText_Request("#9999"),
+            new SearchEntries_Request("#9999"),
             TestContext.Current.CancellationToken);
         var response = await responseMessage.Content.ReadFromJsonAsync<IReadOnlyList<TimeTrackingEntry>>(
             TestContext.Current.CancellationToken);
@@ -287,7 +287,7 @@ public class EntryApiTests
         // Act
         var responseMessage = await httpClient.PostAsJsonAsync(
             "api/ui/entries",
-            new SearchEntriesByText_Request("dummy"),
+            new SearchEntries_Request("dummy"),
             TestContext.Current.CancellationToken);
         var response = await responseMessage.Content.ReadFromJsonAsync<IReadOnlyList<TimeTrackingEntry>>(
             TestContext.Current.CancellationToken);
@@ -342,7 +342,7 @@ public class EntryApiTests
         // Act
         var responseMessage = await httpClient.PostAsJsonAsync(
             "api/ui/entries",
-            new SearchEntriesByText_Request("DUMMY"),
+            new SearchEntries_Request("DUMMY"),
             TestContext.Current.CancellationToken);
         var response = await responseMessage.Content.ReadFromJsonAsync<IReadOnlyList<TimeTrackingEntry>>(
             TestContext.Current.CancellationToken);
@@ -397,7 +397,7 @@ public class EntryApiTests
         // Act
         var responseMessage = await httpClient.PostAsJsonAsync(
             "api/ui/entries",
-            new SearchEntriesByText_Request("dummy", MaxSearchResults: 1),
+            new SearchEntries_Request("dummy", MaxSearchResults: 1),
             TestContext.Current.CancellationToken);
         var response = await responseMessage.Content.ReadFromJsonAsync<IReadOnlyList<TimeTrackingEntry>>(
             TestContext.Current.CancellationToken);

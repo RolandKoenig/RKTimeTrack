@@ -1,17 +1,12 @@
 ﻿<script setup lang="ts">
-import {useBillableEntriesStore} from "@/stores/billable-entries-store";
-import {onMounted} from "vue";
-import IconRefresh from "@/components/icons/IconRefresh.vue";
+  import {useNotBilledEntriesStore} from "@/stores/not-billed-entries-store.ts";
+  import {onMounted} from "vue";
 
-const billableStore = useBillableEntriesStore();
-
-onMounted(() => {
-  billableStore.fetchBillableEntries();
-});
-
-const handleRefresh = () => {
-  billableStore.fetchBillableEntries();
-};
+  const notBilledEntriesStore = useNotBilledEntriesStore();
+  
+  onMounted(() => {
+    notBilledEntriesStore.fetchBillableEntries();
+  });
 </script>
 
 <template>
@@ -20,20 +15,12 @@ const handleRefresh = () => {
       <div class="col">
         <h2>Not Billed</h2>
       </div>
-      <div class="col-auto">
-        <Button class="me-2"
-                @click="handleRefresh"
-                :loading="billableStore.isLoading"
-                :disabled="billableStore.isLoading">
-          <IconRefresh size="small" /> Refresh
-        </Button>
-      </div>
     </div>
 
     <div class="row">
-      <DataTable :value="billableStore.billableEntries"
+      <DataTable :value="notBilledEntriesStore.notBilledEntries"
                  :size="'small'"
-                 :loading="billableStore.isLoading"
+                 :loading="notBilledEntriesStore.isLoading"
                  selectionMode="single">
         <Column field="topicCategory"
                 header="Category"
