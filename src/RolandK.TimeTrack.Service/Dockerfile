@@ -1,6 +1,6 @@
 #####################################
 # Build image
-FROM mcr.microsoft.com/dotnet/sdk:10.0.103 AS build
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 ARG RESOURCE_REAPER_SESSION_ID="00000000-0000-0000-0000-000000000000"
 LABEL "org.testcontainers.resource-reaper-session"=$RESOURCE_REAPER_SESSION_ID
 WORKDIR /src
