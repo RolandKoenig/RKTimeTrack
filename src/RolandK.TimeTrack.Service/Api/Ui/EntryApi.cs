@@ -7,7 +7,7 @@ namespace RolandK.TimeTrack.Service.Api.Ui;
 
 static class EntryApi
 {
-    [ProducesResponseType(typeof(IReadOnlyList<TimeTrackingEntry>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(IReadOnlyList<TimeTrackingEntrySearchResult>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     internal static async Task<IResult> SearchEntriesAsync(

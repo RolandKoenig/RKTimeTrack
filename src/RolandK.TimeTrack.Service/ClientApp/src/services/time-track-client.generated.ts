@@ -75,7 +75,7 @@ export class TimeTrackClient {
     /**
      * @return OK
      */
-    searchEntries(body: SearchEntries_Request): Promise<TimeTrackingEntry[]> {
+    searchEntries(body: SearchEntries_Request): Promise<TimeTrackingEntrySearchResult[]> {
         let url_ = this.baseUrl + "/api/ui/entries";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -95,7 +95,7 @@ export class TimeTrackClient {
         });
     }
 
-    protected processSearchEntries(response: Response): Promise<TimeTrackingEntry[]> {
+    protected processSearchEntries(response: Response): Promise<TimeTrackingEntrySearchResult[]> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
@@ -105,7 +105,7 @@ export class TimeTrackClient {
             if (Array.isArray(resultData200)) {
                 result200 = [] as any;
                 for (let item of resultData200)
-                    result200!.push(TimeTrackingEntry.fromJS(item));
+                    result200!.push(TimeTrackingEntrySearchResult.fromJS(item));
             }
             else {
                 result200 = null as any;
@@ -131,7 +131,7 @@ export class TimeTrackClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<TimeTrackingEntry[]>(null as any);
+        return Promise.resolve<TimeTrackingEntrySearchResult[]>(null as any);
     }
 
     /**
@@ -696,6 +696,79 @@ export class TimeTrackingEntry implements ITimeTrackingEntry {
 }
 
 export interface ITimeTrackingEntry {
+    topic: TimeTrackingTopicReference;
+    effortInHours: number;
+    effortBilled: number;
+    billingMultiplier: number;
+    billed: boolean;
+    type: TimeTrackingEntryType;
+    description: string | undefined;
+}
+
+export class TimeTrackingEntrySearchResult implements ITimeTrackingEntrySearchResult {
+    /** Date in format 'yyyy-mm-dd' */
+    date!: string;
+    topic!: TimeTrackingTopicReference;
+    effortInHours!: number;
+    effortBilled!: number;
+    billingMultiplier!: number;
+    billed!: boolean;
+    type!: TimeTrackingEntryType;
+    description!: string | undefined;
+
+    constructor(data?: ITimeTrackingEntrySearchResult) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.date = _data["date"];
+            this.topic = _data["topic"] ? TimeTrackingTopicReference.fromJS(_data["topic"]) : undefined as any;
+            this.effortInHours = _data["effortInHours"];
+            this.effortBilled = _data["effortBilled"];
+            this.billingMultiplier = _data["billingMultiplier"];
+            this.billed = _data["billed"];
+            this.type = _data["type"];
+            this.description = _data["description"];
+        }
+    }
+
+    static fromJS(data: any): TimeTrackingEntrySearchResult {
+        data = typeof data === 'object' ? data : {};
+        let result = new TimeTrackingEntrySearchResult();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["date"] = this.date;
+        data["topic"] = this.topic ? this.topic.toJSON() : undefined as any;
+        data["effortInHours"] = this.effortInHours;
+        data["effortBilled"] = this.effortBilled;
+        data["billingMultiplier"] = this.billingMultiplier;
+        data["billed"] = this.billed;
+        data["type"] = this.type;
+        data["description"] = this.description;
+        return data;
+    }
+
+    clone(): TimeTrackingEntrySearchResult {
+        const json = this.toJSON();
+        let result = new TimeTrackingEntrySearchResult();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ITimeTrackingEntrySearchResult {
+    /** Date in format 'yyyy-mm-dd' */
+    date: string;
     topic: TimeTrackingTopicReference;
     effortInHours: number;
     effortBilled: number;

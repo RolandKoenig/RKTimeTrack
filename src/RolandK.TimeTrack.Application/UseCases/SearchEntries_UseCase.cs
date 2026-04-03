@@ -4,7 +4,7 @@ using RolandK.TimeTrack.Application.Ports;
 namespace RolandK.TimeTrack.Application.UseCases;
 
 using HandlerResult = OneOf.OneOf<
-    IReadOnlyList<TimeTrackingEntry>,
+    IReadOnlyList<TimeTrackingEntrySearchResult>,
     CommonErrors.ValidationError>;
 
 public class SearchEntries_UseCase(
@@ -21,32 +21,33 @@ public class SearchEntries_UseCase(
             request.Billed == null &&
             request.CanBeInvoiced == null)
         {
-            return Array.Empty<TimeTrackingEntry>();
+            return Array.Empty<TimeTrackingEntrySearchResult>();
         }
-
+        
         var allTopics = await topicRepository.GetAllTopicsAsync(cancellationToken);
         var canBeInvoicedLookup = allTopics.ToDictionary(
             x => (x.Category, x.Name),
             x => x.CanBeInvoiced);
-        
+
+        var result = new List<TimeTrackingEntrySearchResult>(request.MaxSearchResults);
         var allDaysInAscendingOrder = await timeTrackingRepository.GetAllDaysInAscendingOrderAsync(cancellationToken);
-        var result = allDaysInAscendingOrder
-            .Reverse()
-            .SelectMany(x => x.Entries)
-            .Where(actEntry =>
+        var allDaysInDescendingOrderQuery = allDaysInAscendingOrder.Reverse();
+        foreach (var actDay in allDaysInDescendingOrderQuery)
+        {
+            foreach (var actEntry in actDay.Entries)
             {
                 // Search by text
                 if (!string.IsNullOrWhiteSpace(request.SearchText) &&
                     !actEntry.Description.Contains(request.SearchText, StringComparison.OrdinalIgnoreCase))
                 {
-                    return false;
+                    continue;
                 }
 
                 // Search by 'billed' property
                 if (request.Billed.HasValue &&
                     actEntry.Billed != request.Billed.Value)
                 {
-                    return false;
+                    continue;
                 }
 
                 // Search by 'can be invoiced' property
@@ -55,14 +56,23 @@ public class SearchEntries_UseCase(
                     canBeInvoicedLookup.TryGetValue((actEntry.Topic.Category, actEntry.Topic.Name), out var canBeInvoiced);
                     if (canBeInvoiced != request.CanBeInvoiced.Value)
                     {
-                        return false;
+                        continue;
                     }
                 }
-
-                return true;
-            })
-            .Take(request.MaxSearchResults)
-            .ToArray();
+                
+                result.Add(new TimeTrackingEntrySearchResult(
+                    actDay.Date,
+                    actEntry.Topic,
+                    actEntry.EffortInHours,
+                    actEntry.EffortBilled,
+                    actEntry.BillingMultiplier,
+                    actEntry.Billed,
+                    actEntry.Type,
+                    actEntry.Description));
+                if (result.Count >= request.MaxSearchResults) { break; }
+            }
+            if (result.Count >= request.MaxSearchResults) { break; }
+        }
         
         return result;
     }
