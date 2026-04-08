@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     
     <ItemGroup>
-      <PackageReference Include="AWSSDK.S3" Version="4.0.20.1" />
+      <PackageReference Include="AWSSDK.S3" Version="4.0.21" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.5" />
     </ItemGroup>
 
