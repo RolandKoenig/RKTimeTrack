@@ -14,7 +14,12 @@ internal static class TimeTrackingDataMapper
 
         foreach (var actDay in days)
         {
-            if (actDay.Date > today){ continue; }
+            if ((actDay.Date > today) &&
+                (actDay.Entries.Count == 0))
+            {
+                // We do not export future days if there is no data for them
+                continue;
+            }
             
             if (actDay.Entries.Count == 0)
             {
