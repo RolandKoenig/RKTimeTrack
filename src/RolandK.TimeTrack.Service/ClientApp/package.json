@@ -23,7 +23,7 @@
     "pinia": "^3.0.4",
     "primevue": "^4.5.5",
     "uuid": "^11.1.0",
-    "vue": "^3.5.32",
+    "vue": "^3.5.33",
     "vue-router": "^4.6.4"
   },
   "devDependencies": {
@@ -34,7 +34,7 @@
     "@vitejs/plugin-vue": "^6.0.6",
     "@vue/eslint-config-prettier": "^10.2.0",
     "@vue/eslint-config-typescript": "^14.7.0",
-    "@vue/test-utils": "^2.4.6",
+    "@vue/test-utils": "^2.4.9",
     "@vue/tsconfig": "^0.9.1",
     "eslint": "^9.39.4",
     "eslint-plugin-vue": "^9.33.0",
