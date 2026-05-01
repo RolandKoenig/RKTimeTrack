@@ -7,13 +7,18 @@ LABEL "org.testcontainers.resource-reaper-session"=$RESOURCE_REAPER_SESSION_ID
 # Install node to be able to use npm during build time
 RUN bash -E $(curl -fsSL https://deb.nodesource.com/setup_22.x | bash - ); apt install -y nodejs
 
-# Copy all *.csproj files, the switch to /src directory
-COPY --parents **/*.csproj ./
+# Restore first for improved cache usage
 WORKDIR /src
-
-# Copy global project settings
 COPY "global.json" "global.json"
 COPY "Directory.Build.props" "Directory.Build.props"
+COPY "src/RolandK.RemoteFileStorage/RolandK.RemoteFileStorage.csproj" "RolandK.RemoteFileStorage/RolandK.RemoteFileStorage.csproj"
+COPY "src/RolandK.TimeTrack.Service/RolandK.TimeTrack.Service.csproj" "RolandK.TimeTrack.Service/RolandK.TimeTrack.Service.csproj"
+COPY "src/RolandK.TimeTrack.Application/RolandK.TimeTrack.Application.csproj" "RolandK.TimeTrack.Application/RolandK.TimeTrack.Application.csproj"
+COPY "src/RolandK.TimeTrack.ExportAdapter/RolandK.TimeTrack.ExportAdapter.csproj" "RolandK.TimeTrack.ExportAdapter/RolandK.TimeTrack.ExportAdapter.csproj"
+COPY "src/RolandK.TimeTrack.FileBasedTimeTrackingRepositoryAdapter/RolandK.TimeTrack.FileBasedTimeTrackingRepositoryAdapter.csproj" "RolandK.TimeTrack.FileBasedTimeTrackingRepositoryAdapter/RolandK.TimeTrack.FileBasedTimeTrackingRepositoryAdapter.csproj"
+COPY "src/RolandK.TimeTrack.StaticTopicRepositoryAdapter/RolandK.TimeTrack.StaticTopicRepositoryAdapter.csproj" "RolandK.TimeTrack.StaticTopicRepositoryAdapter/RolandK.TimeTrack.StaticTopicRepositoryAdapter.csproj"
+
+RUN dotnet restore "RolandK.TimeTrack.Service/RolandK.TimeTrack.Service.csproj"
 
 # Restore all projects
 RUN dotnet restore "RolandK.TimeTrack.Service/RolandK.TimeTrack.Service.csproj"
