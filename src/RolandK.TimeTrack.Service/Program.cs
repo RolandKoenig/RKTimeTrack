@@ -6,6 +6,7 @@ using RolandK.TimeTrack.Service.Api.Ui;
 using RolandK.TimeTrack.Service.BackgroundServices;
 using RolandK.TimeTrack.StaticTopicRepositoryAdapter;
 using RolandK.TimeTrack.Service.Mappings;
+using RolandK.TimeTrack.Service.Security;
 using Serilog;
 
 namespace RolandK.TimeTrack.Service;
@@ -55,6 +56,9 @@ public static class Program
         // Add Background services
         builder.Services.AddHostedService<ExportTriggerBackgroundService>();
         
+        // Security configuration
+        builder.ConfigureSecurityHeaders();
+        
         // Allow customization from IntegrationTests project
         customizeWebApplicationBuilder?.Invoke(builder);
         
@@ -63,6 +67,7 @@ public static class Program
         
         var app = builder.Build();
 
+        app.UseMiddleware<SecurityHeaderMiddleware>();
         app.UseSerilogRequestLogging();
         
         if (app.Environment.IsDevelopment())
