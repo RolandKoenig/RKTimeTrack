@@ -9,7 +9,7 @@
     return timeTrackingStore.currentWeek.getAllDays()
         .flatMap(day => day.entries)
         .map(entry => entry.effortInHours)
-        .reduce((sum, currentValue) => sum + currentValue);
+        .reduce((sum, currentValue) => sum + currentValue, 0);
   }
 
   const totalBilled = () => {
@@ -17,7 +17,7 @@
     return timeTrackingStore.currentWeek.getAllDays()
         .flatMap(day => day.entries)
         .map(entry => entry.effortBilled)
-        .reduce((sum, currentValue) => sum + currentValue);
+        .reduce((sum, currentValue) => sum + currentValue, 0);
   };
 
 </script>
