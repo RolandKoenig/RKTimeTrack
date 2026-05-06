@@ -12,9 +12,7 @@ public static class SecurityHeaders
 
     public static void AddSecurityHeaders(this IHeaderDictionary headers)
     {
-        headers.TryAdd("X-Content-Type-Options", "nosniff");
         headers.TryAdd("X-Frame-Options", "DENY");
-        headers.TryAdd("Referrer-Policy", "strict-origin-when-cross-origin");
 
         // Modern browsers ignore X-XSS-Protection or may behave unexpectedly with it.
         // Explicitly disabling it is recommended when using a proper CSP.
