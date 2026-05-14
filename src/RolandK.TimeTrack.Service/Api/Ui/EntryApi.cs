@@ -10,7 +10,6 @@ static class EntryApi
     [ProducesResponseType(typeof(IReadOnlyList<TimeTrackingEntry>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-    [ResponseCache(NoStore = true)]
     internal static async Task<IResult> SearchEntriesAsync(
         [FromServices] IWebHostEnvironment environment,
         [FromServices] SearchEntriesByText_UseCase useCase,

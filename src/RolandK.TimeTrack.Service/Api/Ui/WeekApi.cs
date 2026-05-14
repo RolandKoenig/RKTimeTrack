@@ -9,7 +9,6 @@ static class WeekApi
 {
     [ProducesResponseType(typeof(TimeTrackingWeek), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-    [ResponseCache(NoStore = true)]
     internal static async Task<IResult> GetCurrentWeekAsync(
         [FromServices] IWebHostEnvironment environment,
         [FromServices] TimeProvider timeProvider,

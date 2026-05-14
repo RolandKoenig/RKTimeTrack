@@ -9,7 +9,6 @@ public class StateApi
     [ProducesResponseType(typeof(TimeTrackApplicationStatePublic), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-    [ResponseCache(NoStore = true)]
     internal static async Task<IResult> GetStateAsync(
         [FromServices] GetApplicationState_UseCase useCase,
         CancellationToken cancellationToken)
