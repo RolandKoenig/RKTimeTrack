@@ -10,6 +10,7 @@ static class DayApi
     [ProducesResponseType(typeof(TimeTrackingDay), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+    [ResponseCache(NoStore = true)]
     internal static async Task<IResult> UpdateDayAsync(
         [FromServices] IWebHostEnvironment environment,
         [FromServices] UpdateDay_UseCase useCase,

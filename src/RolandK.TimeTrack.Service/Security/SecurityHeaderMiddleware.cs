@@ -13,7 +13,7 @@ public class SecurityHeaderMiddleware
     {
         context.Response.OnStarting(() =>
         {
-            context.Response.Headers.AddSecurityHeaders();
+            context.Response.Headers.AddSecurityHeaders(context.Request);
             return Task.CompletedTask;
         });
 

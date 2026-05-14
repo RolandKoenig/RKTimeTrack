@@ -8,6 +8,7 @@ static class TopicApi
 {
     [ProducesResponseType(typeof(IReadOnlyCollection<TimeTrackingTopic>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+    [ResponseCache(NoStore = true)]
     internal static async Task<IResult> GetAllTopicsAsync(
         [FromServices] IWebHostEnvironment environment,
         [FromServices] GetAllTopics_UseCase useCase,

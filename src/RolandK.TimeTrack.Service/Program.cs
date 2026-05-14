@@ -66,9 +66,9 @@ public static class Program
         // Configure the HTTP request pipeline.
         
         var app = builder.Build();
-
-        app.UseMiddleware<SecurityHeaderMiddleware>();
         app.UseSerilogRequestLogging();
+        
+        app.UseMiddleware<SecurityHeaderMiddleware>();
         
         if (app.Environment.IsDevelopment())
         {
