@@ -1,8 +1,4 @@
 <Solution>
-  <Folder Name="/Common/">
-    <Project Path="src/RolandK.RemoteFileStorage.Tests/RolandK.RemoteFileStorage.Tests.csproj" />
-    <Project Path="src/RolandK.RemoteFileStorage\RolandK.RemoteFileStorage.csproj" />
-  </Folder>
   <Folder Name="/Config/">
     <File Path=".dockerignore" />
     <File Path=".gitignore" />
