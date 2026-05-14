@@ -10,6 +10,7 @@ namespace RolandK.TimeTrack.Service.Tests.IntegrationTests;
 public class WeekApiTests
 {
     private readonly WebHostServerFixture _server;
+    private readonly HttpClient _httpClient;
     
     public WeekApiTests(
         WebHostServerFixture server,
@@ -20,6 +21,9 @@ public class WeekApiTests
         _server.ProgramStartupMethod = Program.CreateApplication;
         
         _server.Reset();
+        
+        _httpClient = new HttpClient();
+        _httpClient.BaseAddress = _server.RootUri;
     }
 
     [Theory]
@@ -33,12 +37,9 @@ public class WeekApiTests
         // Arrange
         var startDate = new DateTimeOffset(year, month, day, 8, 0, 0, TimeSpan.Zero);
         _server.TimeProviderMock.Reset(startDate);
-        
-        var httpClient = new HttpClient();
-        httpClient.BaseAddress = _server.RootUri;
-        
+
         // Act
-        var week = await httpClient.GetFromJsonAsync<TimeTrackingWeek>(
+        var week = await _httpClient.GetFromJsonAsync<TimeTrackingWeek>(
             "api/ui/week",
             TestContext.Current.CancellationToken);
         
@@ -50,12 +51,8 @@ public class WeekApiTests
     [Fact]
     public async Task GetWeek_WhichWasNeverAccessedBefore()
     {
-        // Arrange
-        var httpClient = new HttpClient();
-        httpClient.BaseAddress = _server.RootUri;
-        
         // Act
-        var week = await httpClient.GetFromJsonAsync<TimeTrackingWeek>(
+        var week = await _httpClient.GetFromJsonAsync<TimeTrackingWeek>(
             "api/ui/week/2024/51",
             TestContext.Current.CancellationToken);
         

@@ -10,7 +10,8 @@ namespace RolandK.TimeTrack.Service.Tests.IntegrationTests;
 public class StateApiTests
 {
     private readonly WebHostServerFixture _server;
-
+    private readonly HttpClient _httpClient;
+    
     public StateApiTests(
         WebHostServerFixture server,
         ITestOutputHelper testOutputHelper)
@@ -20,21 +21,21 @@ public class StateApiTests
         _server.ProgramStartupMethod = Program.CreateApplication;
         
         _server.Reset();
+        
+        _httpClient = new HttpClient();
+        _httpClient.BaseAddress = _server.RootUri;
     }
 
     [Fact]
     public async Task GetCurrentState_no_export()
     {
         // Arrange
-        var httpClient = new HttpClient();
-        httpClient.BaseAddress = _server.RootUri;
-
         var fakeStartupTimestamp = DateTime.UtcNow;
         _server.ApplicationState.ServiceStartupTimestamp = fakeStartupTimestamp;
         _server.ApplicationState.LastSuccessfulExport = DateTimeOffset.MinValue;
         
         // Act
-        var state = await httpClient.GetFromJsonAsync<TimeTrackApplicationStatePublic>(
+        var state = await _httpClient.GetFromJsonAsync<TimeTrackApplicationStatePublic>(
             "api/ui/state",
             TestContext.Current.CancellationToken);
         
@@ -48,16 +49,13 @@ public class StateApiTests
     public async Task GetCurrentState_with_export()
     {
         // Arrange
-        var httpClient = new HttpClient();
-        httpClient.BaseAddress = _server.RootUri;
-
         var fakeStartupTimestamp = DateTime.UtcNow.AddHours(-2.0);
         var fakeExportTimestamp = fakeStartupTimestamp.AddHours(1.0);
         _server.ApplicationState.ServiceStartupTimestamp = fakeStartupTimestamp;
         _server.ApplicationState.LastSuccessfulExport = fakeExportTimestamp;
 
         // Act
-        var state = await httpClient.GetFromJsonAsync<TimeTrackApplicationStatePublic>(
+        var state = await _httpClient.GetFromJsonAsync<TimeTrackApplicationStatePublic>(
             "api/ui/state",
             TestContext.Current.CancellationToken);
         

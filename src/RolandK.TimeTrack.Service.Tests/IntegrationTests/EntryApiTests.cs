@@ -11,6 +11,7 @@ namespace RolandK.TimeTrack.Service.Tests.IntegrationTests;
 public class EntryApiTests
 {
     private readonly WebHostServerFixture _server;
+    private readonly HttpClient _httpClient;
     
     public EntryApiTests(
         WebHostServerFixture server,
@@ -21,16 +22,16 @@ public class EntryApiTests
         _server.ProgramStartupMethod = Program.CreateApplication;
         
         _server.Reset();
+        
+        _httpClient = new HttpClient();
+        _httpClient.BaseAddress = _server.RootUri;
     }
 
     [Fact]
     public async Task SearchEntries_SingleEntryFound()
     {
         // Arrange
-        var httpClient = new HttpClient();
-        httpClient.BaseAddress = _server.RootUri;
-
-        await httpClient.PostAsJsonAsync(
+        await _httpClient.PostAsJsonAsync(
             "api/ui/day",
             new UpdateDay_Request(
                 new DateOnly(2024, 12, 16),
@@ -45,7 +46,7 @@ public class EntryApiTests
                         "#1023 My dummy description")
                 ]),
             TestContext.Current.CancellationToken);
-        await httpClient.PostAsJsonAsync(
+        await _httpClient.PostAsJsonAsync(
             "api/ui/day",
             new UpdateDay_Request(
                 new DateOnly(2024, 12, 17),
@@ -62,7 +63,7 @@ public class EntryApiTests
             TestContext.Current.CancellationToken);
         
         // Act
-        var responseMessage = await httpClient.PostAsJsonAsync(
+        var responseMessage = await _httpClient.PostAsJsonAsync(
             "api/ui/entries",
             new SearchEntriesByText_Request("#4210"),
             TestContext.Current.CancellationToken);
@@ -130,10 +131,7 @@ public class EntryApiTests
     public async Task SearchEntries_MoreEntriesFound()
     {
         // Arrange
-        var httpClient = new HttpClient();
-        httpClient.BaseAddress = _server.RootUri;
-
-        await httpClient.PostAsJsonAsync(
+        await _httpClient.PostAsJsonAsync(
             "api/ui/day",
             new UpdateDay_Request(
                 new DateOnly(2024, 12, 16),
@@ -148,7 +146,7 @@ public class EntryApiTests
                         "#1023 My dummy description")
                 ]),
             TestContext.Current.CancellationToken);
-        await httpClient.PostAsJsonAsync(
+        await _httpClient.PostAsJsonAsync(
             "api/ui/day",
             new UpdateDay_Request(
                 new DateOnly(2024, 12, 17),
@@ -165,7 +163,7 @@ public class EntryApiTests
             TestContext.Current.CancellationToken);
         
         // Act
-        var responseMessage = await httpClient.PostAsJsonAsync(
+        var responseMessage = await _httpClient.PostAsJsonAsync(
             "api/ui/entries",
             new SearchEntriesByText_Request("dummy"),
             TestContext.Current.CancellationToken);
@@ -183,10 +181,7 @@ public class EntryApiTests
     public async Task SearchEntries_MoreEntriesFound_Not_CaseSensitive()
     {
         // Arrange
-        var httpClient = new HttpClient();
-        httpClient.BaseAddress = _server.RootUri;
-
-        await httpClient.PostAsJsonAsync(
+        await _httpClient.PostAsJsonAsync(
             "api/ui/day",
             new UpdateDay_Request(
                 new DateOnly(2024, 12, 16),
@@ -201,7 +196,7 @@ public class EntryApiTests
                         "#1023 My dummy description")
                 ]),
             TestContext.Current.CancellationToken);
-        await httpClient.PostAsJsonAsync(
+        await _httpClient.PostAsJsonAsync(
             "api/ui/day",
             new UpdateDay_Request(
                 new DateOnly(2024, 12, 17),
@@ -218,7 +213,7 @@ public class EntryApiTests
             TestContext.Current.CancellationToken);
         
         // Act
-        var responseMessage = await httpClient.PostAsJsonAsync(
+        var responseMessage = await _httpClient.PostAsJsonAsync(
             "api/ui/entries",
             new SearchEntriesByText_Request("DUMMY"),
             TestContext.Current.CancellationToken);
@@ -236,10 +231,7 @@ public class EntryApiTests
     public async Task SearchEntries_MoreEntriesFound_ButLimitedBy_MaxSearchResults()
     {
         // Arrange
-        var httpClient = new HttpClient();
-        httpClient.BaseAddress = _server.RootUri;
-
-        await httpClient.PostAsJsonAsync(
+        await _httpClient.PostAsJsonAsync(
             "api/ui/day",
             new UpdateDay_Request(
                 new DateOnly(2024, 12, 16),
@@ -254,7 +246,7 @@ public class EntryApiTests
                         "#1023 My dummy description")
                 ]),
             TestContext.Current.CancellationToken);
-        await httpClient.PostAsJsonAsync(
+        await _httpClient.PostAsJsonAsync(
             "api/ui/day",
             new UpdateDay_Request(
                 new DateOnly(2024, 12, 17),
@@ -271,7 +263,7 @@ public class EntryApiTests
             TestContext.Current.CancellationToken);
         
         // Act
-        var responseMessage = await httpClient.PostAsJsonAsync(
+        var responseMessage = await _httpClient.PostAsJsonAsync(
             "api/ui/entries",
             new SearchEntriesByText_Request("dummy", 1),
             TestContext.Current.CancellationToken);

@@ -11,6 +11,7 @@ namespace RolandK.TimeTrack.Service.Tests.IntegrationTests;
 public class DayApiTests
 {
     private readonly WebHostServerFixture _server;
+    private readonly HttpClient _httpClient;
     
     public DayApiTests(
         WebHostServerFixture server,
@@ -21,17 +22,16 @@ public class DayApiTests
         _server.ProgramStartupMethod = Program.CreateApplication;
         
         _server.Reset();
+        
+        _httpClient = new HttpClient();
+        _httpClient.BaseAddress = _server.RootUri;
     }
     
     [Fact]
     public async Task UpdateDay_FullDataSet()
     {
-        // Arrange
-        var httpClient = new HttpClient();
-        httpClient.BaseAddress = _server.RootUri;
-        
         // Act
-        await httpClient.PostAsJsonAsync(
+        await _httpClient.PostAsJsonAsync(
             "api/ui/day",
             new UpdateDay_Request(
                 new DateOnly(2024, 12, 17),
@@ -48,7 +48,7 @@ public class DayApiTests
             TestContext.Current.CancellationToken);
         
         // Assert
-        var week = await httpClient.GetFromJsonAsync<TimeTrackingWeek>(
+        var week = await _httpClient.GetFromJsonAsync<TimeTrackingWeek>(
             "api/ui/week/2024/51",
             TestContext.Current.CancellationToken);
         Assert.NotNull(week);
@@ -77,12 +77,8 @@ public class DayApiTests
     [InlineData(TimeTrackingDayType.PublicHoliday)]
     public async Task UpdateDay_Property_DayType(TimeTrackingDayType dayType)
     {
-        // Arrange
-        var httpClient = new HttpClient();
-        httpClient.BaseAddress = _server.RootUri;
-        
         // Act
-        await httpClient.PostAsJsonAsync(
+        await _httpClient.PostAsJsonAsync(
             "api/ui/day",
             new UpdateDay_Request(
                 new DateOnly(2024, 12, 17),
@@ -95,7 +91,7 @@ public class DayApiTests
             TestContext.Current.CancellationToken);
         
         // Assert
-        var week = await httpClient.GetFromJsonAsync<TimeTrackingWeek>(
+        var week = await _httpClient.GetFromJsonAsync<TimeTrackingWeek>(
             "api/ui/week/2024/51",
             TestContext.Current.CancellationToken);
         Assert.NotNull(week);
@@ -110,12 +106,8 @@ public class DayApiTests
     [InlineData("Category1", "Name1")]
     public async Task UpdateDay_Property_TopicReference(string topicCategory, string topicName)
     {
-        // Arrange
-        var httpClient = new HttpClient();
-        httpClient.BaseAddress = _server.RootUri;
-        
         // Act
-        await httpClient.PostAsJsonAsync(
+        await _httpClient.PostAsJsonAsync(
             "api/ui/day",
             new UpdateDay_Request(
                 new DateOnly(2024, 12, 17),
@@ -128,7 +120,7 @@ public class DayApiTests
             TestContext.Current.CancellationToken);
         
         // Assert
-        var week = await httpClient.GetFromJsonAsync<TimeTrackingWeek>(
+        var week = await _httpClient.GetFromJsonAsync<TimeTrackingWeek>(
             "api/ui/week/2024/51",
             TestContext.Current.CancellationToken);
         Assert.NotNull(week);
@@ -146,12 +138,8 @@ public class DayApiTests
     [InlineData(2.0)]
     public async Task UpdateDay_Property_EffortInHours(double effortInHours)
     {
-        // Arrange
-        var httpClient = new HttpClient();
-        httpClient.BaseAddress = _server.RootUri;
-        
         // Act
-        await httpClient.PostAsJsonAsync(
+        await _httpClient.PostAsJsonAsync(
             "api/ui/day",
             new UpdateDay_Request(
                 new DateOnly(2024, 12, 17),
@@ -164,7 +152,7 @@ public class DayApiTests
             TestContext.Current.CancellationToken);
         
         // Assert
-        var week = await httpClient.GetFromJsonAsync<TimeTrackingWeek>(
+        var week = await _httpClient.GetFromJsonAsync<TimeTrackingWeek>(
             "api/ui/week/2024/51",
             TestContext.Current.CancellationToken);
         Assert.NotNull(week);
@@ -181,12 +169,8 @@ public class DayApiTests
     [InlineData(2.0)]
     public async Task UpdateDay_Property_BillingModifier(double billingModifier)
     {
-        // Arrange
-        var httpClient = new HttpClient();
-        httpClient.BaseAddress = _server.RootUri;
-        
         // Act
-        await httpClient.PostAsJsonAsync(
+        await _httpClient.PostAsJsonAsync(
             "api/ui/day",
             new UpdateDay_Request(
                 new DateOnly(2024, 12, 17),
@@ -201,7 +185,7 @@ public class DayApiTests
             TestContext.Current.CancellationToken);
         
         // Assert
-        var week = await httpClient.GetFromJsonAsync<TimeTrackingWeek>(
+        var week = await _httpClient.GetFromJsonAsync<TimeTrackingWeek>(
             "api/ui/week/2024/51",
             TestContext.Current.CancellationToken);
         Assert.NotNull(week);
@@ -218,12 +202,8 @@ public class DayApiTests
     [InlineData(2.0)]
     public async Task UpdateDay_Property_EffortBilled(double effortBilled)
     {
-        // Arrange
-        var httpClient = new HttpClient();
-        httpClient.BaseAddress = _server.RootUri;
-        
         // Act
-        await httpClient.PostAsJsonAsync(
+        await _httpClient.PostAsJsonAsync(
             "api/ui/day",
             new UpdateDay_Request(
                 new DateOnly(2024, 12, 17),
@@ -237,7 +217,7 @@ public class DayApiTests
             TestContext.Current.CancellationToken);
         
         // Assert
-        var week = await httpClient.GetFromJsonAsync<TimeTrackingWeek>(
+        var week = await _httpClient.GetFromJsonAsync<TimeTrackingWeek>(
             "api/ui/week/2024/51",
             TestContext.Current.CancellationToken);
         Assert.NotNull(week);
@@ -252,12 +232,8 @@ public class DayApiTests
     [InlineData(TimeTrackingEntryType.OnCall)]
     public async Task UpdateDay_Property_EntryType(TimeTrackingEntryType entryType)
     {
-        // Arrange
-        var httpClient = new HttpClient();
-        httpClient.BaseAddress = _server.RootUri;
-        
         // Act
-        await httpClient.PostAsJsonAsync(
+        await _httpClient.PostAsJsonAsync(
             "api/ui/day",
             new UpdateDay_Request(
                 new DateOnly(2024, 12, 17),
@@ -271,7 +247,7 @@ public class DayApiTests
             TestContext.Current.CancellationToken);
         
         // Assert
-        var week = await httpClient.GetFromJsonAsync<TimeTrackingWeek>(
+        var week = await _httpClient.GetFromJsonAsync<TimeTrackingWeek>(
             "api/ui/week/2024/51",
             TestContext.Current.CancellationToken);
         Assert.NotNull(week);
@@ -285,12 +261,8 @@ public class DayApiTests
     [InlineData("Some dummy description")]
     public async Task UpdateDay_Property_Description(string description)
     {
-        // Arrange
-        var httpClient = new HttpClient();
-        httpClient.BaseAddress = _server.RootUri;
-        
         // Act
-        await httpClient.PostAsJsonAsync(
+        await _httpClient.PostAsJsonAsync(
             "api/ui/day",
             new UpdateDay_Request(
                 new DateOnly(2024, 12, 17),
@@ -304,7 +276,7 @@ public class DayApiTests
             TestContext.Current.CancellationToken);
         
         // Assert
-        var week = await httpClient.GetFromJsonAsync<TimeTrackingWeek>(
+        var week = await _httpClient.GetFromJsonAsync<TimeTrackingWeek>(
             "api/ui/week/2024/51",
             TestContext.Current.CancellationToken);
         Assert.NotNull(week);
