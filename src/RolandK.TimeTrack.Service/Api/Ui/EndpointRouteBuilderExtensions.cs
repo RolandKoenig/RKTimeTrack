@@ -7,28 +7,35 @@ public static class EndpointRouteBuilderExtensions
     {
         // Year Api
         endpointBuilder.MapGet("/api/ui/year/{year}/metadata", YearApi.GetYearMetadataAsync)
+            .AddNoStoreCacheHeader()
             .WithName(RemoveAsyncFromMethodName(nameof(YearApi.GetYearMetadataAsync)));
         
         // Week Api
         endpointBuilder.MapGet("/api/ui/week", WeekApi.GetCurrentWeekAsync)
+            .AddNoStoreCacheHeader()
             .WithName(RemoveAsyncFromMethodName(nameof(WeekApi.GetCurrentWeekAsync)));
         endpointBuilder.MapGet("/api/ui/week/{year}/{weekNumber}", WeekApi.GetWeekAsync)
+            .AddNoStoreCacheHeader()
             .WithName(RemoveAsyncFromMethodName(nameof(WeekApi.GetWeekAsync)));
         
         // Day Api
         endpointBuilder.MapPost("/api/ui/day", DayApi.UpdateDayAsync)
+            .AddNoStoreCacheHeader()
             .WithName(RemoveAsyncFromMethodName(nameof(DayApi.UpdateDayAsync)));
         
         // Entry Api
         endpointBuilder.MapPost("/api/ui/entries", EntryApi.SearchEntriesAsync)
+            .AddNoStoreCacheHeader()
             .WithName(RemoveAsyncFromMethodName(nameof(EntryApi.SearchEntriesAsync)));
 
         // State Api
         endpointBuilder.MapGet("/api/ui/state", StateApi.GetStateAsync)
+            .AddNoStoreCacheHeader()
             .WithName(RemoveAsyncFromMethodName(nameof(StateApi.GetStateAsync)));
         
         // Topic Api
         endpointBuilder.MapGet("/api/ui/topics", TopicApi.GetAllTopicsAsync)
+            .AddNoStoreCacheHeader()
             .WithName(RemoveAsyncFromMethodName(nameof(TopicApi.GetAllTopicsAsync)));
         
         return endpointBuilder;

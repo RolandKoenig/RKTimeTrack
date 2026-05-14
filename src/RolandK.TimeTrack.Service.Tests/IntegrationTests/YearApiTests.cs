@@ -10,6 +10,7 @@ namespace RolandK.TimeTrack.Service.Tests.IntegrationTests;
 public class YearApiTests
 {
     private readonly WebHostServerFixture _server;
+    private readonly HttpClient _httpClient;
     
     public YearApiTests(
         WebHostServerFixture server,
@@ -20,6 +21,9 @@ public class YearApiTests
         _server.ProgramStartupMethod = Program.CreateApplication;
         
         _server.Reset();
+        
+        _httpClient = new HttpClient();
+        _httpClient.BaseAddress = _server.RootUri;
     }
 
     [Theory]
@@ -32,12 +36,8 @@ public class YearApiTests
     [InlineData(2028, 52)]
     public async Task GetYearMetadata(int year, int expectedWeekCount)
     {
-        // Arrange
-        var httpClient = new HttpClient();
-        httpClient.BaseAddress = _server.RootUri;
-
         // Act
-        var yearMetadata = await httpClient.GetFromJsonAsync<TimeTrackingYearMetadata>(
+        var yearMetadata = await _httpClient.GetFromJsonAsync<TimeTrackingYearMetadata>(
             $"api/ui/year/{year}/metadata",
             TestContext.Current.CancellationToken);
         

@@ -11,6 +11,7 @@ namespace RolandK.TimeTrack.Service.Tests.IntegrationTests;
 public class TopicApiTests
 {
     private readonly WebHostServerFixture _server;
+    private readonly HttpClient _httpClient;
     
     public TopicApiTests(
         WebHostServerFixture server,
@@ -21,15 +22,15 @@ public class TopicApiTests
         _server.ProgramStartupMethod = Program.CreateApplication;
         
         _server.Reset();
+        
+        _httpClient = new HttpClient();
+        _httpClient.BaseAddress = _server.RootUri;
     }
 
     [Fact]
     public async Task GetAllTopics()
     {
         // Arrange
-        var httpClient = new HttpClient();
-        httpClient.BaseAddress = _server.RootUri;
-
         _server.TopicRepositoryMock.GetAllTopicsAsync(Arg.Any<CancellationToken>())
             .Returns(Task.FromResult((IReadOnlyList<TimeTrackingTopic>)[
                 new TimeTrackingTopic("TestCategory", "Topic1"),
@@ -37,7 +38,7 @@ public class TopicApiTests
             ]));
 
         // Act
-        var topics = await httpClient.GetFromJsonAsync<IReadOnlyList<TimeTrackingTopic>>(
+        var topics = await _httpClient.GetFromJsonAsync<IReadOnlyList<TimeTrackingTopic>>(
             "api/ui/topics",
             TestContext.Current.CancellationToken);
 
