@@ -11,7 +11,6 @@ RUN bash -E $(curl -fsSL https://deb.nodesource.com/setup_22.x | bash - ); apt i
 WORKDIR /src
 COPY "global.json" "global.json"
 COPY "Directory.Build.props" "Directory.Build.props"
-COPY "src/RolandK.RemoteFileStorage/RolandK.RemoteFileStorage.csproj" "RolandK.RemoteFileStorage/RolandK.RemoteFileStorage.csproj"
 COPY "src/RolandK.TimeTrack.Service/RolandK.TimeTrack.Service.csproj" "RolandK.TimeTrack.Service/RolandK.TimeTrack.Service.csproj"
 COPY "src/RolandK.TimeTrack.Application/RolandK.TimeTrack.Application.csproj" "RolandK.TimeTrack.Application/RolandK.TimeTrack.Application.csproj"
 COPY "src/RolandK.TimeTrack.ExportAdapter/RolandK.TimeTrack.ExportAdapter.csproj" "RolandK.TimeTrack.ExportAdapter/RolandK.TimeTrack.ExportAdapter.csproj"
