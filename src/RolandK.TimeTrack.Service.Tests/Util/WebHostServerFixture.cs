@@ -13,6 +13,7 @@ using RolandK.TimeTrack.FileBasedTimeTrackingRepositoryAdapter;
 using RolandK.TimeTrack.Application.Ports;
 using RolandK.TimeTrack.Application.State;
 using RolandK.TimeTrack.FileBasedTimeTrackingRepositoryAdapter.Testing;
+using RolandK.TimeTrack.Service.Security.Services;
 using Serilog;
 using Xunit;
 
@@ -42,6 +43,8 @@ public class WebHostServerFixture : IDisposable
     public DateTimeOffset MockedStartTimestamp => _mockedStartTimestamp;
     
     public ITopicRepository TopicRepositoryMock { get; } = Substitute.For<ITopicRepository>();
+
+    public ICspNonceGenerator CspNonceGeneratorMock { get; } = Substitute.For<ICspNonceGenerator>();
 
     public TimeTrackApplicationState ApplicationState { get; } = new TimeTrackApplicationState();
     
@@ -152,6 +155,7 @@ public class WebHostServerFixture : IDisposable
                 services.Replace(ServiceDescriptor.Singleton(TopicRepositoryMock));
                 services.Replace(ServiceDescriptor.Singleton<TimeProvider>(TimeProviderMock));
                 services.Replace(ServiceDescriptor.Singleton(ApplicationState));
+                services.Replace(ServiceDescriptor.Scoped<ICspNonceGenerator>(_ => CspNonceGeneratorMock));
             },
             loggerConfig =>
             {

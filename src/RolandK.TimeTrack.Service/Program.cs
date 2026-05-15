@@ -67,8 +67,8 @@ public static class Program
         
         var app = builder.Build();
         app.UseSerilogRequestLogging();
-        
-        app.UseMiddleware<SecurityHeaderMiddleware>();
+
+        app.UseSecurityHeadersAndMapIndexFile();
         
         if (app.Environment.IsDevelopment())
         {
@@ -82,9 +82,6 @@ public static class Program
         // Our apis
         app.MapWeekApi();
         
-        // Run application        
-        app.MapFallbackToFile("index.html");
-
         return app;
     }
 }

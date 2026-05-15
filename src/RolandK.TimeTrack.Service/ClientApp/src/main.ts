@@ -63,6 +63,10 @@ const MyThemePreset = definePreset(Aura, {
     }
 });
 
+let cspNonce = document
+    .querySelector<HTMLMetaElement>('meta[name="csp-nonce"]')
+    ?.content
+
 // Configure PrimeVue
 app.use(PrimeVue, {
     theme: {
@@ -72,6 +76,9 @@ app.use(PrimeVue, {
             darkModeSelector: '.p-color-mode-dark',
             cssLayer: false
         }
+    },
+    csp: {
+        nonce: cspNonce
     }
 });
 app.component('Button', Button);
