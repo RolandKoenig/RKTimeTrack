@@ -1,3 +1,4 @@
+using NSubstitute;
 using RolandK.TimeTrack.Service.Tests.Util;
 using Xunit;
 
@@ -35,6 +36,45 @@ public class SecurityHeaderTests
         // Assert
         Assert.True(response.IsSuccessStatusCode);
         Assert.False(response.Headers.Contains("Server"));
+    }
+    
+    [Fact]
+    public async Task CSP_Nonce_is_set_in_Index_file()
+    {
+        // Arrange
+        var fakeNonce = "CSP-NONCE-1234567890";
+        _server.CspNonceGeneratorMock.GetNonceForCurrentScope()
+            .Returns(_ => fakeNonce);
+        
+        // Act
+        var responseHtml = await _httpClient.GetAsync(
+            "/index.html", 
+            TestContext.Current.CancellationToken);
+        var fullContentHtml = await responseHtml.Content.ReadAsStringAsync(
+            TestContext.Current.CancellationToken);
+        
+        // Assert
+        Assert.Contains(fakeNonce, fullContentHtml);
+    }
+    
+    [Fact]
+    public async Task CSP_Nonce_is_set_CSP_Header()
+    {
+        // Arrange
+        var fakeNonce = "CSP-NONCE-1234567890";
+        _server.CspNonceGeneratorMock.GetNonceForCurrentScope()
+            .Returns(_ => fakeNonce);
+        
+        // Act
+        var response = await _httpClient.GetAsync(
+            "/index.html", 
+            TestContext.Current.CancellationToken);
+        
+        // Assert
+        Assert.True(response.IsSuccessStatusCode);
+        Assert.Contains(
+            $"style-src 'self' 'nonce-{fakeNonce}'",
+            response.Headers.GetValues("Content-Security-Policy").FirstOrDefault());
     }
     
     [Fact]
@@ -156,7 +196,7 @@ public class SecurityHeaderTests
         
         // Assert
         Assert.True(response.IsSuccessStatusCode);
-        Assert.Equal("default-src 'self'", response.Headers.GetValues("Content-Security-Policy").FirstOrDefault());
+        Assert.Contains("default-src 'self'", response.Headers.GetValues("Content-Security-Policy").FirstOrDefault());
     }
     
     [Fact]
