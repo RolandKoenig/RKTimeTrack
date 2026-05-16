@@ -37,7 +37,7 @@ RUN rm /app/publish/appsettings.Development.json
 #####################################
 # Runtime image
 ## Configure OS
-FROM mcr.microsoft.com/dotnet/aspnet:10.0.7-noble-chiseled-extra AS final
+FROM mcr.microsoft.com/dotnet/aspnet:10.0.8-noble-chiseled-extra AS final
 EXPOSE 80
 
 ## Copy application and define entrypoint

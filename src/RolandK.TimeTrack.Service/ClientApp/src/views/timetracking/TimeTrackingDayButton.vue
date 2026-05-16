@@ -25,27 +25,6 @@
   function isEntryTypeRelevantForSummaries(entryType: TimeTrackingEntryType) : boolean{
     return entryType != TimeTrackingEntryType.OnCall;
   }
-
-  const tooltipText = computed(() =>{
-    if(!props.timeTrackingDay){ return ""; }
-    
-    let result = `${props.timeTrackingDay.type}`;
-    if(props.timeTrackingDay.entries.length > 0){
-      const sumEffort = props.timeTrackingDay.entries
-          .filter(actEntry => isEntryTypeRelevantForSummaries(actEntry.type))
-          .map(actEntry => actEntry.effortInHours)
-          .reduce((sum, currentValue) => sum + currentValue);
-      if(sumEffort > 0){ result += `\nEffort: ${sumEffort} h` }
-      
-      const sumBilled = props.timeTrackingDay.entries
-          .filter(actEntry => isEntryTypeRelevantForSummaries(actEntry.type))
-          .map(actEntry => actEntry.effortBilled)
-          .reduce((sum, currentValue) => sum + currentValue);
-      if(sumBilled > 0){ result += `\nBilled: ${sumBilled} h` }
-    }
-    
-    return result;
-  })
   
   const daytypeSeverity = computed(() =>{
     if(!props.timeTrackingDay){ return "secondary"; }
@@ -109,7 +88,6 @@
        :class="selectionCssClass">
     <Button :severity="daytypeSeverity" 
             v-bind="$attrs"
-            v-tooltip="{ value: tooltipText, showDelay: 500 }"
             raised>
       <div class="parent">
         <div class="dayinfo" >

@@ -24,7 +24,6 @@ import Textarea from 'primevue/textarea';
 import Toast from 'primevue/toast';
 import ToastService from 'primevue/toastservice';
 import Toolbar from "primevue/toolbar";
-import Tooltip from 'primevue/tooltip';
 
 // App
 import App from './App.vue'
@@ -41,8 +40,6 @@ app.use(createPinia())
 app.use(ToastService);
 app.provide("TimeTrackClient", new TimeTrackClient());
 app.use(router)
-
-app.directive('tooltip', Tooltip);
 
 // Configure theme
 const MyThemePreset = definePreset(Aura, {
