@@ -5,7 +5,7 @@ namespace RolandK.TimeTrack.Service.Security.Middlewares;
 
 public class InjectCspNonceIntoIndexHtmlMiddleware
 {
-    private const string CSP_NONCE_PLACEHOLDER = "**[CSP-NONCE]**";
+    private const string CSP_NONCE_PLACEHOLDER = "**[REQUEST-TOKEN]**";
     private const string INDEX_HTML_FILE = "index.html";
 
     private readonly RequestDelegate _next;

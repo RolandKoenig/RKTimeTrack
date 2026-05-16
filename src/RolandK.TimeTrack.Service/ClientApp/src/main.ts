@@ -60,8 +60,8 @@ const MyThemePreset = definePreset(Aura, {
     }
 });
 
-let cspNonce = document
-    .querySelector<HTMLMetaElement>('meta[name="csp-nonce"]')
+let requestToken = document
+    .querySelector<HTMLMetaElement>('meta[name="request-token"]')
     ?.content
 
 // Configure PrimeVue
@@ -75,7 +75,7 @@ app.use(PrimeVue, {
         }
     },
     csp: {
-        nonce: cspNonce
+        nonce: requestToken
     }
 });
 app.component('Button', Button);
