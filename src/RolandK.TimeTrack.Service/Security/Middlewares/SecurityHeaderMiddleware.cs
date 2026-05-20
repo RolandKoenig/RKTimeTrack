@@ -5,12 +5,10 @@ namespace RolandK.TimeTrack.Service.Security.Middlewares;
 public class SecurityHeaderMiddleware
 {
     private readonly RequestDelegate _next;
-    private readonly ICspNonceGenerator _cspNonceGenerator;
 
-    public SecurityHeaderMiddleware(ICspNonceGenerator cspNonceGenerator, RequestDelegate next)
+    public SecurityHeaderMiddleware(RequestDelegate next)
     {
         _next = next;
-        _cspNonceGenerator = cspNonceGenerator;
     }
 
     public async Task InvokeAsync(HttpContext context)
