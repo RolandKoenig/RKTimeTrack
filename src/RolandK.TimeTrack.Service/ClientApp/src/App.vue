@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import {ref} from "vue";
   import StatusComponent from "@/views/StatusComponent.vue";
+  import FooterComponent from "@/views/FooterComponent.vue";
   
   const menuItems = ref([{
       label: 'TimeTracking',
@@ -38,6 +39,8 @@
   <RouterView />
   
   <Toast />
+  
+  <FooterComponent />
 
 </template>
 

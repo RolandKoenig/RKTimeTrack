@@ -69,7 +69,7 @@ public class TimeTrackingPageTests
     }
     
     [Fact]
-    public async Task Initial_connection_state_displayed_not_connected()
+    public async Task Initial_connection_state_displayed_not_connected_two_times()
     {
         // Arrange
         await using var playwrightSession = await _server.StartPlaywrightSessionOnRootPageAsync();
@@ -85,6 +85,56 @@ public class TimeTrackingPageTests
         // Assert
         await playwrightSession
             .Expect(playwrightSession.Page.GetByText("Not connected"))
+            .ToHaveCountAsync(2);
+    }
+    
+    [Fact]
+    public async Task Initial_page_shows_correct_start_and_empty_export_timestamp()
+    {
+        // Arrange
+        var fakeStartupTimestamp = DateTime.UtcNow;
+        _server.ApplicationState.ServiceStartupTimestamp = fakeStartupTimestamp;
+        _server.ApplicationState.LastSuccessfulExport = DateTimeOffset.MinValue;
+        
+        // Arrange
+        await using var playwrightSession = await _server.StartPlaywrightSessionOnRootPageAsync();
+        
+        // Assert
+        var expectedStartedOnTimestamp =
+            $"Started: {fakeStartupTimestamp.ToLocalTime():yyyy-MM-dd HH:mm}";
+        await playwrightSession
+            .Expect(playwrightSession.Page.GetByText(expectedStartedOnTimestamp))
+            .ToBeVisibleAsync();
+
+        var expectedExportOnTimestamp = "Last export: -";
+        await playwrightSession
+            .Expect(playwrightSession.Page.GetByText(expectedExportOnTimestamp))
+            .ToBeVisibleAsync();
+    }
+    
+    [Fact]
+    public async Task Initial_page_shows_correct_start_and_export_timestamp()
+    {
+        // Arrange
+        var fakeStartupTimestamp = DateTime.UtcNow.Subtract(TimeSpan.FromMinutes(30));
+        var fakeExportTimestamp = DateTime.UtcNow;
+        _server.ApplicationState.ServiceStartupTimestamp = fakeStartupTimestamp;
+        _server.ApplicationState.LastSuccessfulExport = fakeExportTimestamp;
+        
+        // Arrange
+        await using var playwrightSession = await _server.StartPlaywrightSessionOnRootPageAsync();
+        
+        // Assert
+        var expectedStartedOnTimestamp =
+            $"Started: {fakeStartupTimestamp.ToLocalTime():yyyy-MM-dd HH:mm}";
+        await playwrightSession
+            .Expect(playwrightSession.Page.GetByText(expectedStartedOnTimestamp))
+            .ToBeVisibleAsync();
+
+        var expectedExportOnTimestamp = 
+            $"Last export: {fakeExportTimestamp.ToLocalTime():yyyy-MM-dd HH:mm}";
+        await playwrightSession
+            .Expect(playwrightSession.Page.GetByText(expectedExportOnTimestamp))
             .ToBeVisibleAsync();
     }
 }

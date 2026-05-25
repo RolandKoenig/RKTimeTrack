@@ -19,7 +19,6 @@
       <IconServer size="small" />
     </span>
   </div>
-
 </template>
 
 <style scoped>
