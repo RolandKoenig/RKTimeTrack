@@ -25,6 +25,15 @@
       () => getWeekdayName(timeTrackingStore.selectedDay?.date)
   )
   
+  const currentDayHasBilledRows = computed(
+      () => {
+        if (!timeTrackingStore.selectedDay) { return false; }
+        return timeTrackingStore.selectedDay.entries.some(
+            entry => !!entry.effortBilled
+        );
+      }
+  )
+  
   const timeTrackingStore = useTimeTrackingStore();
 </script>
 
@@ -62,13 +71,14 @@
     </div>
 
     <!-- day entry edit -->
-    <div class="row py-4"
-         v-if="timeTrackingStore.selectedEntry">
+    <div v-if="timeTrackingStore.selectedEntry"
+         class="row py-4">
       <DayEntryEditView />
     </div>
     
-    <div class="row py-4"
-         v-if="timeTrackingStore.selectedDay">
+    <!-- project overview -->
+    <div v-if="currentDayHasBilledRows" 
+         class="row py-4">
       <DayProjectOverviewView />
     </div>
 
