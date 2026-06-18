@@ -1,13 +1,16 @@
 version: 2
 
-updates:
-
-  # .NET SDK 
-  - package-ecosystem: "dotnet-sdk"
-    directory: "/"
+multi-ecosystem-groups:
+  sdk-updates:
     schedule:
       interval: "weekly"
       day: "wednesday"
+      
+updates:
+  # .NET SDK 
+  - package-ecosystem: "dotnet-sdk"
+    directory: "/"
+    multi-ecosystem-group: "sdk-updates"
     ignore:
       - dependency-name: "*"
         update-types:
@@ -17,11 +20,10 @@ updates:
         patterns:
           - "*"
         
+  # Docker
   - package-ecosystem: "docker"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-      day: "wednesday"
+    directory: "/src/RolandK.TimeTrack.Service"
+    multi-ecosystem-group: "sdk-updates"
     ignore:
       - dependency-name: "*"
         update-types:
