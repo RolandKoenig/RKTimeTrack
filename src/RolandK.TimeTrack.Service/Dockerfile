@@ -1,11 +1,16 @@
 #####################################
+# Node.js image for frontend build tooling
+FROM node:26-bookworm-slim AS node
+
+#####################################
 # Build image
-FROM mcr.microsoft.com/dotnet/sdk:10.0.300 AS build
+FROM mcr.microsoft.com/dotnet/sdk:10.0.301 AS build
 ARG RESOURCE_REAPER_SESSION_ID="00000000-0000-0000-0000-000000000000"
 LABEL "org.testcontainers.resource-reaper-session"=$RESOURCE_REAPER_SESSION_ID
 
-# Install node to be able to use npm during build time
-RUN bash -E $(curl -fsSL https://deb.nodesource.com/setup_22.x | bash - ); apt install -y nodejs
+# Install current Node.js/npm from the official Node image into the build image
+COPY --from=node /usr/local /usr/local
+RUN node --version && npm --version
 
 # Restore first for improved cache usage
 WORKDIR /src
