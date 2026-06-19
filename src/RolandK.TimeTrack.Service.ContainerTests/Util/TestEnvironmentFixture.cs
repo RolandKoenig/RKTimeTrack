@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 using DotNet.Testcontainers.Builders;
 using DotNet.Testcontainers.Containers;
 using DotNet.Testcontainers.Images;
@@ -29,10 +30,17 @@ public class TestEnvironmentFixture : IAsyncDisposable
         await appImage.CreateAsync();
         _builtImages = [appImage];
 
+        var dummySecretAbsolutePath = Path.Combine(
+            Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? "./",
+            "Secrets",
+            "Startup_SecretsTestEndpointAvailable");
+        
         var appContainer = new ContainerBuilder(appImage)
             .WithPortBinding(80, assignRandomHostPort: true)
             .WithEnvironment("Kestrel__Endpoints__Http__Url", "http://+:80")
             .WithEnvironment("ASPNETCORE_ENVIRONMENT", "IntegrationTests")
+            .WithCommand("--Startup:SecretsDirectory", "/run/secrets")
+            .WithBindMount(dummySecretAbsolutePath, "/run/secrets/Startup_SecretsTestEndpointAvailable")
             .WithWaitStrategy(Wait.ForUnixContainer().UntilMessageIsLogged("Now listening on: http:\\/\\/\\[::]:80"))
             .Build();
 

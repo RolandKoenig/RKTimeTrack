@@ -2,6 +2,7 @@ using Microsoft.OpenApi;
 using RolandK.TimeTrack.Application;
 using RolandK.TimeTrack.ExportAdapter;
 using RolandK.TimeTrack.FileBasedTimeTrackingRepositoryAdapter;
+using RolandK.TimeTrack.Service.Api.Tests;
 using RolandK.TimeTrack.Service.Api.Ui;
 using RolandK.TimeTrack.Service.BackgroundServices;
 using RolandK.TimeTrack.StaticTopicRepositoryAdapter;
@@ -91,6 +92,14 @@ public static class Program
         
         // Our apis
         app.MapWeekApi();
+        
+        // Test-Endpoint
+        // Used by RolandK.TimeTrack.Service.ContainerTests.StartupTests.Start_application_container_and_check_test_endpoint
+        // This one is used to check, whether secrets are correctly loaded from the configured secrets directory
+        if (builder.Configuration.GetSection("Startup").GetValue<bool>("SecretTestEndpointAvailable"))
+        {
+            app.MapTestEndpoint();
+        }
         
         return app;
     }
