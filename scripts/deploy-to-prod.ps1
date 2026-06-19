@@ -8,7 +8,6 @@ Param(
 
 # Get infos from git
 $commitSha = git rev-parse --short HEAD
-$branchName = git rev-parse --abbrev-ref HEAD
 
 # Check whether the image exists
 skopeo login --username $DockerHubUser --password $DockerHubPassword registry.hub.docker.com
