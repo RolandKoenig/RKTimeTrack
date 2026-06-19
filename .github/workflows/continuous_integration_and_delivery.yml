@@ -12,6 +12,10 @@ on:
       - Directory.Build.props
       - global.json
 
+permissions:
+  id-token: write
+  contents: read
+  
 jobs:
   
   # Default CI / Testing
@@ -31,9 +35,7 @@ jobs:
       run: ./build-and-test.ps1
       
   # Create and push container   
-  #  - Only for branches 'playground' and 'production'
-  #  - playground updates https://rktimetrack-playground.rolandk.de
-  #  - production updates https://rktimetrack.rolandk.de
+  #  - Only for the main branch
   build-and-publish-container: 
     runs-on: ubuntu-latest
     needs: build-and-test
@@ -48,3 +50,27 @@ jobs:
         run: |
           ./docker-build-and-push.ps1 -DockerHubUser "${{ secrets.DOCKER_REGISTRY_USERNAME }}" `
                                       -DockerHubPassword "${{ secrets.DOCKER_REGISTRY_PASSWORD }}"
+
+  # Deploy the container to prod
+  #  - Only for the main branch
+  deploy-to-prod:
+    runs-on: ubuntu-latest
+    needs: build-and-publish-container
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Az CLI login into Test Subscription using OIDC
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID_PROD }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID_PROD }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID_PROD }}
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Deploy latest image from current branch to Azure Container App (PROD)
+        shell: pwsh
+        working-directory: ./scripts
+        run: |
+          ./deploy-to-prod.ps1 -DockerHubUser "${{ secrets.DOCKER_REGISTRY_USERNAME }}" `
+                               -DockerHubPassword "${{ secrets.DOCKER_REGISTRY_PASSWORD }}"
