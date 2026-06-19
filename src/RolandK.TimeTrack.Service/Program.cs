@@ -29,6 +29,14 @@ public static class Program
     {
         var builder = WebApplication.CreateBuilder(args);
         
+        // Load secrets directory (if configured)
+        var secretsDirectory = builder.Configuration.GetSection("Startup").GetValue<string>("SecretsDirectory");
+        if (Directory.Exists(secretsDirectory))
+        {
+            builder.Configuration
+                .AddKeyPerFile(secretsDirectory);
+        }
+        
         // #########################################
         // Add services to the container.
         builder.Services.AddSerilog(
