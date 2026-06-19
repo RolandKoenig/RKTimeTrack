@@ -1,17 +1,12 @@
 Param(
+    [Parameter(Mandatory = $true)]
     [string]$DockerHubUser,
+
+    [Parameter(Mandatory = $true)]
     [string]$DockerHubPassword
 )
 
 $ErrorActionPreference = "Stop"
-
-# Argument checks
-if(-Not $DockerHubUser){
-    throw "DockerHubUser not set"
-}
-if(-Not $DockerHubPassword){
-    throw "DockerHubPassword not set"
-}
 
 # Get infos from git
 $branchName = git rev-parse --abbrev-ref HEAD
