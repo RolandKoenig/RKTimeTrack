@@ -17,7 +17,7 @@ if($LastExitCode){
 
 skopeo inspect docker://registry.hub.docker.com/rolandk87/rktimetrack:$commitSha
 if($LastExitCode){
-    throw "The image rolandk87/dcn-website:$commitSha does not exist!"
+    throw "The image rolandk87/rktimetrack:$commitSha does not exist!"
 }
 
 # Push to Azure Container Apps
