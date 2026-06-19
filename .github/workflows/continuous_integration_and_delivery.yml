@@ -39,8 +39,7 @@ jobs:
     needs: build-and-test
     if: 
       contains('
-      refs/heads/playground
-      refs/heads/production
+      refs/heads/main
       ', github.ref)
     steps:
       - name: Checkout code
