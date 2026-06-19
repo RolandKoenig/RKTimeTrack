@@ -24,4 +24,10 @@
         <Using Include="Xunit" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Update="Secrets\Startup_SecretsTestEndpointAvailable">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>
