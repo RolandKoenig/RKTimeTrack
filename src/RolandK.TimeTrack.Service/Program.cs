@@ -39,6 +39,7 @@ public static class Program
             });
         builder.Services.AddAuthorization();
         builder.Services.AddSingleton(TimeProvider.System);
+        builder.Services.AddHealthChecks();
 
         // Add application services
         builder.Services.AddRolandKTimeTrackApplication();
@@ -77,8 +78,9 @@ public static class Program
         }
         
         app.UseAuthorization();
+        app.MapHealthChecks("/health");
         app.UseStaticFiles();
-
+        
         // Our apis
         app.MapWeekApi();
         
