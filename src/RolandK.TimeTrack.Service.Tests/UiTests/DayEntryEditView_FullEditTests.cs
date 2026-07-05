@@ -129,7 +129,7 @@ public class DayEntryEditView_FullEditTests
                 Assert.Equal("Topic1", dayToCheck.Entries[0].Topic.Name);
                 Assert.Equal(0.5, dayToCheck.Entries[0].EffortInHours.Hours);
                 Assert.Equal(0.5, dayToCheck.Entries[0].EffortBilled.Hours);
-                Assert.Equal(0.75, dayToCheck.Entries[0].BillingMultiplier.Multiplier);
+                Assert.Equal(0.9, dayToCheck.Entries[0].BillingMultiplier.Multiplier);
                 Assert.Equal("Test-Description", dayToCheck.Entries[0].Description);
             }, 
             times: 200,

@@ -36,7 +36,7 @@
     },
     set(newValue) {
       if(timeTrackingStore.selectedEntry){
-        timeTrackingStore.selectedEntry.billingMultiplier = Math.round(newValue * 4) / 4;
+        timeTrackingStore.selectedEntry.billingMultiplier = Math.round(newValue * 10) / 10;
       }
     }
   })
@@ -50,7 +50,7 @@
       },
       effortInHours: { required, minValue: minValue(0) },
       effortBilled: { required, minValue: minValue(0) },
-      billingMultiplier: { required, minValue: minValue(0.25) },
+      billingMultiplier: { required, minValue: minValue(0.1) },
       type: { required },
       description: { }
     }
@@ -136,10 +136,10 @@
         <InputNumber id="current-row-billing-multiplier"
                      v-model.lazy="wrappedBillingMultiplier"
                      :minFractionDigits="0"
-                     :maxFractionDigits="2"
+                     :maxFractionDigits="1"
                      :invalid="v$.selectedEntry.billingMultiplier.$invalid"
                      showButtons
-                     :step="0.25"
+                     :step="0.1"
                      :disabled="(!timeTrackingStore.canCurrentTopicBeInvoiced)||(wrappedEffortBilled<=0)" />
         <div v-for="error of v$.selectedEntry.billingMultiplier.$silentErrors" :key="error.$uid">
           <div class="error-msg">{{ error.$message }}</div>

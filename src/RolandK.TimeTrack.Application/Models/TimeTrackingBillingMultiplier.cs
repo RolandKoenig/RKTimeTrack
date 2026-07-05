@@ -1,23 +1,22 @@
 ﻿using System.Text.Json.Serialization;
-using Light.GuardClauses;
 using RolandK.TimeTrack.Application.Models.Json;
 
 namespace RolandK.TimeTrack.Application.Models;
 
 /// <summary>
-/// Time spend for some work.
-/// Value must be positive and be rounded to quarter hours.
+/// Multiplier for billing.
+/// Value must be positive and be rounded to 0.1 steps.
 /// </summary>
 [JsonConverter(typeof(TimeTrackingBillingMultiplierJsonConverter))]
 public readonly struct TimeTrackingBillingMultiplier(double multiplier)
 {
     public static readonly TimeTrackingBillingMultiplier Default = new(1.0);
     
-    public double Multiplier { get; } = RoundHoursToQuarterHours(multiplier);
+    public double Multiplier { get; } = RoundMultiplier(multiplier);
 
-    private static double RoundHoursToQuarterHours(double hours)
+    private static double RoundMultiplier(double multiplier)
     {
-        return Math.Round(hours * 4) / 4;
+        return Math.Round(multiplier, 1);
     }
     
     public static implicit operator TimeTrackingBillingMultiplier(double multiplier) => new (multiplier);
