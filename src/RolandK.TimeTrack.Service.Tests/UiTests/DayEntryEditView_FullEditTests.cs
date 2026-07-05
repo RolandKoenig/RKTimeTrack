@@ -70,7 +70,7 @@ public class DayEntryEditView_FullEditTests
                 Assert.Single(dayToCheck.Entries);
                 Assert.Equal("TestCategory1", dayToCheck.Entries[0].Topic.Category);
                 Assert.Equal("Topic1", dayToCheck.Entries[0].Topic.Name);
-                Assert.Equal(0.25, dayToCheck.Entries[0].EffortInHours.Hours);
+                Assert.Equal(0.25, dayToCheck.Entries[0].EffortInHours.Hours, precision: 10);
                 Assert.Equal("Test-Description", dayToCheck.Entries[0].Description);
             }, 
             times: 200,
@@ -127,9 +127,9 @@ public class DayEntryEditView_FullEditTests
                 Assert.Single(dayToCheck.Entries);
                 Assert.Equal("TestCategory1", dayToCheck.Entries[0].Topic.Category);
                 Assert.Equal("Topic1", dayToCheck.Entries[0].Topic.Name);
-                Assert.Equal(0.5, dayToCheck.Entries[0].EffortInHours.Hours);
-                Assert.Equal(0.5, dayToCheck.Entries[0].EffortBilled.Hours);
-                Assert.Equal(0.75, dayToCheck.Entries[0].BillingMultiplier.Multiplier);
+                Assert.Equal(0.5, dayToCheck.Entries[0].EffortInHours.Hours, precision: 10);
+                Assert.Equal(0.5, dayToCheck.Entries[0].EffortBilled.Hours, precision: 10);
+                Assert.Equal(0.95, dayToCheck.Entries[0].BillingMultiplier.Multiplier, precision: 10);
                 Assert.Equal("Test-Description", dayToCheck.Entries[0].Description);
             }, 
             times: 200,
@@ -182,9 +182,9 @@ public class DayEntryEditView_FullEditTests
                 Assert.Single(dayToCheck.Entries);
                 Assert.Equal("TestCategory1", dayToCheck.Entries[0].Topic.Category);
                 Assert.Equal("Topic1", dayToCheck.Entries[0].Topic.Name);
-                Assert.Equal(0.5, dayToCheck.Entries[0].EffortInHours.Hours);
-                Assert.Equal(0.5, dayToCheck.Entries[0].EffortBilled.Hours);
-                Assert.Equal(1, dayToCheck.Entries[0].BillingMultiplier.Multiplier);
+                Assert.Equal(0.5, dayToCheck.Entries[0].EffortInHours.Hours, precision: 10);
+                Assert.Equal(0.5, dayToCheck.Entries[0].EffortBilled.Hours, precision: 10);
+                Assert.Equal(1, dayToCheck.Entries[0].BillingMultiplier.Multiplier, precision: 10);
                 Assert.Equal("Test-Description", dayToCheck.Entries[0].Description);
             }, 
             times: 200,
