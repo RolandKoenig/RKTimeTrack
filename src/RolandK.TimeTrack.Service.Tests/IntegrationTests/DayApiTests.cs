@@ -169,6 +169,10 @@ public class DayApiTests
     [InlineData(1.0)]
     [InlineData(1.1)]
     [InlineData(2.0)]
+    [InlineData(0.75)]
+    [InlineData(1.75)]
+    [InlineData(1.5)]
+    [InlineData(1.25)]
     public async Task UpdateDay_Property_BillingModifier(double billingModifier)
     {
         // Act

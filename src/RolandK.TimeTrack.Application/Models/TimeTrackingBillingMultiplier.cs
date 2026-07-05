@@ -16,7 +16,7 @@ public readonly struct TimeTrackingBillingMultiplier(double multiplier)
 
     private static double RoundMultiplier(double multiplier)
     {
-        return Math.Round(multiplier, 1);
+        return Math.Round(multiplier / 0.05) * 0.05;
     }
     
     public static implicit operator TimeTrackingBillingMultiplier(double multiplier) => new (multiplier);
