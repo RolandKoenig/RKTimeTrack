@@ -4,7 +4,7 @@ FROM node:26-bookworm-slim AS node
 
 #####################################
 # Build image
-FROM mcr.microsoft.com/dotnet/sdk:10.0.301 AS build
+FROM mcr.microsoft.com/dotnet/sdk:10.0.302 AS build
 ARG RESOURCE_REAPER_SESSION_ID="00000000-0000-0000-0000-000000000000"
 LABEL "org.testcontainers.resource-reaper-session"=$RESOURCE_REAPER_SESSION_ID
 
@@ -42,7 +42,7 @@ RUN rm /app/publish/appsettings.Development.json
 #####################################
 # Runtime image
 ## Configure OS
-FROM mcr.microsoft.com/dotnet/aspnet:10.0.8-noble-chiseled-extra AS final
+FROM mcr.microsoft.com/dotnet/aspnet:10.0.9-noble-chiseled-extra AS final
 EXPOSE 80
 
 ## Copy application and define entrypoint
