@@ -213,3 +213,4 @@ BundleArtifacts/
 # Custom rules
 logs/
 .DS_Store
+sbom/
