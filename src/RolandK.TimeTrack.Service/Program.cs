@@ -14,6 +14,8 @@ namespace RolandK.TimeTrack.Service;
 
 public static class Program
 {
+    private static string _test = string.Empty;
+    
     public static void Main(string[] args)
     {
         var host = CreateApplication(args);
