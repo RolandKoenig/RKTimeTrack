@@ -8,6 +8,9 @@
         <LangVersion>14.0</LangVersion>
         <IsPackable>false</IsPackable>
         
+        <!-- Use Microsoft Testing Platform (MTB) -->
+        <UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner>
+        
         <!-- Warning / error configuration -->
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <WarningsAsErrors />
