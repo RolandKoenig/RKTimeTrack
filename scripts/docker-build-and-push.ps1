@@ -26,7 +26,8 @@ echo ""
 
 # Docker build-and-push
 docker login -u $DockerHubUser -p $DockerHubPassword
-docker build -t docker.io/rolandk87/rktimetrack:latest-$branchName `
+docker build --build-arg DOTNET_SDK_VERSION="$dotnetSdkVersion" ` 
+             -t docker.io/rolandk87/rktimetrack:latest-$branchName `
              -t docker.io/rolandk87/rktimetrack:latest `
              -t docker.io/rolandk87/rktimetrack:$commitSha `
              --platform linux/amd64 `
