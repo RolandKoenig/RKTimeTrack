@@ -12,6 +12,18 @@ $ErrorActionPreference = "Stop"
 $branchName = git rev-parse --abbrev-ref HEAD
 $commitSha = git rev-parse --short HEAD
 
+echo "#############"
+echo "Branch: $branchName"
+echo "Commit SHA: $commitSha"
+echo ""
+
+# Get infos regarding .NET SDK and Runtime
+$dotnetSdkVersion = (Get-Content ../global.json -Raw | ConvertFrom-Json).sdk.version
+
+echo "#############"
+echo "Sdk: $dotnetSdkVersion"
+echo ""
+
 # Docker build-and-push
 docker login -u $DockerHubUser -p $DockerHubPassword
 docker build -t docker.io/rolandk87/rktimetrack:latest-$branchName `
