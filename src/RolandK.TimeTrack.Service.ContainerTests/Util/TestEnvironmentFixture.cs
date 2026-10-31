@@ -21,10 +21,12 @@ public class TestEnvironmentFixture : IAsyncDisposable
         if (_containers != null) { return; }
         
         var solutionDirectory = TestUtil.GetSolutionDirectory();
+        var dotNetSdkVersion = TestUtil.GetDotNetSdkVersion(solutionDirectory);
         var appImage = new ImageFromDockerfileBuilder()
             .WithDockerfileDirectory(solutionDirectory)
             .WithDockerfile("src/RolandK.TimeTrack.Service/Dockerfile")
             .WithBuildArgument("RESOURCE_REAPER_SESSION_ID", ResourceReaper.DefaultSessionId.ToString("D"))
+            .WithBuildArgument("DOTNET_SDK_VERSION", dotNetSdkVersion)
             .WithLogger(new TestLogger(outputHelper))
             .Build();
         await appImage.CreateAsync();
