@@ -1,3 +1,5 @@
+using System.Text.Json;
+
 namespace RolandK.TimeTrack.Service.ContainerTests.Util;
 
 internal static class TestUtil
@@ -32,5 +34,17 @@ internal static class TestUtil
         }
 
         return currentDirectory;
+    }
+    
+    public static string GetDotNetSdkVersion(string solutionDirectory)
+    {
+        var globalJsonPath = Path.Combine(solutionDirectory, "global.json");
+        using var globalJsonStream = File.OpenRead(globalJsonPath);
+        using var globalJson = JsonDocument.Parse(globalJsonStream);
+
+        return globalJson.RootElement
+            .GetProperty("sdk")
+            .GetProperty("version")
+            .GetString() ?? throw new InvalidOperationException("No .NET SDK version found in global.json.");
     }
 }

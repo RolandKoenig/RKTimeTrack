@@ -1,5 +1,4 @@
 ARG DOTNET_SDK_VERSION=arg_not_given
-ARG DOTNET_RUNTIME_VERSION=arg_not_given
 
 #####################################
 # Node.js image for frontend build tooling
@@ -45,7 +44,7 @@ RUN rm /app/publish/appsettings.Development.json
 #####################################
 # Runtime image
 ## Configure OS
-FROM mcr.microsoft.com/dotnet/aspnet:${DOTNET_RUNTIME_VERSION}-noble-chiseled-extra AS final
+FROM mcr.microsoft.com/dotnet/aspnet:10.0.13-noble-chiseled-extra AS final
 EXPOSE 80
 
 ## Copy application and define entrypoint
