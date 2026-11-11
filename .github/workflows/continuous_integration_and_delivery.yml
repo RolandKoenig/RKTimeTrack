@@ -57,8 +57,6 @@ jobs:
 
   # Deploy the container to prod
   #  - Only for the main branch
-  #  - Only one deployment at a time; a running deployment is never cancelled,
-  #    queued intermediate deployments are replaced by the newest one
   deploy-to-prod:
     if: github.ref == 'refs/heads/main'
     needs: build-and-publish-container
