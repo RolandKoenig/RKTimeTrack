@@ -15,7 +15,11 @@ on:
 permissions:
   id-token: write
   contents: read
-  
+    
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+      
 jobs:
 
   # Default CI / Testing
@@ -59,9 +63,6 @@ jobs:
     if: github.ref == 'refs/heads/main'
     needs: build-and-publish-container
     runs-on: ubuntu-latest
-    concurrency:
-      group: deploy-to-prod
-      cancel-in-progress: false
     steps:
       - name: Az CLI login into Test Subscription using OIDC
         uses: azure/login@v1
