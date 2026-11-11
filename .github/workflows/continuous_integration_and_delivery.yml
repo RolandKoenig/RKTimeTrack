@@ -11,13 +11,13 @@ on:
       - src/**
       - Directory.Build.props
       - global.json
-  
+
 permissions:
   id-token: write
   contents: read
   
 jobs:
-       
+
   # Default CI / Testing
   build-and-test:
     runs-on: ubuntu-latest
@@ -53,24 +53,15 @@ jobs:
 
   # Deploy the container to prod
   #  - Only for the main branch
-  deploy-to-prod-debounce:
+  #  - Only one deployment at a time; a running deployment is never cancelled,
+  #    queued intermediate deployments are replaced by the newest one
+  deploy-to-prod:
     if: github.ref == 'refs/heads/main'
     needs: build-and-publish-container
     runs-on: ubuntu-latest
     concurrency:
-      group: ${{ github.workflow }}-${{ github.ref }}-deploy
-      cancel-in-progress: true
-    steps:
-      - run: sleep 240
-        
-  deploy-to-prod:
-    if: github.ref == 'refs/heads/main'
-    needs: deploy-to-prod-debounce
-    runs-on: ubuntu-latest
-  
-    concurrency:
-      group: ${{ github.workflow }}-${{ github.ref }}-deploy
-      cancel-in-progress: true
+      group: deploy-to-prod
+      cancel-in-progress: false
     steps:
       - name: Az CLI login into Test Subscription using OIDC
         uses: azure/login@v1
