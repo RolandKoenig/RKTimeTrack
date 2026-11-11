@@ -20,7 +20,6 @@ jobs:
        
   # Default CI / Testing
   build-and-test:
-    needs: debounce-on-main
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
